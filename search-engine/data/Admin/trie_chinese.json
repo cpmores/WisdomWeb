@@ -1,0 +1,2055 @@
+{
+  "root": {
+    "alpha": "",
+    "children": [
+      {
+        "alpha": "备",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "备"
+      },
+      {
+        "alpha": "模",
+        "children": [
+          {
+            "alpha": "式",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "模式"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "模"
+      },
+      {
+        "alpha": "说",
+        "children": [
+          {
+            "alpha": "明",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "说明"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "说"
+      },
+      {
+        "alpha": "黄",
+        "children": [
+          {
+            "alpha": "页",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "黄页"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "黄"
+      },
+      {
+        "alpha": "大",
+        "children": [
+          {
+            "alpha": "黄",
+            "children": [
+              {
+                "alpha": "页",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "大黄页"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "大黄"
+          },
+          {
+            "alpha": "校",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "大校"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "大"
+      },
+      {
+        "alpha": "扫",
+        "children": [
+          {
+            "alpha": "描",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "扫描"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "扫"
+      },
+      {
+        "alpha": "病",
+        "children": [
+          {
+            "alpha": "毒",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "病毒"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "病"
+      },
+      {
+        "alpha": "商",
+        "children": [
+          {
+            "alpha": "城",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "商城"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "商"
+      },
+      {
+        "alpha": "扑",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "扑"
+      },
+      {
+        "alpha": "微",
+        "children": [
+          {
+            "alpha": "博",
+            "children": [
+              {
+                "alpha": "热",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "微博热"
+              }
+            ],
+            "isEnd": false,
+            "isWord": false,
+            "slice": "微博"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "微"
+      },
+      {
+        "alpha": "豆",
+        "children": [
+          {
+            "alpha": "瓣",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "豆瓣"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "豆"
+      },
+      {
+        "alpha": "娱",
+        "children": [
+          {
+            "alpha": "乐",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "娱乐"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "娱"
+      },
+      {
+        "alpha": "社",
+        "children": [
+          {
+            "alpha": "交",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "社交"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "社"
+      },
+      {
+        "alpha": "星",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "星"
+      },
+      {
+        "alpha": "问",
+        "children": [
+          {
+            "alpha": "卷",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "问卷"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "问"
+      },
+      {
+        "alpha": "淘",
+        "children": [
+          {
+            "alpha": "宝",
+            "children": [
+              {
+                "alpha": "网",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "淘宝网"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "淘宝"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "淘"
+      },
+      {
+        "alpha": "企",
+        "children": [
+          {
+            "alpha": "鹅",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "企鹅"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "企"
+      },
+      {
+        "alpha": "直",
+        "children": [
+          {
+            "alpha": "播",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "直播"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "直"
+      },
+      {
+        "alpha": "虎",
+        "children": [
+          {
+            "alpha": "牙",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "虎牙"
+          }
+        ],
+        "isEnd": false,
+        "isWord": true,
+        "slice": "虎"
+      },
+      {
+        "alpha": "苏",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "苏"
+      },
+      {
+        "alpha": "芒",
+        "children": [
+          {
+            "alpha": "果",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "芒果"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "芒"
+      },
+      {
+        "alpha": "腾",
+        "children": [
+          {
+            "alpha": "讯",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "腾讯"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "腾"
+      },
+      {
+        "alpha": "强",
+        "children": [
+          {
+            "alpha": "国",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "强国"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "强"
+      },
+      {
+        "alpha": "转",
+        "children": [
+          {
+            "alpha": "换",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "转换"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "转"
+      },
+      {
+        "alpha": "空",
+        "children": [
+          {
+            "alpha": "投",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "空投"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "空"
+      },
+      {
+        "alpha": "文",
+        "children": [
+          {
+            "alpha": "库",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "文库"
+          },
+          {
+            "alpha": "档",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "文档"
+          },
+          {
+            "alpha": "件",
+            "children": [
+              {
+                "alpha": "格",
+                "children": [
+                  {
+                    "alpha": "式",
+                    "children": [],
+                    "isEnd": true,
+                    "isWord": true,
+                    "slice": "文件格式"
+                  }
+                ],
+                "isEnd": false,
+                "isWord": false,
+                "slice": "文件格"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "文件"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "文"
+      },
+      {
+        "alpha": "生",
+        "children": [
+          {
+            "alpha": "成",
+            "children": [
+              {
+                "alpha": "器",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "生成器"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "生成"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "生"
+      },
+      {
+        "alpha": "短",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "短"
+      },
+      {
+        "alpha": "编",
+        "children": [
+          {
+            "alpha": "辑",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "编辑"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "编"
+      },
+      {
+        "alpha": "复",
+        "children": [
+          {
+            "alpha": "原",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "复原"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "复"
+      },
+      {
+        "alpha": "缩",
+        "children": [
+          {
+            "alpha": "略",
+            "children": [
+              {
+                "alpha": "词",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "缩略词"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "缩略"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "缩"
+      },
+      {
+        "alpha": "航",
+        "children": [
+          {
+            "alpha": "班",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "航班"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "航"
+      },
+      {
+        "alpha": "翻",
+        "children": [
+          {
+            "alpha": "译",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "翻译"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "翻"
+      },
+      {
+        "alpha": "下",
+        "children": [
+          {
+            "alpha": "载",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "下载"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "下"
+      },
+      {
+        "alpha": "听",
+        "children": [
+          {
+            "alpha": "歌",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "听歌"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "听"
+      },
+      {
+        "alpha": "木",
+        "children": [
+          {
+            "alpha": "函",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "木函"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "木"
+      },
+      {
+        "alpha": "一",
+        "children": [
+          {
+            "alpha": "个",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "一个"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "一"
+      },
+      {
+        "alpha": "号",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "号"
+      },
+      {
+        "alpha": "影",
+        "children": [
+          {
+            "alpha": "视",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "影视"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "影"
+      },
+      {
+        "alpha": "工",
+        "children": [
+          {
+            "alpha": "具",
+            "children": [
+              {
+                "alpha": "箱",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "工具箱"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "工具"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "工"
+      },
+      {
+        "alpha": "用",
+        "children": [
+          {
+            "alpha": "工",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "用工"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "用"
+      },
+      {
+        "alpha": "圈",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "圈"
+      },
+      {
+        "alpha": "报",
+        "children": [
+          {
+            "alpha": "名",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "报名"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "报"
+      },
+      {
+        "alpha": "素",
+        "children": [
+          {
+            "alpha": "质",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "素质"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "素"
+      },
+      {
+        "alpha": "维",
+        "children": [
+          {
+            "alpha": "普",
+            "children": [
+              {
+                "alpha": "网",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "维普网"
+              }
+            ],
+            "isEnd": false,
+            "isWord": false,
+            "slice": "维普"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "维"
+      },
+      {
+        "alpha": "老",
+        "children": [
+          {
+            "alpha": "师",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "老师"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "老"
+      },
+      {
+        "alpha": "树",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "树"
+      },
+      {
+        "alpha": "正",
+        "children": [
+          {
+            "alpha": "版",
+            "children": [
+              {
+                "alpha": "软",
+                "children": [
+                  {
+                    "alpha": "件",
+                    "children": [],
+                    "isEnd": true,
+                    "isWord": true,
+                    "slice": "正版软件"
+                  }
+                ],
+                "isEnd": false,
+                "isWord": false,
+                "slice": "正版软"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "正版"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "正"
+      },
+      {
+        "alpha": "实",
+        "children": [
+          {
+            "alpha": "时",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "实时"
+          },
+          {
+            "alpha": "用",
+            "children": [
+              {
+                "alpha": "工",
+                "children": [
+                  {
+                    "alpha": "具",
+                    "children": [],
+                    "isEnd": true,
+                    "isWord": true,
+                    "slice": "实用工具"
+                  }
+                ],
+                "isEnd": false,
+                "isWord": false,
+                "slice": "实用工"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "实用"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "实"
+      },
+      {
+        "alpha": "索",
+        "children": [
+          {
+            "alpha": "引",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "索引"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "索"
+      },
+      {
+        "alpha": "查",
+        "children": [
+          {
+            "alpha": "重",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "查重"
+          },
+          {
+            "alpha": "询",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "查询"
+          }
+        ],
+        "isEnd": false,
+        "isWord": true,
+        "slice": "查"
+      },
+      {
+        "alpha": "信",
+        "children": [
+          {
+            "alpha": "息",
+            "children": [
+              {
+                "alpha": "化",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "信息化"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "信息"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "信"
+      },
+      {
+        "alpha": "邮",
+        "children": [
+          {
+            "alpha": "箱",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "邮箱"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "邮"
+      },
+      {
+        "alpha": "反",
+        "children": [
+          {
+            "alpha": "馈",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "反馈"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "反"
+      },
+      {
+        "alpha": "引",
+        "children": [
+          {
+            "alpha": "擎",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "引擎"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "引"
+      },
+      {
+        "alpha": "请",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "请"
+      },
+      {
+        "alpha": "拓",
+        "children": [
+          {
+            "alpha": "展",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "拓展"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "拓"
+      },
+      {
+        "alpha": "选",
+        "children": [
+          {
+            "alpha": "择",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "选择"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "选"
+      },
+      {
+        "alpha": "求",
+        "children": [
+          {
+            "alpha": "是",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "求是"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "求"
+      },
+      {
+        "alpha": "轻",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "轻"
+      },
+      {
+        "alpha": "斗",
+        "children": [
+          {
+            "alpha": "鱼",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "斗鱼"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "斗"
+      },
+      {
+        "alpha": "资",
+        "children": [
+          {
+            "alpha": "源",
+            "children": [
+              {
+                "alpha": "管",
+                "children": [
+                  {
+                    "alpha": "理",
+                    "children": [],
+                    "isEnd": true,
+                    "isWord": true,
+                    "slice": "资源管理"
+                  }
+                ],
+                "isEnd": false,
+                "isWord": false,
+                "slice": "资源管"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "资源"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "资"
+      },
+      {
+        "alpha": "搜",
+        "children": [
+          {
+            "alpha": "索",
+            "children": [
+              {
+                "alpha": "引",
+                "children": [
+                  {
+                    "alpha": "擎",
+                    "children": [],
+                    "isEnd": true,
+                    "isWord": true,
+                    "slice": "搜索引擎"
+                  }
+                ],
+                "isEnd": false,
+                "isWord": false,
+                "slice": "搜索引"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "搜索"
+          }
+        ],
+        "isEnd": false,
+        "isWord": true,
+        "slice": "搜"
+      },
+      {
+        "alpha": "班",
+        "children": [
+          {
+            "alpha": "车",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "班车"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "班"
+      },
+      {
+        "alpha": "管",
+        "children": [
+          {
+            "alpha": "理",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "管理"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "管"
+      },
+      {
+        "alpha": "本",
+        "children": [
+          {
+            "alpha": "站",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "本站"
+          },
+          {
+            "alpha": "科",
+            "children": [
+              {
+                "alpha": "生",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "本科生"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "本科"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "本"
+      },
+      {
+        "alpha": "京",
+        "children": [
+          {
+            "alpha": "东",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "京东"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "京"
+      },
+      {
+        "alpha": "书",
+        "children": [
+          {
+            "alpha": "馆",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "书馆"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "书"
+      },
+      {
+        "alpha": "网",
+        "children": [
+          {
+            "alpha": "络",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "网络"
+          },
+          {
+            "alpha": "址",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "网址"
+          },
+          {
+            "alpha": "费",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "网费"
+          },
+          {
+            "alpha": "上",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "网上"
+          }
+        ],
+        "isEnd": false,
+        "isWord": true,
+        "slice": "网"
+      },
+      {
+        "alpha": "团",
+        "children": [
+          {
+            "alpha": "在",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "团在"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "团"
+      },
+      {
+        "alpha": "地",
+        "children": [
+          {
+            "alpha": "图",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "地图"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "地"
+      },
+      {
+        "alpha": "计",
+        "children": [
+          {
+            "alpha": "财",
+            "children": [
+              {
+                "alpha": "处",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "计财处"
+              }
+            ],
+            "isEnd": false,
+            "isWord": false,
+            "slice": "计财"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "计"
+      },
+      {
+        "alpha": "平",
+        "children": [
+          {
+            "alpha": "台",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "平台"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "平"
+      },
+      {
+        "alpha": "成",
+        "children": [
+          {
+            "alpha": "器",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "成器"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "成"
+      },
+      {
+        "alpha": "图",
+        "children": [
+          {
+            "alpha": "片",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "图片"
+          },
+          {
+            "alpha": "书",
+            "children": [
+              {
+                "alpha": "馆",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "图书馆"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "图书"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "图"
+      },
+      {
+        "alpha": "首",
+        "children": [
+          {
+            "alpha": "页",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "首页"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "首"
+      },
+      {
+        "alpha": "数",
+        "children": [
+          {
+            "alpha": "据",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "数据"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "数"
+      },
+      {
+        "alpha": "上",
+        "children": [
+          {
+            "alpha": "网",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "上网"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "上"
+      },
+      {
+        "alpha": "预",
+        "children": [
+          {
+            "alpha": "约",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "预约"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "预"
+      },
+      {
+        "alpha": "知",
+        "children": [
+          {
+            "alpha": "乎",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "知乎"
+          },
+          {
+            "alpha": "网",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "知网"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "知"
+      },
+      {
+        "alpha": "研",
+        "children": [
+          {
+            "alpha": "在",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "研在"
+          }
+        ],
+        "isEnd": false,
+        "isWord": true,
+        "slice": "研"
+      },
+      {
+        "alpha": "学",
+        "children": [
+          {
+            "alpha": "习",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "学习"
+          },
+          {
+            "alpha": "术",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "学术"
+          },
+          {
+            "alpha": "在",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "学在"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "学"
+      },
+      {
+        "alpha": "认",
+        "children": [
+          {
+            "alpha": "证",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "认证"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "认"
+      },
+      {
+        "alpha": "二",
+        "children": [
+          {
+            "alpha": "维",
+            "children": [
+              {
+                "alpha": "码",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "二维码"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "二维"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "二"
+      },
+      {
+        "alpha": "百",
+        "children": [
+          {
+            "alpha": "度",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "百度"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "百"
+      },
+      {
+        "alpha": "软",
+        "children": [
+          {
+            "alpha": "件",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "软件"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "软"
+      },
+      {
+        "alpha": "优",
+        "children": [
+          {
+            "alpha": "酷",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "优酷"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "优"
+      },
+      {
+        "alpha": "语",
+        "children": [
+          {
+            "alpha": "雀",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "语雀"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "语"
+      },
+      {
+        "alpha": "中",
+        "children": [
+          {
+            "alpha": "国",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "中国"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "中"
+      },
+      {
+        "alpha": "站",
+        "children": [
+          {
+            "alpha": "长",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "站长"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "站"
+      },
+      {
+        "alpha": "浙",
+        "children": [
+          {
+            "alpha": "大",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "浙大"
+          }
+        ],
+        "isEnd": false,
+        "isWord": true,
+        "slice": "浙"
+      },
+      {
+        "alpha": "云",
+        "children": [
+          {
+            "alpha": "盘",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "云盘"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "云"
+      },
+      {
+        "alpha": "在",
+        "children": [
+          {
+            "alpha": "线",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "在线"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "在"
+      },
+      {
+        "alpha": "教",
+        "children": [
+          {
+            "alpha": "师",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "教师"
+          },
+          {
+            "alpha": "务",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "教务"
+          },
+          {
+            "alpha": "学",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "教学"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "教"
+      },
+      {
+        "alpha": "表",
+        "children": [
+          {
+            "alpha": "单",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "表单"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "表"
+      },
+      {
+        "alpha": "校",
+        "children": [
+          {
+            "alpha": "网",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "校网"
+          },
+          {
+            "alpha": "园",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "校园"
+          },
+          {
+            "alpha": "外",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "校外"
+          },
+          {
+            "alpha": "友",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "校友"
+          },
+          {
+            "alpha": "务",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "校务"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "校"
+      },
+      {
+        "alpha": "深",
+        "children": [
+          {
+            "alpha": "色",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "深色"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "深"
+      },
+      {
+        "alpha": "朵",
+        "children": [
+          {
+            "alpha": "朵",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "朵朵"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "朵"
+      },
+      {
+        "alpha": "宝",
+        "children": [
+          {
+            "alpha": "网",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "宝网"
+          },
+          {
+            "alpha": "典",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "宝典"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "宝"
+      },
+      {
+        "alpha": "就",
+        "children": [
+          {
+            "alpha": "业",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "就业"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "就"
+      },
+      {
+        "alpha": "院",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "院"
+      },
+      {
+        "alpha": "测",
+        "children": [
+          {
+            "alpha": "速",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "测速"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "测"
+      },
+      {
+        "alpha": "秀",
+        "children": [
+          {
+            "alpha": "米",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "秀米"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "秀"
+      },
+      {
+        "alpha": "办",
+        "children": [
+          {
+            "alpha": "公",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "办公"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "办"
+      },
+      {
+        "alpha": "视",
+        "children": [
+          {
+            "alpha": "频",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "视频"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "视"
+      },
+      {
+        "alpha": "新",
+        "children": [
+          {
+            "alpha": "生",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "新生"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "新"
+      },
+      {
+        "alpha": "万",
+        "children": [
+          {
+            "alpha": "方",
+            "children": [
+              {
+                "alpha": "数",
+                "children": [
+                  {
+                    "alpha": "据",
+                    "children": [],
+                    "isEnd": true,
+                    "isWord": true,
+                    "slice": "万方数据"
+                  }
+                ],
+                "isEnd": false,
+                "isWord": false,
+                "slice": "万方数"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "万方"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "万"
+      },
+      {
+        "alpha": "智",
+        "children": [
+          {
+            "alpha": "慧",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "智慧"
+          },
+          {
+            "alpha": "云",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "智云"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "智"
+      },
+      {
+        "alpha": "电",
+        "children": [
+          {
+            "alpha": "话",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "电话"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "电"
+      },
+      {
+        "alpha": "体",
+        "children": [
+          {
+            "alpha": "育",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "体育"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "体"
+      },
+      {
+        "alpha": "课",
+        "children": [
+          {
+            "alpha": "堂",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "课堂"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "课"
+      },
+      {
+        "alpha": "谷",
+        "children": [
+          {
+            "alpha": "歌",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "谷歌"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "谷"
+      },
+      {
+        "alpha": "服",
+        "children": [
+          {
+            "alpha": "务",
+            "children": [
+              {
+                "alpha": "网",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "服务网"
+              },
+              {
+                "alpha": "平",
+                "children": [
+                  {
+                    "alpha": "台",
+                    "children": [],
+                    "isEnd": true,
+                    "isWord": true,
+                    "slice": "服务平台"
+                  }
+                ],
+                "isEnd": false,
+                "isWord": false,
+                "slice": "服务平"
+              }
+            ],
+            "isEnd": false,
+            "isWord": true,
+            "slice": "服务"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "服"
+      },
+      {
+        "alpha": "必",
+        "children": [
+          {
+            "alpha": "应",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "必应"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "必"
+      },
+      {
+        "alpha": "历",
+        "children": [],
+        "isEnd": true,
+        "isWord": true,
+        "slice": "历"
+      },
+      {
+        "alpha": "格",
+        "children": [
+          {
+            "alpha": "式",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "格式"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "格"
+      },
+      {
+        "alpha": "综",
+        "children": [
+          {
+            "alpha": "合",
+            "children": [],
+            "isEnd": true,
+            "isWord": true,
+            "slice": "综合"
+          }
+        ],
+        "isEnd": false,
+        "isWord": false,
+        "slice": "综"
+      },
+      {
+        "alpha": "爱",
+        "children": [
+          {
+            "alpha": "奇",
+            "children": [
+              {
+                "alpha": "艺",
+                "children": [],
+                "isEnd": true,
+                "isWord": true,
+                "slice": "爱奇艺"
+              }
+            ],
+            "isEnd": false,
+            "isWord": false,
+            "slice": "爱奇"
+          }
+        ],
+        "isEnd": false,
+        "isWord": true,
+        "slice": "爱"
+      }
+    ],
+    "isEnd": false,
+    "isWord": false,
+    "slice": ""
+  },
+  "userid": "Admin"
+}

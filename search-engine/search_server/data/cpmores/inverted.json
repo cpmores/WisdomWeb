@@ -1,0 +1,5637 @@
+{
+  "000": {
+    "mapping": {
+      "1": 3,
+      "2": 1
+    },
+    "totalCount": 4
+  },
+  "02": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "0910417": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "115": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "15": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "167": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "17": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "1848": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "198": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "20026701": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "2009": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "2010": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "2022": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "2023": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "2024": {
+    "mapping": {
+      "0": 1,
+      "1": 3
+    },
+    "totalCount": 4
+  },
+  "2024.": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "2025": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "24": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "25": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "250": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "26": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "28": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "45": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "50": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "55": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "72": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "87": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "90": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "a": {
+    "mapping": {
+      "1": 7
+    },
+    "totalCount": 7
+  },
+  "about": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "aboutus": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "accelerate": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "accompanied": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "accounts": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "acg": {
+    "mapping": {
+      "2": 5
+    },
+    "totalCount": 5
+  },
+  "achieve": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "ackmore": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "action": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "actions": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "activated": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "active": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "adapt": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "adaptable": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "add": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "address": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "adopted": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "advanced": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "ai": {
+    "mapping": {
+      "1": 12
+    },
+    "totalCount": 12
+  },
+  "alert": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "all": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "allowing": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "amanda": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "analysis": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "animation": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "anime": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "api": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "app": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "application": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "apply": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "appreciating": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "approvals": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "apps": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "array": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "articles": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "asia": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "ask": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "assistance": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "assistants": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "assisted": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "attacks": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "autofix": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "automate": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "automates": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "automotive": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "available": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "average": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "away": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "based": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "become": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "belong": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "below": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "benz": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "best": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "better": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "big": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "bilibili": {
+    "mapping": {
+      "0": 1,
+      "2": 31
+    },
+    "totalCount": 32
+  },
+  "bishi": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "blog": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "boosts": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "bounds": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "branch": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "breaking": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "build": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "building": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "built": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "business": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "businesses": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "button": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "by": {
+    "mapping": {
+      "1": 7
+    },
+    "totalCount": 7
+  },
+  "campaigns": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "cancel": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "careers": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "case": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "cases": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "cc98": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "cctv": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "cd": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "changes": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "chat": {
+    "mapping": {
+      "1": 7
+    },
+    "totalCount": 7
+  },
+  "check": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "checks": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "ci": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "cites": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "clear": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "cli": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "cloud": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "cn": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "code": {
+    "mapping": {
+      "1": 23
+    },
+    "totalCount": 23
+  },
+  "codespace": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "codespaces": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "coding": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "collaborate": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "collaboration": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "collaborative": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "collections": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "com": {
+    "mapping": {
+      "2": 17
+    },
+    "totalCount": 17
+  },
+  "comics": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "community": {
+    "mapping": {
+      "1": 2,
+      "2": 2
+    },
+    "totalCount": 4
+  },
+  "companies": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "company": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "compare": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "compared": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "complete": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "completed": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "completion": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "comprehensive": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "connection": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "contact": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "contacted": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "content": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "continues": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "conversation": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "conversations": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "cookie": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "cookies": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "copilot": {
+    "mapping": {
+      "1": 18
+    },
+    "totalCount": 18
+  },
+  "coverage": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "create": {
+    "mapping": {
+      "1": 5,
+      "2": 1
+    },
+    "totalCount": 6
+  },
+  "customer": {
+    "mapping": {
+      "1": 7
+    },
+    "totalCount": 7
+  },
+  "cuts": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "d": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "data": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "day": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "days": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "debt": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "demonstration": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "depend": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "dependabot": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "dependencies": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "depending": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "desktop": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "detect": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "dev": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "developer": {
+    "mapping": {
+      "1": 7
+    },
+    "totalCount": 7
+  },
+  "developers": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "development": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "devops": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "devsecops": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "different": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "directly": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "discover": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "discussion": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "discussions": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "dismiss": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "display": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "displays": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "dive": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "do": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "docker": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "docs": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "documentation": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "download": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "duolingo": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "duplicated": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "duration": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "ebooks": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "edit": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "editor": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "education": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "effectively": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "email": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "embedded": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "enabled": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "enables": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "ended": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "engaging": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "engineers": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "english": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "enter": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "enterprise": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "enterprises": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "environment": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "environments": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "eta": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "events": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "evolved": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "executive": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "experience": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "explore": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "extend": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "extension": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "extensions": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "extract": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "fabian": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "factor": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "faster": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "faulhaber": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "features": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "feedback": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "fifty": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "figma": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "files": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "filter": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "financial": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "find": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "fit": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "fix": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "fixed": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "fixes": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "fixing": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "flaws": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "focus": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "followed": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "footnote": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "footnotes": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "formatted": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "forum": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "freeing": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "frees": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "from": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "function": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "fund": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "game": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "games": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "gartner": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "geogebra": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "get": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "git": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "github": {
+    "mapping": {
+      "0": 1,
+      "1": 58
+    },
+    "totalCount": 59
+  },
+  "given": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "go": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "goal": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "government": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "grade": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "grid": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "grow": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "growing": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "guides": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "hatsune": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "heading": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "healthcare": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "helios": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "helps": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "home": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "html": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "https": {
+    "mapping": {
+      "2": 10
+    },
+    "totalCount": 10
+  },
+  "hub": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "hubot": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "icp": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "id": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "idea": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "ideas": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "image": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "impact": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "improve": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "in": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "inbox": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "inc": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "incident": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "include": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "including": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "inclusion": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "increase": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "indicate": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "industries": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "industry": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "information": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "input": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "inputs": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "insights": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "inspired": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "instagram": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "instant": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "instantly": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "integrate": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "integrated": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "integrations": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "involving": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "issue": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "issues": {
+    "mapping": {
+      "1": 10
+    },
+    "totalCount": 10
+  },
+  "it": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "january": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "javascript": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "join": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "jump": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "june": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "keep": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "knox": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "landing": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "languages": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "latest": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "launched": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "leading": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "leaked": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "learn": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "learning": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "left": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "levels": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "leverage": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "libraries": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "library": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "libre": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "linkedin": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "links": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "list": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "listing": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "lists": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "live": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "logic": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "logos": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "longest": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "love": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "magic": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "main": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "manage": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "management": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "manager": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "manufacturing": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "marketplace": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "means": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "medium": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "menial": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "menu": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "mercado": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "mercedes": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "metadata": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "microsoft": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "miku": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "mikufans": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "millions": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "minimum": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "minutes": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "mobile": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "models": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "mona": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "month": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "mooc": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "myscript": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "name": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "named": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "names": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "navigation": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "neatly": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "new": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "newsletter": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "newsroom": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "nexushd": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "nga": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "nonprofits": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "notification": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "octoarcade": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "octoinvaders": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "officially": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "on": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "onboard": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "onboarding": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "ons": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "open": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "optimize": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "org": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "organization": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "page": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "partner": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "partners": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "path": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "pathways": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "pc": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "pdf": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "people": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "perform": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "performance": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "personal": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "piece": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "pixivic": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "place": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "plan": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "platform": {
+    "mapping": {
+      "1": 9
+    },
+    "totalCount": 9
+  },
+  "popular": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "popup": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "possible": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "post": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "power": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "powered": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "practices": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "premium": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "prevent": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "pricing": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "privacy": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "process": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "processes": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "product": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "productive": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "productivity": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "professional": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "progress": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "project": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "projects": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "prompt": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "prompts": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "protected": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "protecting": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "provide": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "pta": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "publish": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "pull": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "quadrant": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "qualifiers": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "quality": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "query": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "questions": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "quickly": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "rank": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "rates": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "reactions": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "read": {
+    "mapping": {
+      "1": 7
+    },
+    "totalCount": 7
+  },
+  "readme": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "received": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "redefine": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "reduce": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "refactor": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "refresh": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "related": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "reload": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "remediate": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "render": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "report": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "repositories": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "requests": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "resetting": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "resources": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "results": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "reusable": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "reveal": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "revealing": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "review": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "right": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "roadmap": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "rows": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "running": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "runs": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "rvpn": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "s": {
+    "mapping": {
+      "1": 7,
+      "2": 1
+    },
+    "totalCount": 8
+  },
+  "sample": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "saved": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "scales": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "scaling": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "scanning": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "sci": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "screen": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "screens": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "screenshot": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "search": {
+    "mapping": {
+      "1": 7,
+      "2": 4
+    },
+    "totalCount": 11
+  },
+  "searches": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "seconds": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "secret": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "secrets": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "secure": {
+    "mapping": {
+      "1": 2,
+      "2": 1
+    },
+    "totalCount": 3
+  },
+  "secured": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "securely": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "security": {
+    "mapping": {
+      "1": 12
+    },
+    "totalCount": 12
+  },
+  "selected": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "send": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "sentry": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "seriously": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "services": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "session": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "setup": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "share": {
+    "mapping": {
+      "1": 2,
+      "2": 1
+    },
+    "totalCount": 3
+  },
+  "shifts": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "ship": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "shop": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "showing": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "shows": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "sign": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "signed": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "simple": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "simplify": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "single": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "site": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "sitemap": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "size": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "skills": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "skip": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "slack": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "small": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "smartphone": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "snippet": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "social": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "software": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "solutions": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "solve": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "source": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "southeast": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "space": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "speed": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "spend": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "split": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "sponsors": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "spreadsheet": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "standardizes": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "start": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "startups": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "state": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "status": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "stories": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "story": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "streamlines": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "strengthens": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "stripe": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "sub": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "submit": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "subscribe": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "successful": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "suggesting": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "suggests": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "support": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "supported": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "survey": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "switched": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "symbol": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "sync": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "syncs": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "syntax": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "t": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "tab": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "task": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "tasks": {
+    "mapping": {
+      "1": 3
+    },
+    "totalCount": 3
+  },
+  "team": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "teams": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "technical": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "technologies": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "technology": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "tensorflow": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "terms": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "test": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "the": {
+    "mapping": {
+      "1": 10
+    },
+    "totalCount": 10
+  },
+  "there": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "this": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "thread": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "tiktok": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "tiles": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "time": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "times": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "tips": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "to": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "toggle": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "toolchain": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "tools": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "topics": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "track": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "tracking": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "trending": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "try": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "tv": {
+    "mapping": {
+      "0": 1,
+      "2": 2
+    },
+    "totalCount": 3
+  },
+  "twice": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "twitch": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "two": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "types": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "up": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "update": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "updated": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "ups": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "upvotes": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "use": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "used": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "user": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "users": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "using": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "veracode": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "video": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "videos": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "view": {
+    "mapping": {
+      "1": 5
+    },
+    "totalCount": 5
+  },
+  "visit": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "vs": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "vulnerabilities": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "vulnerability": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "vulnerable": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "watch": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "wave": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "way": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "we": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "webinars": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "website": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "webvpn": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "what": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "whether": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "whitepapers": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "why": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "wide": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "widely": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "wiki": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "wikipedia": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "window": {
+    "mapping": {
+      "1": 7
+    },
+    "totalCount": 7
+  },
+  "with": {
+    "mapping": {
+      "1": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "wolfram": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "work": {
+    "mapping": {
+      "1": 6
+    },
+    "totalCount": 6
+  },
+  "workflow": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "workflows": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "world": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "wos": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "write": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "www": {
+    "mapping": {
+      "2": 4
+    },
+    "totalCount": 4
+  },
+  "x": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "you": {
+    "mapping": {
+      "1": 4
+    },
+    "totalCount": 4
+  },
+  "your": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "youtube": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "zero": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "zh": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "zjuers": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "—": {
+    "mapping": {
+      "1": 2
+    },
+    "totalCount": 2
+  },
+  "™": {
+    "mapping": {
+      "1": 1
+    },
+    "totalCount": 1
+  },
+  "⑨": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "つ": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "゜": {
+    "mapping": {
+      "2": 6
+    },
+    "totalCount": 6
+  },
+  "ロ": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "一个": {
+    "mapping": {
+      "0": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "一家": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "一面": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "万方": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "万方数据": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "上网": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "下一頁": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "下载": {
+    "mapping": {
+      "0": 2,
+      "2": 1
+    },
+    "totalCount": 3
+  },
+  "中国": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "中開": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "丰富": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "主": {
+    "mapping": {
+      "2": 4
+    },
+    "totalCount": 4
+  },
+  "乐趣": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "书馆": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "乾杯": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "二次": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "二次元": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "二维": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "二维码": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "云盘": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "互动": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "交流": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "交流平台": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "京东": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "企鹅": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "优酷": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "传播": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "体育": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "体验": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "信息": {
+    "mapping": {
+      "0": 2,
+      "2": 1
+    },
+    "totalCount": 3
+  },
+  "信息化": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "信息网": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "信息网络": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "個": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "內容": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "全书": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "内容": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "分頁": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "创建": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "创意": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "初音": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "制作": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "前身": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "办公": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "动态": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "动漫": {
+    "mapping": {
+      "2": 4
+    },
+    "totalCount": 4
+  },
+  "包括": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "历": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "及时": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "反應": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "反馈": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "发布": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "号": {
+    "mapping": {
+      "0": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "听歌": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "哔哩": {
+    "mapping": {
+      "2": 30
+    },
+    "totalCount": 30
+  },
+  "唱": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "商城": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "啟連結": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "喜欢": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "团在": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "国内": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "图书": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "图书馆": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "图片": {
+    "mapping": {
+      "0": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "圈": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "圖片": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "在线": {
+    "mapping": {
+      "0": 3
+    },
+    "totalCount": 3
+  },
+  "地图": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "地圖": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "备": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "复原": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "大校": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "大黄": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "大黄页": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "好者": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "娱乐": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "学习": {
+    "mapping": {
+      "0": 2,
+      "2": 1
+    },
+    "totalCount": 3
+  },
+  "学在": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "学术": {
+    "mapping": {
+      "0": 6
+    },
+    "totalCount": 6
+  },
+  "宅": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "宝典": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "宝网": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "实时": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "实用": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "实用工具": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "客户": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "客户端": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "小時": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "就业": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "展示": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "工具": {
+    "mapping": {
+      "0": 6,
+      "2": 1
+    },
+    "totalCount": 7
+  },
+  "工具箱": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "干杯": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "平台": {
+    "mapping": {
+      "0": 1,
+      "2": 2
+    },
+    "totalCount": 3
+  },
+  "年": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "年轻": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "广播": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "应有": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "应有尽有": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "廣告": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "引擎": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "弹幕": {
+    "mapping": {
+      "2": 7
+    },
+    "totalCount": 7
+  },
+  "强国": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "影片": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "影视": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "徐逸": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "微博热": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "必应": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "快来": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "意見": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "成器": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "我們": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "扑": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "执照": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "扫描": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "找到": {
+    "mapping": {
+      "2": 4
+    },
+    "totalCount": 4
+  },
+  "报名": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "拓展": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "捕捉": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "描述": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "提供": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "搜": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "搜尋": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "搜索": {
+    "mapping": {
+      "0": 4,
+      "2": 1
+    },
+    "totalCount": 5
+  },
+  "搜索引擎": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "教务": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "教学": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "教师": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "数据": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "文件": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "文件格式": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "文化": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "文字": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "文库": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "文档": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "斗鱼": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "新": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "新生": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "新番": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "新聞": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "方式": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "旅遊": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "旅館": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "日": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "日期": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "旨在": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "星": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "智云": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "智慧": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "更": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "最新": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "最有": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "最棒": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "月": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "服务": {
+    "mapping": {
+      "0": 5
+    },
+    "totalCount": 5
+  },
+  "服务平台": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "服务网": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "木函": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "未来": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "本科": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "本科生": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "本站": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "朵朵": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "查": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "查询": {
+    "mapping": {
+      "0": 3
+    },
+    "totalCount": 3
+  },
+  "查重": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "树": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "校务": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "校友": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "校园": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "校外": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "校网": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "格式": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "標": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "模式": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "欢乐": {
+    "mapping": {
+      "2": 4
+    },
+    "totalCount": 4
+  },
+  "正版": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "正版软件": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "氛围": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "求是": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "沪": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "法律": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "活跃": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "测速": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "浙": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "浙大": {
+    "mapping": {
+      "0": 12
+    },
+    "totalCount": 12
+  },
+  "淘宝": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "淘宝网": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "深色": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "游戏": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "爱": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "爱奇艺": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "爱好": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "爱好者": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "班车": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "生成": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "生成器": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "生活": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "用工": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "用户": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "电": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "电视": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "电视节": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "电视节目": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "电话": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "病毒": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "百度": {
+    "mapping": {
+      "0": 3,
+      "2": 1
+    },
+    "totalCount": 4
+  },
+  "百科": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "百科全书": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "直播": {
+    "mapping": {
+      "0": 2,
+      "2": 3
+    },
+    "totalCount": 5
+  },
+  "看见": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "真实": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "知乎": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "知名": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "知网": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "短": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "研": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "研在": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "社交": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "秀米": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "空投": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "立即": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "站点": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "站长": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "竞": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "管理": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "籤": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "約": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "素质": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "索引": {
+    "mapping": {
+      "0": 2,
+      "2": 1
+    },
+    "totalCount": 3
+  },
+  "結果": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "经营": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "绘画": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "维基": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "维基百": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "维基百科": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "维普网": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "综合": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "编辑": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "缩略": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "缩略词": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "网": {
+    "mapping": {
+      "0": 4
+    },
+    "totalCount": 4
+  },
+  "网上": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "网址": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "网文": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "网站": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "网络": {
+    "mapping": {
+      "0": 1,
+      "2": 3
+    },
+    "totalCount": 4
+  },
+  "网费": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "美食": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "翻译": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "老师": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "聲明": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "腾讯": {
+    "mapping": {
+      "0": 3
+    },
+    "totalCount": 3
+  },
+  "自由": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "舞": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "航班": {
+    "mapping": {
+      "0": 1,
+      "2": 1
+    },
+    "totalCount": 2
+  },
+  "节目": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "芒果": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "苏": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "营业": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "营业执照": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "虎": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "虎牙": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "表单": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "见": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "视听": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "视频": {
+    "mapping": {
+      "0": 2,
+      "2": 6
+    },
+    "totalCount": 8
+  },
+  "视频网": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "說明": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "计财处": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "认证": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "许可": {
+    "mapping": {
+      "2": 3
+    },
+    "totalCount": 3
+  },
+  "许可证": {
+    "mapping": {
+      "2": 2
+    },
+    "totalCount": 2
+  },
+  "语雀": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "说明": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "请": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "课堂": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "谷歌": {
+    "mapping": {
+      "0": 2
+    },
+    "totalCount": 2
+  },
+  "豆瓣": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "贴": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "资源": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "资源管理": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "跳至": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "转换": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "软件": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "轻": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "选择": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "週": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "過去": {
+    "mapping": {
+      "2": 4
+    },
+    "totalCount": 4
+  },
+  "邮箱": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "關於": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "问卷": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "院": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "隱私權": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "音乐": {
+    "mapping": {
+      "2": 1
+    },
+    "totalCount": 1
+  },
+  "预约": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  },
+  "首页": {
+    "mapping": {
+      "0": 1,
+      "2": 2
+    },
+    "totalCount": 3
+  },
+  "黄页": {
+    "mapping": {
+      "0": 1
+    },
+    "totalCount": 1
+  }
+}
