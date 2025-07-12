@@ -1,27 +1,22 @@
 <template>
   <div id="app">
-    <!-- 登录组件 -->
-    <LoginModel />
+    <!-- 门户界面 -->
+    <PortalView v-if="!isLoggedIn" />
 
-    <!-- 主界面和副界面 -->
-    <MainView v-if="isLoggedIn" />
-
-    <!-- 首页 -->
-    <HomeView v-else />
+    <!-- 主界面 -->
+    <MainView v-else />
   </div>
 </template>
 
 <script>
-import LoginModel from './components/LoginModel.vue'
+import PortalView from './views/PortalView.vue'
 import MainView from './views/MainView.vue'
-import HomeView from './views/HomeView.vue'
 
 export default {
   name: 'App',
   components: {
-    LoginModel,
+    PortalView,
     MainView,
-    HomeView,
   },
   data() {
     return {

@@ -17,7 +17,7 @@
             @focus="showSuggestions = true"
             @blur="hideSuggestions"
             type="text"
-            placeholder="搜索收藏的网页..."
+            placeholder="搜索网址、标题或标签..."
             class="search-input"
           />
           <button @click="handleSearch" class="search-btn">搜索</button>
@@ -28,7 +28,7 @@
               v-for="suggestion in searchSuggestions"
               :key="suggestion"
               @click="selectSuggestion(suggestion)"
-              class="suggestion-item"
+              :class="['suggestion-item', { 'tag-suggestion': suggestion.startsWith('标签: ') }]"
             >
               {{ suggestion }}
             </div>
@@ -59,23 +59,38 @@
       <!-- 用户选择模块 -->
       <div class="user-selection-module">
         <h3>标签筛选</h3>
-        <div class="tags-container">
+        <div v-if="userTags.length === 0" class="no-tags">
+          <p>暂无标签，添加收藏时可以为收藏添加标签</p>
+        </div>
+        <div v-else class="tags-container">
+          <button @click="selectAllBookmarks" :class="['tag-btn', { active: selectedTag === '' }]">
+            全部 ({{ totalBookmarksCount }})
+          </button>
           <button
             v-for="tag in userTags"
             :key="tag"
             @click="selectTag(tag)"
             :class="['tag-btn', { active: selectedTag === tag }]"
+            :title="`点击查看包含「${tag}」标签的收藏`"
           >
-            {{ tag }}
+            {{ tag }} ({{ getTagCount(tag) }})
           </button>
         </div>
       </div>
 
       <!-- 展示模块 -->
       <div class="display-module">
-        <h3>收藏列表</h3>
+        <h3>
+          收藏列表
+          <span v-if="selectedTag" class="filter-info"> (筛选: {{ selectedTag }}) </span>
+          <span v-if="searchQuery && !selectedTag" class="search-info">
+            (搜索: {{ searchQuery }})
+          </span>
+        </h3>
         <div v-if="bookmarks.length === 0" class="no-bookmarks">
-          <p>暂无收藏内容</p>
+          <p v-if="selectedTag">没有找到包含"{{ selectedTag }}"标签的收藏</p>
+          <p v-else-if="searchQuery">没有找到包含"{{ searchQuery }}"的收藏</p>
+          <p v-else>暂无收藏内容</p>
         </div>
         <div v-else class="bookmarks-list">
           <div v-for="bookmark in bookmarks" :key="bookmark.id" class="bookmark-item">
@@ -166,6 +181,14 @@
         </div>
       </div>
     </div>
+
+    <!-- 标签管理对话框 -->
+    <TagManager
+      :show-tag-modal="showTagModal"
+      :bookmark-url="bookmarkUrl"
+      @close="closeTagModal"
+      @bookmark-added="onBookmarkAdded"
+    />
   </div>
 </template>
 
@@ -175,14 +198,19 @@ import {
   getSearchSuggestions,
   searchBookmarks,
   addBookmark,
+  getAllBookmarks,
   getBookmarksByTag,
   getUserTags,
   chatWithAI,
   logout,
 } from '../services/api.js'
+import TagManager from '../components/TagManager.vue'
 
 export default {
   name: 'MainView',
+  components: {
+    TagManager,
+  },
   data() {
     return {
       // 用户信息
@@ -204,7 +232,10 @@ export default {
       bookmarkUrl: '',
       bookmarks: [],
       userTags: [],
+      tagCounts: {}, // 标签数量统计
       selectedTag: '',
+      showTagModal: false, // 标签管理对话框显示状态
+      totalBookmarksCount: 0, // 用户总收藏数量
 
       // 分页
       currentPage: 1,
@@ -227,6 +258,9 @@ export default {
     // 获取用户标签
     await this.loadUserTags()
 
+    // 加载所有收藏（初始状态）
+    await this.loadAllBookmarks()
+
     // 初始化AI悬浮球位置
     this.initAIBallPosition()
   },
@@ -239,7 +273,11 @@ export default {
       try {
         const userId = localStorage.getItem('userId')
         if (!userId) {
-          this.$router.push('/')
+          // 清除登录状态，触发返回门户界面
+          localStorage.removeItem('isLoggedIn')
+          localStorage.removeItem('userEmail')
+          localStorage.removeItem('userId')
+          window.dispatchEvent(new CustomEvent('loginStatusChanged'))
           return
         }
 
@@ -259,8 +297,12 @@ export default {
       try {
         const userId = localStorage.getItem('userId')
         const response = await getUserTags(userId)
+
         if (response.success) {
           this.userTags = response.tags
+          this.tagCounts = response.tagCounts || {}
+        } else {
+          console.error('获取用户标签失败:', response.message)
         }
       } catch (error) {
         console.error('加载用户标签失败:', error)
@@ -302,6 +344,13 @@ export default {
     selectSuggestion(suggestion) {
       this.searchQuery = suggestion
       this.showSuggestions = false
+
+      // 如果选择的是标签建议，直接搜索标签
+      if (suggestion.startsWith('标签: ')) {
+        const tag = suggestion.replace('标签: ', '')
+        this.searchQuery = tag
+      }
+
       this.handleSearch()
     },
 
@@ -309,14 +358,25 @@ export default {
      * 执行搜索
      */
     async handleSearch() {
-      if (!this.searchQuery.trim()) return
+      if (!this.searchQuery.trim()) {
+        // 如果搜索框为空，恢复之前的显示状态
+        if (this.selectedTag) {
+          await this.selectTag(this.selectedTag)
+        } else {
+          await this.loadAllBookmarks()
+        }
+        return
+      }
 
       try {
         const userId = localStorage.getItem('userId')
         const response = await searchBookmarks(this.searchQuery, userId)
         if (response.success) {
           this.bookmarks = response.bookmarks
-          this.selectedTag = ''
+          this.selectedTag = '' // 搜索时清除标签选择
+
+          // 滚动到展示模块
+          this.scrollToDisplayModule()
         }
       } catch (error) {
         console.error('搜索失败:', error)
@@ -324,34 +384,52 @@ export default {
     },
 
     /**
-     * 添加收藏 - 将用户ID和网页链接传输给后端服务器
+     * 添加收藏 - 显示标签管理对话框
      */
-    async handleAddBookmark() {
+    handleAddBookmark() {
       if (!this.bookmarkUrl.trim()) {
         alert('请输入要收藏的网页链接')
         return
       }
 
-      try {
-        const userId = localStorage.getItem('userId')
-        // 只传输用户ID和网页链接
-        const response = await addBookmark({
-          userId: userId,
-          url: this.bookmarkUrl,
-        })
+      // 显示标签管理对话框
+      this.showTagModal = true
+    },
 
-        if (response.success) {
-          this.bookmarkUrl = ''
-          alert('收藏成功！')
-          // 重新加载当前标签的收藏
-          if (this.selectedTag) {
-            this.selectTag(this.selectedTag)
-          }
-        }
-      } catch (error) {
-        console.error('添加收藏失败:', error)
-        alert('收藏失败，请稍后重试')
+    /**
+     * 关闭标签管理对话框
+     */
+    closeTagModal() {
+      this.showTagModal = false
+      this.bookmarkUrl = '' // 清空输入框
+    },
+
+    /**
+     * 收藏添加成功后的回调
+     */
+    async onBookmarkAdded() {
+      // 重新加载用户标签
+      await this.loadUserTags()
+
+      // 重新加载当前标签的收藏
+      if (this.selectedTag) {
+        await this.selectTag(this.selectedTag)
+      } else {
+        // 如果没有选中标签，重新加载所有收藏
+        await this.loadAllBookmarks()
       }
+
+      // 显示成功提示
+      this.showSuccessMessage('收藏添加成功！')
+    },
+
+    /**
+     * 选择全部收藏
+     */
+    async selectAllBookmarks() {
+      this.selectedTag = ''
+      this.currentPage = 1
+      await this.loadAllBookmarks()
     },
 
     /**
@@ -362,6 +440,24 @@ export default {
       this.currentPage = 1
       // 将点击的标签和用户ID一起传送给后端服务器
       await this.loadBookmarksByTag(tag)
+    },
+
+    /**
+     * 加载所有收藏
+     */
+    async loadAllBookmarks() {
+      try {
+        const userId = localStorage.getItem('userId')
+        const response = await getAllBookmarks(userId, this.currentPage, this.pageSize)
+
+        if (response.success) {
+          this.bookmarks = response.bookmarks
+          this.totalPages = response.totalPages
+          this.totalBookmarksCount = response.total
+        }
+      } catch (error) {
+        console.error('加载所有收藏失败:', error)
+      }
     },
 
     /**
@@ -382,6 +478,47 @@ export default {
     },
 
     /**
+     * 获取指定标签的收藏数量
+     */
+    getTagCount(tag) {
+      return this.tagCounts[tag] || 0
+    },
+
+    /**
+     * 显示成功消息
+     */
+    showSuccessMessage(message) {
+      // 创建一个临时的成功提示
+      const successDiv = document.createElement('div')
+      successDiv.className = 'success-message'
+      successDiv.textContent = message
+      successDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4caf50;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+      `
+
+      document.body.appendChild(successDiv)
+
+      // 3秒后自动移除
+      setTimeout(() => {
+        successDiv.style.animation = 'slideOutRight 0.3s ease'
+        setTimeout(() => {
+          if (successDiv.parentNode) {
+            successDiv.parentNode.removeChild(successDiv)
+          }
+        }, 300)
+      }, 3000)
+    },
+
+    /**
      * 切换页面
      */
     async changePage(page) {
@@ -390,6 +527,8 @@ export default {
       this.currentPage = page
       if (this.selectedTag) {
         await this.loadBookmarksByTag(this.selectedTag)
+      } else {
+        await this.loadAllBookmarks()
       }
     },
 
@@ -530,6 +669,21 @@ export default {
     },
 
     /**
+     * 滚动到展示模块
+     */
+    scrollToDisplayModule() {
+      this.$nextTick(() => {
+        const displayModule = document.querySelector('.display-module')
+        if (displayModule) {
+          displayModule.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+        }
+      })
+    },
+
+    /**
      * 退出登录
      */
     async handleLogout() {
@@ -661,6 +815,16 @@ export default {
   background: #f8f9fa;
 }
 
+.tag-suggestion {
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.tag-suggestion::before {
+  content: '🏷️ ';
+  margin-right: 5px;
+}
+
 .suggestion-item:last-child {
   border-bottom: none;
 }
@@ -729,6 +893,20 @@ export default {
   margin-bottom: 20px;
 }
 
+.no-tags {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px dashed #dee2e6;
+}
+
+.no-tags p {
+  margin: 0;
+  font-size: 14px;
+}
+
 .tags-container {
   display: flex;
   flex-wrap: wrap;
@@ -737,26 +915,74 @@ export default {
 
 .tag-btn {
   padding: 8px 16px;
-  background: #e9ecef;
+  background: #f8f9fa;
   color: #495057;
-  border: none;
+  border: 2px solid #e9ecef;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
 }
 
 .tag-btn:hover {
-  background: #dee2e6;
+  background: #e9ecef;
+  border-color: #4a90e2;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
 }
 
 .tag-btn.active {
   background: #4a90e2;
   color: white;
+  border-color: #4a90e2;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.tag-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.tag-btn:hover::after {
+  left: 100%;
 }
 
 .display-module h3 {
   color: #333;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-info {
+  color: #4a90e2;
+  font-size: 14px;
+  font-weight: normal;
+  background: #e3f2fd;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid #bbdefb;
+}
+
+.search-info {
+  color: #ff9800;
+  font-size: 14px;
+  font-weight: normal;
+  background: #fff3e0;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid #ffcc02;
 }
 
 .no-bookmarks {
@@ -1063,6 +1289,29 @@ export default {
 
 .ai-send-btn:hover {
   background: #357abd;
+}
+
+/* 成功消息动画 */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
 
 /* 响应式设计 */

@@ -36,11 +36,35 @@ const mockBookmarks = [
     userId: '1',
     url: 'https://github.com',
     title: 'GitHub: Where the world builds software',
-    tags: ['技术', '编程'],
+    tags: ['技术', '编程', '工具'],
     createdAt: '2024-01-14T15:20:00Z',
   },
   {
     id: '3',
+    userId: '1',
+    url: 'https://reactjs.org',
+    title: 'React – A JavaScript library for building user interfaces',
+    tags: ['技术', '编程', 'React', '前端'],
+    createdAt: '2024-01-13T09:15:00Z',
+  },
+  {
+    id: '4',
+    userId: '1',
+    url: 'https://developer.mozilla.org',
+    title: 'MDN Web Docs',
+    tags: ['技术', '学习', '文档'],
+    createdAt: '2024-01-12T14:30:00Z',
+  },
+  {
+    id: '5',
+    userId: '1',
+    url: 'https://stackoverflow.com',
+    title: 'Stack Overflow - Where Developers Learn, Share, & Build Careers',
+    tags: ['学习', '编程', '问答'],
+    createdAt: '2024-01-11T11:45:00Z',
+  },
+  {
+    id: '6',
     userId: '2',
     url: 'https://stackoverflow.com',
     title: 'Stack Overflow - Where Developers Learn, Share, & Build Careers',
@@ -154,7 +178,7 @@ export async function getUserInfo(userId) {
 }
 
 /**
- * 搜索建议API
+ * 搜索建议API - 包含网址和标签建议
  * @param {string} query - 搜索查询
  * @param {string} userId - 用户ID
  * @returns {Promise<Object>} 搜索建议
@@ -162,23 +186,48 @@ export async function getUserInfo(userId) {
 export async function getSearchSuggestions(query, userId) {
   await delay(300)
 
-  // 模拟搜索建议
-  const suggestions = [
-    'Vue.js 教程',
-    'JavaScript 基础',
-    'CSS 样式指南',
-    'HTML 标签大全',
-    'React 开发',
-  ].filter((item) => item.toLowerCase().includes(query.toLowerCase()))
+  // 获取用户的收藏和标签
+  const userBookmarks = mockBookmarks.filter((bookmark) => bookmark.userId === userId)
+  const userTags = [...new Set(userBookmarks.flatMap((bookmark) => bookmark.tags || []))]
+
+  // 生成搜索建议
+  const suggestions = []
+
+  // 添加标题建议
+  userBookmarks.forEach((bookmark) => {
+    if (bookmark.title.toLowerCase().includes(query.toLowerCase())) {
+      suggestions.push(bookmark.title)
+    }
+  })
+
+  // 添加URL建议
+  userBookmarks.forEach((bookmark) => {
+    if (bookmark.url.toLowerCase().includes(query.toLowerCase())) {
+      suggestions.push(bookmark.url)
+    }
+  })
+
+  // 添加标签建议
+  userTags.forEach((tag) => {
+    if (tag.toLowerCase().includes(query.toLowerCase())) {
+      suggestions.push(`标签: ${tag}`)
+    }
+  })
+
+  // 去重并限制数量
+  const uniqueSuggestions = [...new Set(suggestions)]
+  const filteredSuggestions = uniqueSuggestions.filter((item) =>
+    item.toLowerCase().includes(query.toLowerCase()),
+  )
 
   return {
     success: true,
-    suggestions: suggestions.slice(0, 5),
+    suggestions: filteredSuggestions.slice(0, 8),
   }
 }
 
 /**
- * 搜索收藏的网页API
+ * 搜索收藏的网页API - 支持网址和标签搜索
  * @param {string} query - 搜索查询
  * @param {string} userId - 用户ID
  * @returns {Promise<Object>} 搜索结果
@@ -190,7 +239,9 @@ export async function searchBookmarks(query, userId) {
     (bookmark) =>
       bookmark.userId === userId &&
       (bookmark.title.toLowerCase().includes(query.toLowerCase()) ||
-        bookmark.url.toLowerCase().includes(query.toLowerCase())),
+        bookmark.url.toLowerCase().includes(query.toLowerCase()) ||
+        (bookmark.tags &&
+          bookmark.tags.some((tag) => tag.toLowerCase().includes(query.toLowerCase())))),
   )
 
   return {
@@ -200,8 +251,8 @@ export async function searchBookmarks(query, userId) {
 }
 
 /**
- * 添加收藏API - 只接收用户ID和网页链接
- * @param {Object} bookmarkData - 收藏数据 {userId, url}
+ * 添加收藏API - 接收用户ID、网页链接和标签
+ * @param {Object} bookmarkData - 收藏数据 {userId, url, tags}
  * @returns {Promise<Object>} 添加结果
  */
 export async function addBookmark(bookmarkData) {
@@ -210,22 +261,51 @@ export async function addBookmark(bookmarkData) {
   // 生成新收藏ID
   const newBookmarkId = (mockBookmarks.length + 1).toString()
 
-  // 添加新收藏到模拟数据库 - 只使用用户ID和URL
+  // 添加新收藏到模拟数据库
   const newBookmark = {
     id: newBookmarkId,
     userId: bookmarkData.userId,
     url: bookmarkData.url,
     title: bookmarkData.url, // 使用URL作为标题
-    tags: [], // 默认为空标签
+    tags: bookmarkData.tags || [], // 使用传入的标签或默认为空数组
     createdAt: new Date().toISOString(),
   }
 
   mockBookmarks.push(newBookmark)
 
+  // 注意：不再更新用户的tags字段，因为getUserTags现在直接从收藏中提取标签
+
   return {
     success: true,
     message: '收藏成功',
     bookmark: newBookmark,
+  }
+}
+
+/**
+ * 获取用户所有收藏的网页API
+ * @param {string} userId - 用户ID
+ * @param {number} page - 页码
+ * @param {number} pageSize - 每页数量
+ * @returns {Promise<Object>} 收藏列表
+ */
+export async function getAllBookmarks(userId, page = 1, pageSize = 10) {
+  await delay(500)
+
+  const userBookmarks = mockBookmarks.filter((bookmark) => bookmark.userId === userId)
+
+  // 分页处理
+  const startIndex = (page - 1) * pageSize
+  const endIndex = startIndex + pageSize
+  const paginatedBookmarks = userBookmarks.slice(startIndex, endIndex)
+
+  return {
+    success: true,
+    bookmarks: paginatedBookmarks,
+    total: userBookmarks.length,
+    page: page,
+    pageSize: pageSize,
+    totalPages: Math.ceil(userBookmarks.length / pageSize),
   }
 }
 
@@ -262,7 +342,7 @@ export async function getBookmarksByTag(tag, userId, page = 1, pageSize = 10) {
 /**
  * 获取用户所有标签API
  * @param {string} userId - 用户ID
- * @returns {Promise<Object>} 标签列表
+ * @returns {Promise<Object>} 标签列表和数量
  */
 export async function getUserTags(userId) {
   await delay(300)
@@ -270,9 +350,25 @@ export async function getUserTags(userId) {
   const user = mockUsers.find((u) => u.id === userId)
 
   if (user) {
+    // 从用户的所有收藏中提取所有唯一的标签
+    const userBookmarks = mockBookmarks.filter((bookmark) => bookmark.userId === userId)
+    const allTags = userBookmarks.flatMap((bookmark) => bookmark.tags || [])
+
+    // 去重并排序
+    const uniqueTags = [...new Set(allTags)].sort()
+
+    // 计算每个标签的数量
+    const tagCounts = {}
+    uniqueTags.forEach((tag) => {
+      tagCounts[tag] = userBookmarks.filter(
+        (bookmark) => bookmark.tags && bookmark.tags.includes(tag),
+      ).length
+    })
+
     return {
       success: true,
-      tags: user.tags,
+      tags: uniqueTags,
+      tagCounts: tagCounts,
     }
   } else {
     return {

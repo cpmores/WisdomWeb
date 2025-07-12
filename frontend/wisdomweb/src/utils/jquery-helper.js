@@ -14,36 +14,40 @@ export class JQueryAnimations {
    * 淡入效果
    * @param {string} selector - 选择器
    * @param {number} duration - 动画持续时间
+   * @param {Function} callback - 动画完成后的回调函数
    */
-  static fadeIn(selector, duration = 300) {
-    $(selector).fadeIn(duration)
+  static fadeIn(selector, duration = 300, callback = null) {
+    $(selector).fadeIn(duration, callback)
   }
 
   /**
    * 淡出效果
    * @param {string} selector - 选择器
    * @param {number} duration - 动画持续时间
+   * @param {Function} callback - 动画完成后的回调函数
    */
-  static fadeOut(selector, duration = 300) {
-    $(selector).fadeOut(duration)
+  static fadeOut(selector, duration = 300, callback = null) {
+    $(selector).fadeOut(duration, callback)
   }
 
   /**
    * 滑动显示效果
    * @param {string} selector - 选择器
    * @param {number} duration - 动画持续时间
+   * @param {Function} callback - 动画完成后的回调函数
    */
-  static slideDown(selector, duration = 300) {
-    $(selector).slideDown(duration)
+  static slideDown(selector, duration = 300, callback = null) {
+    $(selector).slideDown(duration, callback)
   }
 
   /**
    * 滑动隐藏效果
    * @param {string} selector - 选择器
    * @param {number} duration - 动画持续时间
+   * @param {Function} callback - 动画完成后的回调函数
    */
-  static slideUp(selector, duration = 300) {
-    $(selector).slideUp(duration)
+  static slideUp(selector, duration = 300, callback = null) {
+    $(selector).slideUp(duration, callback)
   }
 
   /**
@@ -51,9 +55,10 @@ export class JQueryAnimations {
    * @param {string} selector - 选择器
    * @param {Object} properties - 动画属性
    * @param {number} duration - 动画持续时间
+   * @param {Function} callback - 动画完成后的回调函数
    */
-  static animate(selector, properties, duration = 300) {
-    $(selector).animate(properties, duration)
+  static animate(selector, properties, duration = 300, callback = null) {
+    $(selector).animate(properties, duration, callback)
   }
 }
 
