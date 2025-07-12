@@ -8,5 +8,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_executable(search-engine src/main.cpp src/porter2_stemmer.cpp src/tokenization.cpp src/search_machine.cpp)
+add_executable(trie_get src/trie_server.cpp)
 
 file(COPY ${CMAKE_SOURCE_DIR}/dict DESTINATION ${CMAKE_BINARY_DIR})

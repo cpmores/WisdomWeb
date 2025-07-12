@@ -1,3 +1,4 @@
 /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/build/CMakeFiles/search-engine.dir
+/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/build/CMakeFiles/trie_get.dir
 /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/build/CMakeFiles/edit_cache.dir
 /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/build/CMakeFiles/rebuild_cache.dir

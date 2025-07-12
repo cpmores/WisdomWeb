@@ -14,7 +14,7 @@ function main()
     mytag = String(ARGS[2])
     myuser = String(ARGS[3])
 
-    basedir = "./data"
+    basedir = "../data"
     dir = joinpath(basedir, myuser)
     uri = URI(url)
     hostname = uri.host

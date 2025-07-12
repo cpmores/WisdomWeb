@@ -22,5 +22,11 @@
   "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine/include -g -std=gnu++17 -o CMakeFiles/search-engine.dir/src/search_machine.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine/src/search_machine.cpp",
   "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine/src/search_machine.cpp",
   "output": "CMakeFiles/search-engine.dir/src/search_machine.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine/include -g -std=gnu++17 -o CMakeFiles/trie_get.dir/src/trie_server.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine/src/trie_server.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine/src/trie_server.cpp",
+  "output": "CMakeFiles/trie_get.dir/src/trie_server.cpp.o"
 }
 ]

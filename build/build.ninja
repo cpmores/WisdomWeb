@@ -93,6 +93,38 @@ build search-engine: CXX_EXECUTABLE_LINKER__search-engine_Debug CMakeFiles/searc
   TARGET_FILE = search-engine
   TARGET_PDB = search-engine.dbg
 
+# =============================================================================
+# Object build statements for EXECUTABLE target trie_get
+
+
+#############################################
+# Order-only phony target for trie_get
+
+build cmake_object_order_depends_target_trie_get: phony || .
+
+build CMakeFiles/trie_get.dir/src/trie_server.cpp.o: CXX_COMPILER__trie_get_unscanned_Debug /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine/src/trie_server.cpp || cmake_object_order_depends_target_trie_get
+  DEP_FILE = CMakeFiles/trie_get.dir/src/trie_server.cpp.o.d
+  FLAGS = -g -std=gnu++17
+  INCLUDES = -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine/include
+  OBJECT_DIR = CMakeFiles/trie_get.dir
+  OBJECT_FILE_DIR = CMakeFiles/trie_get.dir/src
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target trie_get
+
+
+#############################################
+# Link the executable trie_get
+
+build trie_get: CXX_EXECUTABLE_LINKER__trie_get_Debug CMakeFiles/trie_get.dir/src/trie_server.cpp.o
+  FLAGS = -g
+  OBJECT_DIR = CMakeFiles/trie_get.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = trie_get
+  TARGET_PDB = trie_get.dbg
+
 
 #############################################
 # Utility command for edit_cache
@@ -127,7 +159,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/build
 
-build all: phony search-engine
+build all: phony search-engine trie_get
 
 # =============================================================================
 # Built-in targets

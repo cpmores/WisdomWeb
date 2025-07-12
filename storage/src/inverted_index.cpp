@@ -39,8 +39,8 @@ int main(int argc, char* argv[]) {
     const std::string url = argv[1];
     const std::string userid = argv[2];
     const std::string operation = argv[3];
-    const std::string meta_filepath = "./data/" + userid +"/meta.json";
-    const std::string url_meta_filepath = "./data/" + userid + "/url_meta.json";
+    const std::string meta_filepath = "../data/" + userid +"/meta.json";
+    const std::string url_meta_filepath = "../data/" + userid + "/url_meta.json";
 
     if (operation != "append" && operation != "remove") {
         std::cerr << "Invalid operation: " << operation << ". Must be 'append' or 'remove'" << std::endl;

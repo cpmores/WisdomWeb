@@ -1,0 +1,69 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "WisdomWeb_storage",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "inverted_index::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-inverted_index-Debug-a1d5cd2a79f08a871176.json",
+					"name" : "inverted_index",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "trie_index::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-trie_index-Debug-9e16da3eab226be4ca07.json",
+					"name" : "trie_index",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+		"source" : "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

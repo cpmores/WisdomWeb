@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
 
     const std::string userid = argv[1];
     std::string search_string = argv[2];
-    std::string url_meta_path = "./data/" + userid + "/url_meta.json";
+    std::string url_meta_path = "../data/" + userid + "/url_meta.json";
     SearchMachine searchMachine(userid, search_string, url_meta_path);
     searchMachine.search();
     return 0;

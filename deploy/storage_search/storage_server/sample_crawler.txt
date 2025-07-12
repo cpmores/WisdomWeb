@@ -1,0 +1,9 @@
+➜ curl -X POST -H "Content-Type: application/json" -d '{"url":"https://github.com","tag":"Math","userid":"cpmores", "operation":"append"}' http://localhost:3000/receive-json
+{"message":"Processing completed successfully","juliaOutput":"index\n  2.494042 seconds (1.81 M allocations: 89.164 MiB, 3.02% gc time, 30.30% compilation time)\nSave '../data/cpmores/github.com/_index.txt' finished\n","trieOutput":"Trie processing completed for URL: https://github.com, User: cpmores\n","indexOutput":"IndexManager append completed for URL: https://github.com, User: cpmores\n","receivedData":{"url":"https://github.com","tag":"Math","userid":"cpmores","operation":"append"}}%  
+➜ curl -X POST -H "Content-Type: application/json" -d '{"url":"https://github.com","tag":"Math","userid":"cpmores", "operation":"remove"}' http://localhost:3000/receive-json
+{"message":"Processing completed successfully","juliaOutput":"Skipped Julia script for remove operation","trieOutput":"Trie processing completed for URL: https://github.com, User: cpmores\n","indexOutput":"IndexManager remove completed for URL: https://github.com, User: cpmores\n","receivedData":{"url":"https://github.com","tag":"Math","userid":"cpmores","operation":"remove"}}%  
+
+
+docker:
+docker run -it -v "$(pwd)/data:/data" -p 3000:3000 storage-server:v1.0 
+docker run -d -v "$(pwd)/data:/data" -p 3000:3000 --name storage-server --restart unless-stopped  cpmores/storage-server:v1.0 

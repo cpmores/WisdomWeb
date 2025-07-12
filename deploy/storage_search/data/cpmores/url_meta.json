@@ -1,0 +1,13 @@
+{
+  "cpmores": {
+    "urlId": {
+      "https://zjuers.com": 1,
+      "https://github.com": 0
+    },
+    "urlCount": 2,
+    "Idurl": {
+      "1": "https://zjuers.com",
+      "0": "https://github.com"
+    }
+  }
+}

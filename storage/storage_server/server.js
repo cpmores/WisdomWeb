@@ -10,10 +10,10 @@ app.use(express.json());
 
 // 处理JSON数据并依次运行Julia脚本和C++二进制文件
 app.post('/receive-json', (req, res) => {
-  const { url, tag, user, operation } = req.body;
+  const { url, tag, userid, operation } = req.body;
 
   // 验证JSON数据
-  if (!url || !tag || !user || !operation) {
+  if (!url || !tag || !userid || !operation) {
     return res.status(400).json({ error: 'Missing required fields: url, tag, user, and operation are required' });
   }
 
@@ -43,7 +43,7 @@ app.post('/receive-json', (req, res) => {
     if (operation === 'remove') {
       return callback('Skipped Julia script for remove operation');
     }
-    const juliaCommand = `julia ${path.join('bin', 'MyCrawler.jl')} ${escapeArg(url)} ${escapeArg(tag)} ${escapeArg(user)}`;
+    const juliaCommand = `julia ${path.join('bin', 'MyCrawler.jl')} ${escapeArg(url)} ${escapeArg(tag)} ${escapeArg(userid)}`;
     exec(juliaCommand, { maxBuffer: 1024 * 1024, timeout: 30000 }, (juliaError, juliaStdout, juliaStderr) => {
       if (juliaError) {
         console.error(`Error executing Julia script: ${juliaStderr}`);
@@ -55,7 +55,7 @@ app.post('/receive-json', (req, res) => {
 
   processJulia((juliaOutput) => {
     // 第二步：运行trie二进制文件
-    const trieCommand = `${path.join('bin', 'trie_index')} ${escapeArg(url)} ${escapeArg(user)}`;
+    const trieCommand = `${path.join('bin', 'trie_index')} ${escapeArg(url)} ${escapeArg(userid)}`;
     exec(trieCommand, { maxBuffer: 1024 * 1024, timeout: 10000 }, (trieError, trieStdout, trieStderr) => {
       if (trieError) {
         console.error(`Error executing trie binary: ${trieStderr}`);
@@ -63,7 +63,7 @@ app.post('/receive-json', (req, res) => {
       }
 
       // 第三步：运行index_manager二进制文件
-      const indexCommand = `${path.join('bin', 'inverted_index')} ${escapeArg(url)} ${escapeArg(user)} ${escapeArg(operation)}`;
+      const indexCommand = `${path.join('bin', 'inverted_index')} ${escapeArg(url)} ${escapeArg(userid)} ${escapeArg(operation)}`;
       exec(indexCommand, { maxBuffer: 1024 * 1024, timeout: 10000 }, (indexError, indexStdout, indexStderr) => {
         if (indexError) {
           console.error(`Error executing index_manager binary: ${indexStderr}`);
@@ -76,7 +76,7 @@ app.post('/receive-json', (req, res) => {
           juliaOutput,
           trieOutput: trieStdout,
           indexOutput: indexStdout,
-          receivedData: { url, tag, user, operation }
+          receivedData: { url, tag, userid, operation }
         });
       });
     });

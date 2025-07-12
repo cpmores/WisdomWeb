@@ -1,0 +1,12 @@
+~ via 🅒 notebook …
+➜ curl -X POST -H "Content-Type: application/json" -d '{"userid": "cpmores", "search_string": "bilibili"}' http://localhost:3001/search
+{"message":"Search completed successfully","searchOutput":{"urlCount":2,"urlList":{"https://www.bing.com/search?q=bilibili&qs=n&form=QBRE&sp=-1&ghc=1&lq=0&pq=bilibili&sc=17-8&sk=&cvid=21A95E9434764EC3914B22AEFA8E8E1A":0.96875,"https://zjuers.com":0.03125},"userid":"cpmores"},"receivedData":{"userid":"cpmores","search_string":"bilibili"}}%                                      
+~ via 🅒 notebook …
+➜ curl -X POST -H "Content-Type: application/json" -d '{"userid": "cpmores", "search_string": "zju"}' http://localhost:3001/search     
+{"message":"Search completed successfully","searchOutput":{"urlCount":1,"urlList":{"https://zjuers.com":1},"userid":"cpmores"},"receivedData":{"userid":"cpmores","search_string":"zju"}}%                                                                  
+~ via 🅒 notebook …
+➜ curl -X POST -H "Content-Type: application/json" -d '{"userid": "cpmores", "search_string": "教务"}' http://localhost:3001/search
+{"message":"Search completed successfully","searchOutput":{"urlCount":1,"urlList":{"https://zjuers.com":1},"userid":"cpmores"},"receivedData":{"userid":"cpmores","search_string":"教务"}}%
+
+Docker:
+docker run -d -v "$(pwd)/data:/data" -p 3001:3001 --name search-server --restart unless-stopped  cpmores/search-server:v1.0

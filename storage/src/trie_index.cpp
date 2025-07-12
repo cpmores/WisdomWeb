@@ -32,8 +32,8 @@ int main(int argc, char* argv[]) {
 
     const std::string url = argv[1];
     const std::string userid = argv[2];
-    const std::string meta_filepath = "./data/" + userid + "/meta.json";
-    const std::string url_meta_filepath = "./data/" + userid + "/url_meta.json";
+    const std::string meta_filepath = "../data/" + userid + "/meta.json";
+    const std::string url_meta_filepath = "../data/" + userid + "/url_meta.json";
 
     int file_index = find_file_index(url_meta_filepath, url, userid);
     Trie trie_manager(userid, meta_filepath, file_index);

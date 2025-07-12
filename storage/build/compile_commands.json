@@ -1,0 +1,56 @@
+[
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/inverted_index.dir/src/inverted_index.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/inverted_index.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/inverted_index.cpp",
+  "output": "CMakeFiles/inverted_index.dir/src/inverted_index.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/inverted_index.dir/src/tokenization.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/tokenization.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/tokenization.cpp",
+  "output": "CMakeFiles/inverted_index.dir/src/tokenization.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/inverted_index.dir/src/porter2_stemmer.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/porter2_stemmer.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/porter2_stemmer.cpp",
+  "output": "CMakeFiles/inverted_index.dir/src/porter2_stemmer.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/inverted_index.dir/src/inverted_maker.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/inverted_maker.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/inverted_maker.cpp",
+  "output": "CMakeFiles/inverted_index.dir/src/inverted_maker.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/inverted_index.dir/src/index_manager.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/index_manager.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/index_manager.cpp",
+  "output": "CMakeFiles/inverted_index.dir/src/index_manager.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/trie_index.dir/src/trie_index.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/trie_index.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/trie_index.cpp",
+  "output": "CMakeFiles/trie_index.dir/src/trie_index.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/trie_index.dir/src/trie.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/trie.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/trie.cpp",
+  "output": "CMakeFiles/trie_index.dir/src/trie.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/trie_index.dir/src/tokenization.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/tokenization.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/tokenization.cpp",
+  "output": "CMakeFiles/trie_index.dir/src/tokenization.cpp.o"
+},
+{
+  "directory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/build",
+  "command": "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++ -I/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/include -g -std=gnu++17 -o CMakeFiles/trie_index.dir/src/porter2_stemmer.cpp.o -c /home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/porter2_stemmer.cpp",
+  "file": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/storage/src/porter2_stemmer.cpp",
+  "output": "CMakeFiles/trie_index.dir/src/porter2_stemmer.cpp.o"
+}
+]
