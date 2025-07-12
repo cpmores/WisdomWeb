@@ -7,6 +7,7 @@
 const mockUsers = [
   {
     id: '1',
+    username: 'admin',
     email: 'admin@example.com',
     password: '123456',
     avatar: 'https://via.placeholder.com/100x100/4a90e2/ffffff?text=A',
@@ -14,6 +15,7 @@ const mockUsers = [
   },
   {
     id: '2',
+    username: 'user',
     email: 'user@example.com',
     password: '123456',
     avatar: 'https://via.placeholder.com/100x100/67c23a/ffffff?text=U',
@@ -29,6 +31,7 @@ const mockBookmarks = [
     url: 'https://vuejs.org',
     title: 'Vue.js - 渐进式JavaScript框架',
     tags: ['技术', '编程', 'Vue'],
+    clickCount: 5,
     createdAt: '2024-01-15T10:30:00Z',
   },
   {
@@ -37,6 +40,7 @@ const mockBookmarks = [
     url: 'https://github.com',
     title: 'GitHub: Where the world builds software',
     tags: ['技术', '编程', '工具'],
+    clickCount: 12,
     createdAt: '2024-01-14T15:20:00Z',
   },
   {
@@ -45,6 +49,7 @@ const mockBookmarks = [
     url: 'https://reactjs.org',
     title: 'React – A JavaScript library for building user interfaces',
     tags: ['技术', '编程', 'React', '前端'],
+    clickCount: 3,
     createdAt: '2024-01-13T09:15:00Z',
   },
   {
@@ -53,6 +58,7 @@ const mockBookmarks = [
     url: 'https://developer.mozilla.org',
     title: 'MDN Web Docs',
     tags: ['技术', '学习', '文档'],
+    clickCount: 8,
     createdAt: '2024-01-12T14:30:00Z',
   },
   {
@@ -61,6 +67,7 @@ const mockBookmarks = [
     url: 'https://stackoverflow.com',
     title: 'Stack Overflow - Where Developers Learn, Share, & Build Careers',
     tags: ['学习', '编程', '问答'],
+    clickCount: 15,
     createdAt: '2024-01-11T11:45:00Z',
   },
   {
@@ -69,6 +76,7 @@ const mockBookmarks = [
     url: 'https://stackoverflow.com',
     title: 'Stack Overflow - Where Developers Learn, Share, & Build Careers',
     tags: ['学习', '编程'],
+    clickCount: 2,
     createdAt: '2024-01-13T09:15:00Z',
   },
 ]
@@ -100,6 +108,7 @@ export async function login(loginData) {
       message: '登录成功',
       user: {
         id: user.id,
+        username: user.username,
         email: user.email,
         avatar: user.avatar,
       },
@@ -114,7 +123,7 @@ export async function login(loginData) {
 
 /**
  * 模拟注册API
- * @param {Object} registerData - 注册数据 {email, password}
+ * @param {Object} registerData - 注册数据 {username, email, password}
  * @returns {Promise<Object>} 注册结果
  */
 export async function register(registerData) {
@@ -131,15 +140,26 @@ export async function register(registerData) {
     }
   }
 
+  // 检查用户名是否已存在
+  const existingUsername = mockUsers.find((u) => u.username === registerData.username)
+
+  if (existingUsername) {
+    return {
+      success: false,
+      message: '该用户名已被使用',
+    }
+  }
+
   // 生成新用户ID
   const newUserId = (mockUsers.length + 1).toString()
 
   // 添加新用户到模拟数据库
   mockUsers.push({
     id: newUserId,
+    username: registerData.username,
     email: registerData.email,
     password: registerData.password,
-    avatar: `https://via.placeholder.com/100x100/${Math.floor(Math.random() * 16777215).toString(16)}/ffffff?text=${registerData.email.charAt(0).toUpperCase()}`,
+    avatar: `https://via.placeholder.com/100x100/${Math.floor(Math.random() * 16777215).toString(16)}/ffffff?text=${registerData.username.charAt(0).toUpperCase()}`,
     tags: [],
   })
 
@@ -164,6 +184,7 @@ export async function getUserInfo(userId) {
       success: true,
       user: {
         id: user.id,
+        username: user.username,
         email: user.email,
         avatar: user.avatar,
         tags: user.tags,
@@ -174,6 +195,56 @@ export async function getUserInfo(userId) {
       success: false,
       message: '用户不存在',
     }
+  }
+}
+
+/**
+ * 用户初始化API - 登录成功后获取完整的用户数据和收藏信息
+ * @param {string} userId - 用户ID
+ * @param {string} password - 用户密码（用于确认）
+ * @returns {Promise<Object>} 初始化数据
+ */
+export async function initializeUser(userId, password) {
+  await delay(800)
+
+  // 验证用户凭据
+  const user = mockUsers.find((u) => u.id === userId && u.password === password)
+
+  if (!user) {
+    return {
+      success: false,
+      message: '用户验证失败',
+    }
+  }
+
+  // 获取用户的所有收藏
+  const userBookmarks = mockBookmarks.filter((bookmark) => bookmark.userId === userId)
+
+  // 获取用户的所有标签及数量
+  const allTags = userBookmarks.flatMap((bookmark) => bookmark.tags || [])
+  const uniqueTags = [...new Set(allTags)].sort()
+  const tagCounts = {}
+  uniqueTags.forEach((tag) => {
+    tagCounts[tag] = userBookmarks.filter(
+      (bookmark) => bookmark.tags && bookmark.tags.includes(tag),
+    ).length
+  })
+
+  return {
+    success: true,
+    message: '初始化成功',
+    data: {
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+      },
+      bookmarks: userBookmarks,
+      tags: uniqueTags,
+      tagCounts: tagCounts,
+      totalBookmarks: userBookmarks.length,
+    },
   }
 }
 
@@ -268,6 +339,7 @@ export async function addBookmark(bookmarkData) {
     url: bookmarkData.url,
     title: bookmarkData.url, // 使用URL作为标题
     tags: bookmarkData.tags || [], // 使用传入的标签或默认为空数组
+    clickCount: 0, // 点击次数，初始为0
     createdAt: new Date().toISOString(),
   }
 
@@ -406,15 +478,54 @@ export async function chatWithAI(message, userId) {
 }
 
 /**
- * 模拟退出登录API
+ * 退出登录API - 模拟向后端发送POST请求
+ * @param {string} token - 用户token
  * @returns {Promise<Object>} 退出结果
  */
-export async function logout() {
+export async function logout(token) {
   await delay(500)
 
-  return {
-    success: true,
-    message: '退出成功',
+  try {
+    // 模拟后端验证token的逻辑
+    console.log('模拟向后端发送POST请求到 /api/logout')
+    console.log('请求头: Authorization: Bearer', token)
+
+    // 模拟不同的响应情况
+    if (token === 'fromLogin') {
+      // 模拟成功响应
+      console.log('后端响应: Logout successful')
+      return {
+        success: true,
+        message: '退出成功',
+      }
+    } else if (token === 'invalidToken') {
+      // 模拟token无效响应
+      console.log('后端响应: Logout failed: Invalid token')
+      return {
+        success: false,
+        message: '退出失败：无效的token',
+      }
+    } else if (token === 'userNotFound') {
+      // 模拟用户不存在响应
+      console.log('后端响应: Logout failed: User not found')
+      return {
+        success: false,
+        message: '退出失败：用户不存在',
+      }
+    } else {
+      // 模拟未知错误响应
+      console.log('后端响应: Logout failed: Unknown error')
+      return {
+        success: false,
+        message: '退出失败：未知错误',
+      }
+    }
+  } catch (error) {
+    console.error('退出登录请求失败:', error)
+    return {
+      success: false,
+      message: '退出失败：网络错误',
+    }
   }
 }
 
@@ -442,6 +553,82 @@ export async function checkAuthStatus() {
     return {
       success: true,
       isLoggedIn: false,
+    }
+  }
+}
+
+/**
+ * 记录收藏点击次数API - 发送用户ID和URL
+ * @param {string} userId - 用户ID
+ * @param {string} url - 点击的URL
+ * @returns {Promise<Object>} 记录结果
+ */
+export async function recordBookmarkClick(userId, url) {
+  await delay(300)
+
+  // 查找收藏（通过用户ID和URL）
+  const bookmark = mockBookmarks.find(
+    (bookmark) => bookmark.userId === userId && bookmark.url === url,
+  )
+
+  if (bookmark) {
+    // 增加点击次数
+    bookmark.clickCount = (bookmark.clickCount || 0) + 1
+
+    return {
+      success: true,
+      message: '点击记录成功',
+      clickCount: bookmark.clickCount,
+    }
+  } else {
+    return {
+      success: false,
+      message: '收藏不存在',
+    }
+  }
+}
+
+/**
+ * 删除收藏API - 发送用户ID和URL
+ * @param {string} userId - 用户ID
+ * @param {string} url - 要删除的URL
+ * @returns {Promise<Object>} 删除结果
+ */
+export async function deleteBookmark(userId, url) {
+  await delay(500)
+
+  try {
+    // 模拟向后端发送删除请求
+    console.log('模拟向后端发送删除收藏请求')
+    console.log('用户ID:', userId)
+    console.log('删除URL:', url)
+
+    // 查找要删除的收藏
+    const bookmarkIndex = mockBookmarks.findIndex(
+      (bookmark) => bookmark.userId === userId && bookmark.url === url,
+    )
+
+    if (bookmarkIndex !== -1) {
+      // 从数组中删除收藏
+      mockBookmarks.splice(bookmarkIndex, 1)
+
+      console.log('后端响应: success')
+      return {
+        success: true,
+        message: '收藏删除成功',
+      }
+    } else {
+      console.log('后端响应: error - 收藏不存在')
+      return {
+        success: false,
+        message: '收藏不存在',
+      }
+    }
+  } catch (error) {
+    console.error('删除收藏请求失败:', error)
+    return {
+      success: false,
+      message: '删除失败：网络错误',
     }
   }
 }

@@ -50,6 +50,19 @@
       <div v-else class="register-form" ref="registerForm">
         <h2 class="modal-title">用户注册</h2>
 
+        <!-- 用户名输入框 -->
+        <div class="input-group">
+          <label for="register-username">用户名</label>
+          <input
+            id="register-username"
+            v-model="registerForm.username"
+            type="text"
+            placeholder="请输入用户名"
+            required
+            ref="registerUsername"
+          />
+        </div>
+
         <!-- 邮箱输入框 -->
         <div class="input-group">
           <label for="register-email">邮箱</label>
@@ -111,7 +124,7 @@
 </template>
 
 <script>
-import { login, register } from '../services/api.js'
+import { login, register, initializeUser } from '../services/api.js'
 import { JQueryAnimations, JQueryDOM, JQueryEvents, JQueryUtils } from '../utils/jquery-helper.js'
 
 export default {
@@ -137,6 +150,7 @@ export default {
 
       // 注册表单数据
       registerForm: {
+        username: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -182,6 +196,7 @@ export default {
       const inputs = [
         '#login-email',
         '#login-password',
+        '#register-username',
         '#register-email',
         '#register-password',
         '#register-confirm-password',
@@ -274,24 +289,44 @@ export default {
           localStorage.setItem('isLoggedIn', 'true')
           localStorage.setItem('userEmail', this.loginForm.email)
           localStorage.setItem('userId', response.user.id)
+          localStorage.setItem('userPassword', this.loginForm.password) // 临时存储密码用于初始化
+          localStorage.setItem('userToken', 'fromLogin') // 保存token用于登出
 
-          this.showMessage('登录成功！', 'success')
+          this.showMessage('登录成功！正在初始化...', 'success')
 
           // 使用jQuery添加成功动画
           if (this.$refs.loginModal) {
             JQueryDOM.addClass(this.$refs.loginModal, 'success-animation')
           }
 
-          // 触发自定义事件以通知App.vue更新状态
-          window.dispatchEvent(new CustomEvent('loginStatusChanged'))
+          // 调用初始化API
+          try {
+            const initResponse = await initializeUser(response.user.id, this.loginForm.password)
 
-          // 发射登录成功事件
-          this.$emit('login-success')
+            if (initResponse.success) {
+              // 保存初始化数据到localStorage
+              localStorage.setItem('userData', JSON.stringify(initResponse.data))
+              localStorage.removeItem('userPassword') // 清除临时密码
 
-          // 延迟关闭登录框
-          setTimeout(() => {
-            this.closeModal()
-          }, 1500)
+              this.showMessage('初始化完成！', 'success')
+
+              // 触发自定义事件以通知App.vue更新状态
+              window.dispatchEvent(new CustomEvent('loginStatusChanged'))
+
+              // 发射登录成功事件
+              this.$emit('login-success')
+
+              // 延迟关闭登录框
+              setTimeout(() => {
+                this.closeModal()
+              }, 1500)
+            } else {
+              this.showMessage('初始化失败：' + initResponse.message, 'error')
+            }
+          } catch (error) {
+            console.error('初始化失败:', error)
+            this.showMessage('初始化失败，请稍后重试', 'error')
+          }
         } else {
           this.showMessage(response.message || '登录失败，请检查邮箱和密码', 'error')
 
@@ -419,6 +454,12 @@ export default {
      * 注册表单验证
      */
     validateRegisterForm() {
+      if (!this.registerForm.username) {
+        this.showMessage('请输入用户名', 'error')
+        this.highlightErrorField('#register-username')
+        return false
+      }
+
       if (!this.registerForm.email) {
         this.showMessage('请输入邮箱地址', 'error')
         this.highlightErrorField('#register-email')
@@ -517,6 +558,7 @@ export default {
         password: '',
       }
       this.registerForm = {
+        username: '',
         email: '',
         password: '',
         confirmPassword: '',

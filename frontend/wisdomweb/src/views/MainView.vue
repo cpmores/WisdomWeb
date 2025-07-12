@@ -53,7 +53,28 @@
       <!-- 可视化模块 -->
       <div class="visualization-module">
         <h2>数据可视化</h2>
-        <p>可视化模块开发中...</p>
+        <div class="visualization-content">
+          <div class="chart-section">
+            <h3>标签词云</h3>
+            <p class="chart-description">展示您收藏中使用的所有标签，字体大小代表使用频率</p>
+            <WordCloud :tags="userTags" :tag-counts="tagCounts" />
+          </div>
+
+          <div class="stats-section">
+            <div class="stat-item">
+              <div class="stat-number">{{ totalBookmarksCount }}</div>
+              <div class="stat-label">总收藏数</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ userTags.length }}</div>
+              <div class="stat-label">标签种类</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ getMostUsedTag() }}</div>
+              <div class="stat-label">最常用标签</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 用户选择模块 -->
@@ -95,8 +116,29 @@
         <div v-else class="bookmarks-list">
           <div v-for="bookmark in bookmarks" :key="bookmark.id" class="bookmark-item">
             <div class="bookmark-content">
-              <h4 class="bookmark-title">{{ bookmark.title }}</h4>
-              <a :href="bookmark.url" target="_blank" class="bookmark-url">{{ bookmark.url }}</a>
+              <div class="bookmark-header">
+                <h4 class="bookmark-title">{{ bookmark.title }}</h4>
+                <div class="bookmark-actions">
+                  <div class="bookmark-click-count">
+                    <span class="click-icon">👆</span>
+                    <span class="click-number">{{ bookmark.clickCount || 0 }}</span>
+                  </div>
+                  <button
+                    @click="handleDeleteBookmark(bookmark)"
+                    class="delete-btn"
+                    title="删除收藏"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+              <a
+                :href="bookmark.url"
+                class="bookmark-url"
+                @click="handleBookmarkClick(bookmark, $event)"
+              >
+                {{ bookmark.url }}
+              </a>
               <div class="bookmark-tags">
                 <span v-for="tag in bookmark.tags" :key="tag" class="bookmark-tag">
                   {{ tag }}
@@ -142,6 +184,7 @@
           <img :src="userInfo.avatar" alt="用户头像" class="user-center-avatar" />
           <div class="user-info">
             <p class="user-id">用户ID: {{ userInfo.id }}</p>
+            <p class="user-name">用户名: {{ userInfo.username }}</p>
             <p class="user-email">邮箱: {{ userInfo.email }}</p>
           </div>
           <button @click="handleLogout" class="logout-btn">退出登录</button>
@@ -203,13 +246,17 @@ import {
   getUserTags,
   chatWithAI,
   logout,
+  recordBookmarkClick,
+  deleteBookmark,
 } from '../services/api.js'
 import TagManager from '../components/TagManager.vue'
+import WordCloud from '../components/WordCloud.vue'
 
 export default {
   name: 'MainView',
   components: {
     TagManager,
+    WordCloud,
   },
   data() {
     return {
@@ -252,20 +299,45 @@ export default {
   },
 
   async mounted() {
-    // 获取用户信息
-    await this.loadUserInfo()
+    // 检查是否有初始化数据
+    const userData = localStorage.getItem('userData')
 
-    // 获取用户标签
-    await this.loadUserTags()
-
-    // 加载所有收藏（初始状态）
-    await this.loadAllBookmarks()
+    if (userData) {
+      // 使用初始化数据
+      await this.initializeWithData(JSON.parse(userData))
+    } else {
+      // 如果没有初始化数据，使用原有方式加载
+      await this.loadUserInfo()
+      await this.loadUserTags()
+      await this.loadAllBookmarks()
+    }
 
     // 初始化AI悬浮球位置
     this.initAIBallPosition()
   },
 
   methods: {
+    /**
+     * 使用初始化数据初始化界面
+     */
+    async initializeWithData(userData) {
+      // 初始化用户信息
+      this.userInfo = userData.user
+
+      // 初始化收藏数据
+      this.bookmarks = userData.bookmarks
+      this.totalBookmarksCount = userData.totalBookmarks
+
+      // 初始化标签数据
+      this.userTags = userData.tags
+      this.tagCounts = userData.tagCounts
+
+      // 计算分页信息
+      this.totalPages = Math.ceil(userData.totalBookmarks / this.pageSize)
+
+      console.log('使用初始化数据完成界面初始化')
+    },
+
     /**
      * 加载用户信息
      */
@@ -277,6 +349,7 @@ export default {
           localStorage.removeItem('isLoggedIn')
           localStorage.removeItem('userEmail')
           localStorage.removeItem('userId')
+          localStorage.removeItem('userData')
           window.dispatchEvent(new CustomEvent('loginStatusChanged'))
           return
         }
@@ -519,6 +592,40 @@ export default {
     },
 
     /**
+     * 显示错误消息
+     */
+    showErrorMessage(message) {
+      // 创建一个临时的错误提示
+      const errorDiv = document.createElement('div')
+      errorDiv.className = 'error-message'
+      errorDiv.textContent = message
+      errorDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #f44336;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+      `
+
+      document.body.appendChild(errorDiv)
+
+      // 3秒后自动移除
+      setTimeout(() => {
+        errorDiv.style.animation = 'slideOutRight 0.3s ease'
+        setTimeout(() => {
+          if (errorDiv.parentNode) {
+            errorDiv.parentNode.removeChild(errorDiv)
+          }
+        }, 300)
+      }, 3000)
+    },
+
+    /**
      * 切换页面
      */
     async changePage(page) {
@@ -684,25 +791,151 @@ export default {
     },
 
     /**
+     * 处理收藏点击
+     */
+    async handleBookmarkClick(bookmark, event) {
+      console.log('点击收藏链接:', bookmark.url)
+
+      // 立即在页面上将点击次数+1
+      const bookmarkIndex = this.bookmarks.findIndex((b) => b.id === bookmark.id)
+      if (bookmarkIndex !== -1) {
+        this.bookmarks[bookmarkIndex].clickCount =
+          (this.bookmarks[bookmarkIndex].clickCount || 0) + 1
+      }
+
+      // 向后端发送POST请求，发送用户ID和点击的URL（不等待响应）
+      this.sendClickRecordToBackend(bookmark.url)
+
+      // 使用 window.open 确保在新标签页打开链接
+      window.open(bookmark.url, '_blank', 'noopener,noreferrer')
+
+      console.log('链接已打开:', bookmark.url)
+    },
+
+    /**
+     * 向后端发送点击记录（不处理响应）
+     */
+    async sendClickRecordToBackend(url) {
+      try {
+        const userId = localStorage.getItem('userId')
+        // 发送请求但不处理响应
+        recordBookmarkClick(userId, url)
+        console.log('点击记录已发送到服务器')
+      } catch (error) {
+        console.error('发送点击记录失败:', error)
+      }
+    },
+
+    /**
+     * 获取最常用标签
+     */
+    getMostUsedTag() {
+      if (Object.keys(this.tagCounts).length === 0) {
+        return '暂无'
+      }
+
+      const maxCount = Math.max(...Object.values(this.tagCounts))
+      const mostUsedTags = Object.keys(this.tagCounts).filter(
+        (tag) => this.tagCounts[tag] === maxCount,
+      )
+
+      return mostUsedTags[0] || '暂无'
+    },
+
+    /**
+     * 处理删除收藏
+     */
+    async handleDeleteBookmark(bookmark) {
+      try {
+        // 确认删除
+        if (!confirm(`确定要删除收藏"${bookmark.title}"吗？`)) {
+          return
+        }
+
+        const userId = localStorage.getItem('userId')
+        const response = await deleteBookmark(userId, bookmark.url)
+
+        if (response.success) {
+          // 显示成功消息
+          this.showSuccessMessage('收藏删除成功！')
+
+          // 从当前列表中移除该收藏
+          const index = this.bookmarks.findIndex((b) => b.id === bookmark.id)
+          if (index !== -1) {
+            this.bookmarks.splice(index, 1)
+          }
+
+          // 更新总收藏数量
+          this.totalBookmarksCount--
+
+          // 重新加载用户标签（因为删除可能影响标签统计）
+          await this.loadUserTags()
+
+          // 如果当前页面没有收藏了，且不是第一页，则跳转到上一页
+          if (this.bookmarks.length === 0 && this.currentPage > 1) {
+            await this.changePage(this.currentPage - 1)
+          }
+
+          // 重新计算分页
+          this.totalPages = Math.ceil(this.totalBookmarksCount / this.pageSize)
+        } else {
+          // 显示错误消息
+          this.showErrorMessage(response.message || '删除失败')
+        }
+      } catch (error) {
+        console.error('删除收藏失败:', error)
+        this.showErrorMessage('删除收藏失败，请稍后重试')
+      }
+    },
+
+    /**
      * 退出登录
      */
     async handleLogout() {
       try {
-        const response = await logout()
+        // 获取用户token
+        const token = localStorage.getItem('userToken') || 'fromLogin'
+
+        const response = await logout(token)
+
         if (response.success) {
+          // 显示成功消息
+          this.showSuccessMessage('退出登录成功！')
+
           // 清除本地存储
           localStorage.removeItem('isLoggedIn')
           localStorage.removeItem('userEmail')
           localStorage.removeItem('userId')
+          localStorage.removeItem('userData')
+          localStorage.removeItem('userToken')
 
           // 触发自定义事件以通知App.vue更新状态
           window.dispatchEvent(new CustomEvent('loginStatusChanged'))
 
           // 关闭用户中心
           this.showUserCenter = false
+        } else {
+          // 显示错误消息
+          this.showErrorMessage(response.message)
+
+          // 如果是token无效或用户不存在，也清除本地存储
+          if (response.message.includes('无效的token') || response.message.includes('用户不存在')) {
+            localStorage.removeItem('isLoggedIn')
+            localStorage.removeItem('userEmail')
+            localStorage.removeItem('userId')
+            localStorage.removeItem('userData')
+            localStorage.removeItem('userToken')
+
+            // 触发自定义事件以通知App.vue更新状态
+            window.dispatchEvent(new CustomEvent('loginStatusChanged'))
+
+            // 关闭用户中心
+            this.showUserCenter = false
+          }
         }
       } catch (error) {
         console.error('退出登录失败:', error)
+        this.showErrorMessage('退出登录失败，请稍后重试')
       }
     },
   },
@@ -873,7 +1106,7 @@ export default {
 
 .visualization-module {
   text-align: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   background: #f8f9fa;
   border-radius: 12px;
   margin-bottom: 40px;
@@ -881,7 +1114,63 @@ export default {
 
 .visualization-module h2 {
   color: #333;
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.visualization-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.chart-section {
+  text-align: center;
+}
+
+.chart-section h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.chart-description {
+  color: #666;
   margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.stats-section {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 120px;
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: bold;
+  color: #4a90e2;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 14px;
 }
 
 .user-selection-module {
@@ -1009,10 +1298,69 @@ export default {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.bookmark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
 .bookmark-title {
   color: #333;
-  margin-bottom: 8px;
   font-size: 18px;
+  margin: 0;
+  flex: 1;
+  margin-right: 15px;
+}
+
+.bookmark-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bookmark-click-count {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.click-icon {
+  font-size: 14px;
+}
+
+.click-number {
+  font-weight: 600;
+  color: #4a90e2;
 }
 
 .bookmark-url {
@@ -1326,6 +1674,19 @@ export default {
 
   .tags-container {
     justify-content: center;
+  }
+
+  .stats-section {
+    gap: 20px;
+  }
+
+  .stat-item {
+    min-width: 100px;
+    padding: 15px;
+  }
+
+  .stat-number {
+    font-size: 24px;
   }
 
   .ai-chat-modal {
