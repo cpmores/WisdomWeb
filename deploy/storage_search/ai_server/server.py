@@ -72,16 +72,36 @@ def chat():
     data = request.get_json()
     userid = data.get("userid")
     message = data.get("message")
+    is_first_chat = data.get("is_first_chat")
 
     if not userid or not message:
         return jsonify({"error": "userid 和 message 参数必填"}), 400
 
-    # 如果该用户尚未初始化对话历史，则加载文档
+    if is_first_chat:
+        if not initialize_documents(userid):
+            print("No docs now")
+            system_prompt = "First Time: "
+            conversation_histories[userid] = [
+                {"role": "system", "content": system_prompt},
+                {
+                    "role": "assistant",
+                    "content": "我已成功学习您上传的文档内容，请开始提问吧！",
+                },
+            ]
+
+    #
+    # # 如果该用户尚未初始化对话历史，则加载文档
     if userid not in conversation_histories:
         if not initialize_documents(userid):
-            return jsonify(
-                {"error": f"用户 {userid} 的文档初始化失败，请检查文件夹路径和文件内容"}
-            ), 500
+            print("No docs now")
+            system_prompt = "First Time: "
+            conversation_histories[userid] = [
+                {"role": "system", "content": system_prompt},
+                {
+                    "role": "assistant",
+                    "content": "我已成功学习您上传的文档内容，请开始提问吧！",
+                },
+            ]
 
     # 添加用户消息到对应用户的对话历史
     conversation_histories[userid].append({"role": "user", "content": message})
