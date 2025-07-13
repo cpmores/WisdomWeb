@@ -12,5 +12,6 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_executable(inverted_index src/inverted_index.cpp src/tokenization.cpp src/porter2_stemmer.cpp src/inverted_maker.cpp src/index_manager.cpp)
 add_executable(trie_index src/trie_index.cpp src/trie.cpp src/tokenization.cpp src/porter2_stemmer.cpp)
+add_executable(load_index src/load_index.cpp)
 # target_link_libraries(inverted_index PRIVATE Boost)
 file(COPY ${CMAKE_SOURCE_DIR}/dict DESTINATION ${CMAKE_BINARY_DIR})
