@@ -63,6 +63,8 @@ export default {
       this.showLoginModal = false
       // 触发登录状态变化事件
       window.dispatchEvent(new CustomEvent('loginStatusChanged'))
+      // 登录成功后自动跳转到主页面
+      this.$router.push('/main')
     },
   },
 }

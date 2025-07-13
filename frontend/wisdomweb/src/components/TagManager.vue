@@ -13,19 +13,19 @@
         <div class="url-content">{{ bookmarkUrl }}</div>
       </div>
 
-      <!-- 标签输入区域 -->
+      <!-- 标签选择区域 -->
       <div class="tag-input-section">
-        <h3>添加标签</h3>
+        <h3>选择标签</h3>
         <div class="tag-input-container">
           <input
-            v-model="newTag"
-            @keyup.enter="addTag"
+            v-model="selectedTag"
+            @keyup.enter="confirmAdd"
             type="text"
-            placeholder="输入标签名称..."
+            placeholder="输入标签名称或选择下方标签..."
             class="tag-input"
             ref="tagInput"
+            maxlength="50"
           />
-          <button @click="addTag" class="add-tag-btn" :disabled="!newTag.trim()">添加标签</button>
         </div>
 
         <!-- 标签辅助功能 -->
@@ -37,7 +37,7 @@
               :key="tag"
               @click="selectUserTag(tag)"
               class="user-tag-btn"
-              :class="{ selected: newTag === tag }"
+              :class="{ selected: selectedTag === tag }"
             >
               {{ tag }}
             </button>
@@ -45,21 +45,19 @@
         </div>
       </div>
 
-      <!-- 已添加的标签显示 -->
-      <div class="tags-display" v-if="tags.length > 0">
-        <h3>已添加的标签</h3>
-        <div class="tags-list">
-          <div v-for="(tag, index) in tags" :key="index" class="tag-item" ref="tagItems">
-            <span class="tag-text">{{ tag }}</span>
-            <button @click="removeTag(index)" class="remove-tag-btn">×</button>
-          </div>
+      <!-- 当前选中的标签显示 -->
+      <div class="selected-tag-display" v-if="selectedTag">
+        <h3>当前标签</h3>
+        <div class="selected-tag-item">
+          <span class="tag-text">{{ selectedTag }}</span>
+          <button @click="clearSelectedTag" class="remove-tag-btn">×</button>
         </div>
       </div>
 
       <!-- 操作按钮 -->
       <div class="tag-modal-actions">
         <button @click="closeModal" class="cancel-btn">取消</button>
-        <button @click="confirmAdd" class="confirm-btn" :disabled="tags.length === 0">
+        <button @click="confirmAdd" class="confirm-btn" :disabled="!selectedTag.trim()">
           确认收藏
         </button>
       </div>
@@ -95,7 +93,7 @@ export default {
   },
   data() {
     return {
-      tags: [], // 已添加的标签
+      selectedTag: '', // 选中的标签
       newTag: '', // 新标签输入
       userTags: [], // 用户已添加的所有标签
       message: '', // 消息提示
@@ -115,7 +113,7 @@ export default {
      * 初始化模态框
      */
     async initModal() {
-      this.tags = []
+      this.selectedTag = ''
       this.newTag = ''
       this.clearMessage()
 
@@ -136,62 +134,25 @@ export default {
     },
 
     /**
-     * 添加标签
+     * 清除选中的标签
      */
-    addTag() {
-      const tag = this.newTag.trim()
-      if (!tag) {
-        this.showMessage('请输入标签名称', 'error')
-        return
-      }
-
-      // 检查标签是否已存在
-      if (this.tags.includes(tag)) {
-        this.showMessage('该标签已存在', 'error')
-        return
-      }
-
-      // 检查标签长度
-      if (tag.length > 20) {
-        this.showMessage('标签长度不能超过20个字符', 'error')
-        return
-      }
-
-      // 添加标签
-      this.tags.push(tag)
-      this.newTag = ''
-
-      // 使用jQuery动画效果
-      this.$nextTick(() => {
-        const lastTagItem = this.$refs.tagItems[this.tags.length - 1]
-        if (lastTagItem) {
-          JQueryAnimations.fadeIn(lastTagItem, 300)
-        }
-      })
-
-      this.showMessage('标签添加成功', 'success')
-    },
-
-    /**
-     * 移除标签
-     */
-    removeTag(index) {
-      const tagItem = this.$refs.tagItems[index]
-      if (tagItem) {
-        JQueryAnimations.fadeOut(tagItem, 300, () => {
-          this.tags.splice(index, 1)
-        })
-      } else {
-        this.tags.splice(index, 1)
-      }
+    clearSelectedTag() {
+      this.selectedTag = ''
+      this.showMessage('标签已清除', 'info')
     },
 
     /**
      * 确认添加收藏
      */
     async confirmAdd() {
-      if (this.tags.length === 0) {
-        this.showMessage('请至少添加一个标签', 'error')
+      if (!this.selectedTag.trim()) {
+        this.showMessage('请选择一个标签', 'error')
+        return
+      }
+
+      // 验证标签长度
+      if (this.selectedTag.length > 50) {
+        this.showMessage('标签长度不能超过50个字符', 'error')
         return
       }
 
@@ -204,11 +165,9 @@ export default {
           JQueryAnimations.fadeIn(this.$refs.loadingOverlay, 200)
         }
 
-        const userId = localStorage.getItem('userId')
         const response = await addBookmark({
-          userId: userId,
           url: this.bookmarkUrl,
-          tags: this.tags,
+          tag: this.selectedTag.trim(),
         })
 
         if (response.success) {
@@ -230,7 +189,16 @@ export default {
         }
       } catch (error) {
         console.error('添加收藏失败:', error)
-        this.showMessage('添加收藏失败，请稍后重试', 'error')
+
+        // 显示具体的错误信息
+        let errorMessage = '添加收藏失败，请稍后重试'
+        if (error.message) {
+          errorMessage = error.message
+        }
+
+        // 弹出错误提示框
+        alert(`收藏失败：${errorMessage}`)
+        this.showMessage(errorMessage, 'error')
       } finally {
         this.isLoading = false
         if (this.$refs.loadingOverlay) {
@@ -291,15 +259,8 @@ export default {
      * 选择用户标签
      */
     selectUserTag(tag) {
-      this.newTag = tag
-      // 聚焦到输入框
-      this.$nextTick(() => {
-        if (this.$refs.tagInput) {
-          this.$refs.tagInput.focus()
-          // 选中输入框中的文本
-          this.$refs.tagInput.select()
-        }
-      })
+      this.selectedTag = tag
+      this.showMessage(`已选择标签：${tag}`, 'success')
     },
 
     /**
@@ -442,30 +403,6 @@ export default {
   border-color: #4a90e2;
 }
 
-.add-tag-btn {
-  padding: 12px 20px;
-  background: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.add-tag-btn:hover:not(:disabled) {
-  background: #357abd;
-  transform: translateY(-1px);
-}
-
-.add-tag-btn:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
-  transform: none;
-}
-
 /* 标签辅助功能 */
 .tag-assistant {
   margin-top: 16px;
@@ -511,7 +448,8 @@ export default {
 }
 
 /* 标签显示区域 */
-.tags-display h3 {
+.tags-display h3,
+.selected-tag-display h3 {
   margin: 0 0 12px 0;
   color: #333;
   font-size: 16px;
@@ -525,7 +463,8 @@ export default {
   margin-bottom: 20px;
 }
 
-.tag-item {
+.tag-item,
+.selected-tag-item {
   display: flex;
   align-items: center;
   background: #e3f2fd;
@@ -537,7 +476,8 @@ export default {
   transition: all 0.3s ease;
 }
 
-.tag-item:hover {
+.tag-item:hover,
+.selected-tag-item:hover {
   background: #bbdefb;
   transform: translateY(-1px);
 }
@@ -565,6 +505,29 @@ export default {
 .remove-tag-btn:hover {
   background: #1976d2;
   color: white;
+}
+
+/* 选中标签显示区域 */
+.selected-tag-display {
+  margin: 20px 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.selected-tag-item {
+  background: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+}
+
+.selected-tag-item .remove-tag-btn {
+  color: white;
+}
+
+.selected-tag-item .remove-tag-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* 操作按钮 */

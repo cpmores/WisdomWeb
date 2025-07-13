@@ -11,26 +11,67 @@
       <div class="search-bookmark-section">
         <!-- 搜索框 -->
         <div class="search-container">
-          <input
-            v-model="searchQuery"
-            @input="handleSearchInput"
-            @focus="showSuggestions = true"
-            @blur="hideSuggestions"
-            type="text"
-            placeholder="搜索网址、标题或标签..."
-            class="search-input"
-          />
-          <button @click="handleSearch" class="search-btn">搜索</button>
+          <div class="search-input-group">
+            <input
+              v-model="searchQuery"
+              @input="handleSearchInput"
+              @focus="handleSearchFocus"
+              @blur="hideSuggestions"
+              type="text"
+              placeholder="搜索网址、标题或标签..."
+              class="search-input"
+            />
+            <button @click="handleSearch" class="search-btn">搜索</button>
+          </div>
 
-          <!-- 搜索建议 -->
-          <div v-if="showSuggestions && searchSuggestions.length > 0" class="search-suggestions">
-            <div
-              v-for="suggestion in searchSuggestions"
-              :key="suggestion"
-              @click="selectSuggestion(suggestion)"
-              :class="['suggestion-item', { 'tag-suggestion': suggestion.startsWith('标签: ') }]"
-            >
-              {{ suggestion }}
+          <!-- 搜索排序选择 -->
+          <div class="search-sort-container">
+            <label for="search-sort" class="sort-label">排序方式：</label>
+            <select id="search-sort" v-model="searchSortBy" class="search-sort-select">
+              <option value="time">按时间</option>
+              <option value="click_count">按点击量</option>
+            </select>
+          </div>
+
+          <!-- 搜索建议和历史记录 -->
+          <div
+            v-if="
+              showSuggestions &&
+              (prefixMatchResults.length > 0 || (showHistory && searchHistory.length > 0))
+            "
+            class="search-suggestions"
+          >
+            <!-- 前缀匹配结果 -->
+            <div v-if="prefixMatchResults.length > 0">
+              <div class="suggestions-header">
+                <span class="suggestions-title">匹配结果</span>
+                <span class="suggestions-count">({{ prefixMatchResults.length }})</span>
+              </div>
+              <div
+                v-for="result in prefixMatchResults"
+                :key="result"
+                @click="selectSuggestion(result)"
+                class="suggestion-item"
+              >
+                {{ result }}
+              </div>
+            </div>
+
+            <!-- 搜索历史记录 -->
+            <div v-if="showHistory && searchHistory.length > 0">
+              <div class="suggestions-header">
+                <span class="suggestions-title">搜索历史</span>
+                <span class="suggestions-count">({{ searchHistory.length }})</span>
+              </div>
+              <div
+                v-for="historyItem in searchHistory"
+                :key="historyItem"
+                @click="selectSuggestion(historyItem)"
+                class="suggestion-item history-item"
+              >
+                <span class="history-icon">🕒</span>
+                {{ historyItem }}
+              </div>
             </div>
           </div>
         </div>
@@ -101,13 +142,32 @@
 
       <!-- 展示模块 -->
       <div class="display-module">
-        <h3>
-          收藏列表
-          <span v-if="selectedTag" class="filter-info"> (筛选: {{ selectedTag }}) </span>
-          <span v-if="searchQuery && !selectedTag" class="search-info">
-            (搜索: {{ searchQuery }})
-          </span>
-        </h3>
+        <div class="display-header">
+          <h3>
+            收藏列表
+            <span v-if="selectedTag" class="filter-info"> (筛选: {{ selectedTag }}) </span>
+            <span v-if="searchQuery && !selectedTag" class="search-info">
+              (搜索: {{ searchQuery }})
+            </span>
+          </h3>
+
+          <!-- 排序按钮 - 只在显示全部收藏时显示 -->
+          <div v-if="!selectedTag && !searchQuery" class="sort-controls">
+            <span class="sort-label">排序方式：</span>
+            <button
+              @click="changeSortBy('time')"
+              :class="['sort-btn', { active: currentSortBy === 'time' }]"
+            >
+              按时间
+            </button>
+            <button
+              @click="changeSortBy('click_count')"
+              :class="['sort-btn', { active: currentSortBy === 'click_count' }]"
+            >
+              按点击次数
+            </button>
+          </div>
+        </div>
         <div v-if="bookmarks.length === 0" class="no-bookmarks">
           <p v-if="selectedTag">没有找到包含"{{ selectedTag }}"标签的收藏</p>
           <p v-else-if="searchQuery">没有找到包含"{{ searchQuery }}"的收藏</p>
@@ -144,8 +204,15 @@
                   {{ tag }}
                 </span>
               </div>
-              <div class="bookmark-date">
-                {{ formatDate(bookmark.createdAt) }}
+              <div class="bookmark-info">
+                <div class="bookmark-date">
+                  <span class="info-label">收藏时间：</span>
+                  <span class="info-value">{{ formatDate(bookmark.createdAt) }}</span>
+                </div>
+                <div class="bookmark-clicks">
+                  <span class="info-label">点击次数：</span>
+                  <span class="info-value">{{ bookmark.clickCount || 0 }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -237,10 +304,6 @@
 
 <script>
 import {
-  getUserInfo,
-  getSearchSuggestions,
-  searchBookmarks,
-  addBookmark,
   getAllBookmarks,
   getBookmarksByTag,
   getUserTags,
@@ -248,6 +311,9 @@ import {
   logout,
   recordBookmarkClick,
   deleteBookmark,
+  prefixMatch,
+  getSearchHistory,
+  multiSearchBookmarks,
 } from '../services/api.js'
 import TagManager from '../components/TagManager.vue'
 import WordCloud from '../components/WordCloud.vue'
@@ -273,7 +339,11 @@ export default {
       // 搜索相关
       searchQuery: '',
       searchSuggestions: [],
+      prefixMatchResults: [], // 前缀匹配结果
       showSuggestions: false,
+      searchSortBy: 'time', // 搜索排序方式：time 或 click_count
+      searchHistory: [], // 搜索历史记录
+      showHistory: false, // 是否显示搜索历史
 
       // 收藏相关
       bookmarkUrl: '',
@@ -288,6 +358,9 @@ export default {
       currentPage: 1,
       totalPages: 1,
       pageSize: 10,
+
+      // 排序相关
+      currentSortBy: 'time', // 默认按时间排序
 
       // AI助手
       showAIChat: false,
@@ -306,10 +379,25 @@ export default {
       // 使用初始化数据
       await this.initializeWithData(JSON.parse(userData))
     } else {
-      // 如果没有初始化数据，使用原有方式加载
-      await this.loadUserInfo()
-      await this.loadUserTags()
-      await this.loadAllBookmarks()
+      // 如果没有初始化数据，检查是否有用户信息
+      const userInfo = localStorage.getItem('user_info')
+      if (userInfo) {
+        // 使用保存的用户信息
+        this.userInfo = JSON.parse(userInfo)
+        // 加载其他数据
+        await this.loadUserTags()
+        await this.loadAllBookmarks()
+      } else {
+        // 没有任何用户数据，清除登录状态
+        localStorage.removeItem('isLoggedIn')
+        localStorage.removeItem('userEmail')
+        localStorage.removeItem('userId')
+        localStorage.removeItem('userData')
+        localStorage.removeItem('user_info')
+        localStorage.removeItem('auth_token')
+        window.dispatchEvent(new CustomEvent('loginStatusChanged'))
+        return
+      }
     }
 
     // 初始化AI悬浮球位置
@@ -339,36 +427,31 @@ export default {
     },
 
     /**
-     * 加载用户信息
-     */
-    async loadUserInfo() {
-      try {
-        const userId = localStorage.getItem('userId')
-        if (!userId) {
-          // 清除登录状态，触发返回门户界面
-          localStorage.removeItem('isLoggedIn')
-          localStorage.removeItem('userEmail')
-          localStorage.removeItem('userId')
-          localStorage.removeItem('userData')
-          window.dispatchEvent(new CustomEvent('loginStatusChanged'))
-          return
-        }
-
-        const response = await getUserInfo(userId)
-        if (response.success) {
-          this.userInfo = response.user
-        }
-      } catch (error) {
-        console.error('加载用户信息失败:', error)
-      }
-    },
-
-    /**
      * 加载用户标签
      */
     async loadUserTags() {
       try {
-        const userId = localStorage.getItem('userId')
+        // 获取userId - 优先从userData中获取，如果没有则从user_info中获取
+        let userId = null
+        const userData = localStorage.getItem('userData')
+        if (userData) {
+          const parsedUserData = JSON.parse(userData)
+          userId = parsedUserData.user?.userId || parsedUserData.user?.id
+        }
+
+        if (!userId) {
+          const userInfo = localStorage.getItem('user_info')
+          if (userInfo) {
+            const parsedUserInfo = JSON.parse(userInfo)
+            userId = parsedUserInfo.userId || parsedUserInfo.id
+          }
+        }
+
+        if (!userId) {
+          console.error('无法获取用户ID，跳过加载用户标签')
+          return
+        }
+
         const response = await getUserTags(userId)
 
         if (response.success) {
@@ -383,22 +466,83 @@ export default {
     },
 
     /**
-     * 处理搜索输入 - 每输入一个字符都会向后端传输
+     * 处理搜索输入框获得焦点
+     */
+    async handleSearchFocus() {
+      this.showSuggestions = true
+
+      // 如果搜索框为空，显示搜索历史
+      if (!this.searchQuery.trim()) {
+        await this.loadSearchHistory()
+      }
+    },
+
+    /**
+     * 加载搜索历史
+     */
+    async loadSearchHistory() {
+      try {
+        const response = await getSearchHistory('time') // 使用默认的time排序
+        if (response.success) {
+          this.searchHistory = response.data.queries
+          this.showHistory = true
+          console.log('搜索历史加载成功:', this.searchHistory)
+        }
+      } catch (error) {
+        console.error('加载搜索历史失败:', error)
+        this.searchHistory = []
+        this.showHistory = false
+      }
+    },
+
+    /**
+     * 处理搜索输入 - 每输入一个字符都会调用前缀匹配API
      */
     async handleSearchInput() {
       // 每输入一个字符都会向后端传输该字符
       if (this.searchQuery.trim()) {
+        // 有输入时隐藏搜索历史，显示前缀匹配结果
+        this.showHistory = false
+
         try {
-          const userId = localStorage.getItem('userId')
-          const response = await getSearchSuggestions(this.searchQuery, userId)
+          // 获取userId - 优先从userData中获取，如果没有则从user_info中获取
+          let userId = null
+          const userData = localStorage.getItem('userData')
+          if (userData) {
+            const parsedUserData = JSON.parse(userData)
+            userId = parsedUserData.user?.userId || parsedUserData.user?.id
+          }
+
+          if (!userId) {
+            const userInfo = localStorage.getItem('user_info')
+            if (userInfo) {
+              const parsedUserInfo = JSON.parse(userInfo)
+              userId = parsedUserInfo.userId || parsedUserInfo.id
+            }
+          }
+
+          if (!userId) {
+            console.error('无法获取用户ID，跳过前缀匹配')
+            return
+          }
+
+          const response = await prefixMatch(userId, this.searchQuery)
           if (response.success) {
-            this.searchSuggestions = response.suggestions
+            this.prefixMatchResults = response.data.results
+            this.searchSuggestions = this.prefixMatchResults // 使用前缀匹配结果作为搜索建议
+            console.log('前缀匹配结果:', response.data.results)
+            console.log('检测到的语言:', response.data.language)
           }
         } catch (error) {
-          console.error('获取搜索建议失败:', error)
+          console.error('前缀匹配失败:', error)
+          this.prefixMatchResults = []
+          this.searchSuggestions = []
         }
       } else {
+        // 输入框为空时，显示搜索历史
+        this.prefixMatchResults = []
         this.searchSuggestions = []
+        await this.loadSearchHistory()
       }
     },
 
@@ -431,28 +575,39 @@ export default {
      * 执行搜索
      */
     async handleSearch() {
-      if (!this.searchQuery.trim()) {
-        // 如果搜索框为空，恢复之前的显示状态
-        if (this.selectedTag) {
-          await this.selectTag(this.selectedTag)
-        } else {
-          await this.loadAllBookmarks()
-        }
-        return
-      }
-
       try {
-        const userId = localStorage.getItem('userId')
-        const response = await searchBookmarks(this.searchQuery, userId)
+        // 准备搜索参数
+        const searchParams = {
+          keyword: this.searchQuery.trim(),
+          sortBy: this.searchSortBy,
+        }
+
+        // 如果当前有选中的标签，添加到搜索参数中
+        if (this.selectedTag && this.selectedTag !== '') {
+          searchParams.tag = this.selectedTag
+        }
+
+        // 如果关键词为空且没有选中标签，恢复之前的显示状态
+        if (!searchParams.keyword && !searchParams.tag) {
+          if (this.selectedTag) {
+            await this.selectTag(this.selectedTag)
+          } else {
+            await this.loadAllBookmarks()
+          }
+          return
+        }
+
+        const response = await multiSearchBookmarks(searchParams)
         if (response.success) {
-          this.bookmarks = response.bookmarks
-          this.selectedTag = '' // 搜索时清除标签选择
+          this.bookmarks = response.data
+          console.log('搜索成功，结果数量:', this.bookmarks.length)
 
           // 滚动到展示模块
           this.scrollToDisplayModule()
         }
       } catch (error) {
         console.error('搜索失败:', error)
+        this.showErrorMessage('搜索失败，请稍后重试')
       }
     },
 
@@ -462,6 +617,14 @@ export default {
     handleAddBookmark() {
       if (!this.bookmarkUrl.trim()) {
         alert('请输入要收藏的网页链接')
+        return
+      }
+
+      // 验证URL格式
+      try {
+        new URL(this.bookmarkUrl)
+      } catch (error) {
+        alert('请输入有效的网页链接')
         return
       }
 
@@ -506,12 +669,24 @@ export default {
     },
 
     /**
-     * 选择标签 - 将点击的标签和用户ID一起传送给后端服务器
+     * 切换排序方式
+     */
+    async changeSortBy(sortBy) {
+      if (this.currentSortBy === sortBy) return
+
+      this.currentSortBy = sortBy
+      if (!this.selectedTag) {
+        // 只有在显示全部收藏时才重新加载
+        await this.loadAllBookmarks()
+      }
+    },
+
+    /**
+     * 选择标签 - 根据标签获取收藏
      */
     async selectTag(tag) {
       this.selectedTag = tag
-      this.currentPage = 1
-      // 将点击的标签和用户ID一起传送给后端服务器
+      // 新API不支持分页，所有数据一次性返回
       await this.loadBookmarksByTag(tag)
     },
 
@@ -520,16 +695,36 @@ export default {
      */
     async loadAllBookmarks() {
       try {
-        const userId = localStorage.getItem('userId')
-        const response = await getAllBookmarks(userId, this.currentPage, this.pageSize)
+        const response = await getAllBookmarks(this.currentSortBy)
 
         if (response.success) {
-          this.bookmarks = response.bookmarks
-          this.totalPages = response.totalPages
-          this.totalBookmarksCount = response.total
+          // 处理新的响应格式 - 按标签分组的收藏
+          const allBookmarks = []
+          let totalCount = 0
+
+          response.data.forEach((group) => {
+            if (group.bookmarks && Array.isArray(group.bookmarks)) {
+              group.bookmarks.forEach((bookmark) => {
+                allBookmarks.push({
+                  ...bookmark,
+                  id: `${bookmark.url}_${bookmark.tag}`, // 生成唯一ID
+                  title: bookmark.url, // 使用URL作为标题
+                  tags: [bookmark.tag], // 转换为标签数组格式
+                  clickCount: bookmark.click_count,
+                  createdAt: bookmark.created_at,
+                })
+              })
+              totalCount += group.bookmarks.length
+            }
+          })
+
+          this.bookmarks = allBookmarks
+          this.totalBookmarksCount = totalCount
+          this.totalPages = 1 // 新API不支持分页，所有数据一次性返回
         }
       } catch (error) {
         console.error('加载所有收藏失败:', error)
+        this.showErrorMessage('加载收藏失败，请稍后重试')
       }
     },
 
@@ -538,15 +733,26 @@ export default {
      */
     async loadBookmarksByTag(tag) {
       try {
-        const userId = localStorage.getItem('userId')
-        const response = await getBookmarksByTag(tag, userId, this.currentPage, this.pageSize)
+        const response = await getBookmarksByTag(tag)
 
         if (response.success) {
-          this.bookmarks = response.bookmarks
-          this.totalPages = response.totalPages
+          // 处理新的响应格式 - 直接是收藏数组
+          const bookmarks = response.data.map((bookmark) => ({
+            ...bookmark,
+            id: `${bookmark.url}_${bookmark.tag}`, // 生成唯一ID
+            title: bookmark.url, // 使用URL作为标题
+            tags: [bookmark.tag], // 转换为标签数组格式
+            clickCount: bookmark.click_count,
+            createdAt: bookmark.created_at,
+          }))
+
+          this.bookmarks = bookmarks
+          this.totalBookmarksCount = bookmarks.length
+          this.totalPages = 1 // 新API不支持分页，所有数据一次性返回
         }
       } catch (error) {
         console.error('加载收藏失败:', error)
+        this.showErrorMessage('加载收藏失败，请稍后重试')
       }
     },
 
@@ -632,11 +838,12 @@ export default {
       if (page < 1 || page > this.totalPages) return
 
       this.currentPage = page
-      if (this.selectedTag) {
-        await this.loadBookmarksByTag(this.selectedTag)
-      } else {
-        await this.loadAllBookmarks()
-      }
+      // 新API不支持分页，所有数据一次性返回
+      // if (this.selectedTag) {
+      //   await this.loadBookmarksByTag(this.selectedTag)
+      // } else {
+      //   await this.loadAllBookmarks()
+      // }
     },
 
     /**
@@ -817,9 +1024,8 @@ export default {
      */
     async sendClickRecordToBackend(url) {
       try {
-        const userId = localStorage.getItem('userId')
         // 发送请求但不处理响应
-        recordBookmarkClick(userId, url)
+        recordBookmarkClick(url)
         console.log('点击记录已发送到服务器')
       } catch (error) {
         console.error('发送点击记录失败:', error)
@@ -852,8 +1058,10 @@ export default {
           return
         }
 
-        const userId = localStorage.getItem('userId')
-        const response = await deleteBookmark(userId, bookmark.url)
+        const response = await deleteBookmark({
+          url: bookmark.url,
+          tag: bookmark.tags && bookmark.tags.length > 0 ? bookmark.tags[0] : 'default',
+        })
 
         if (response.success) {
           // 显示成功消息
@@ -880,11 +1088,22 @@ export default {
           this.totalPages = Math.ceil(this.totalBookmarksCount / this.pageSize)
         } else {
           // 显示错误消息
-          this.showErrorMessage(response.message || '删除失败')
+          const errorMessage = response.message || '删除失败'
+          alert(`删除失败：${errorMessage}`)
+          this.showErrorMessage(errorMessage)
         }
       } catch (error) {
         console.error('删除收藏失败:', error)
-        this.showErrorMessage('删除收藏失败，请稍后重试')
+
+        // 显示具体的错误信息
+        let errorMessage = '删除收藏失败，请稍后重试'
+        if (error.message) {
+          errorMessage = error.message
+        }
+
+        // 弹出错误提示框
+        alert(`删除失败：${errorMessage}`)
+        this.showErrorMessage(errorMessage)
       }
     },
 
@@ -893,9 +1112,22 @@ export default {
      */
     async handleLogout() {
       try {
-        // 获取用户token
+        // 获取用户token和用户ID
         const token = localStorage.getItem('userToken') || 'fromLogin'
+        const userId = localStorage.getItem('userId')
 
+        // 先调用前缀树登出API清除用户缓存数据
+        if (userId) {
+          try {
+            await prefixTreeLogout(userId)
+            console.log('用户缓存数据清除成功')
+          } catch (error) {
+            console.error('清除用户缓存数据失败:', error)
+            // 即使清除缓存失败，也继续执行登出流程
+          }
+        }
+
+        // 调用常规登出API
         const response = await logout(token)
 
         if (response.success) {
@@ -907,7 +1139,8 @@ export default {
           localStorage.removeItem('userEmail')
           localStorage.removeItem('userId')
           localStorage.removeItem('userData')
-          localStorage.removeItem('userToken')
+          localStorage.removeItem('user_info')
+          localStorage.removeItem('auth_token')
 
           // 触发自定义事件以通知App.vue更新状态
           window.dispatchEvent(new CustomEvent('loginStatusChanged'))
@@ -924,7 +1157,8 @@ export default {
             localStorage.removeItem('userEmail')
             localStorage.removeItem('userId')
             localStorage.removeItem('userData')
-            localStorage.removeItem('userToken')
+            localStorage.removeItem('user_info')
+            localStorage.removeItem('auth_token')
 
             // 触发自定义事件以通知App.vue更新状态
             window.dispatchEvent(new CustomEvent('loginStatusChanged'))
@@ -997,6 +1231,19 @@ export default {
   margin-bottom: 30px;
 }
 
+.search-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.search-sort-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 .search-input {
   width: 100%;
   padding: 15px 20px;
@@ -1025,6 +1272,27 @@ export default {
   background: #357abd;
 }
 
+.search-sort-select {
+  padding: 8px 12px;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  background: white;
+  color: #495057;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-sort-select:hover {
+  border-color: #4a90e2;
+}
+
+.search-sort-select:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
 .search-suggestions {
   position: absolute;
   top: 100%;
@@ -1035,6 +1303,32 @@ export default {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   z-index: 100;
   margin-top: 5px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.suggestions-header {
+  padding: 10px 20px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.suggestions-title {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.suggestions-count {
+  color: #6c757d;
+  font-size: 12px;
+  background: #e9ecef;
+  padding: 2px 8px;
+  border-radius: 12px;
 }
 
 .suggestion-item {
@@ -1060,6 +1354,18 @@ export default {
 
 .suggestion-item:last-child {
   border-bottom: none;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+}
+
+.history-icon {
+  font-size: 14px;
+  opacity: 0.7;
 }
 
 .bookmark-container {
@@ -1393,6 +1699,87 @@ export default {
 .bookmark-date {
   color: #999;
   font-size: 12px;
+}
+
+/* 展示模块头部 */
+.display-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.display-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+/* 排序控制 */
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-label {
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sort-btn {
+  padding: 6px 12px;
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.sort-btn:hover {
+  background: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.sort-btn.active {
+  background: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+}
+
+/* 收藏信息 */
+.bookmark-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.bookmark-date,
+.bookmark-clicks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.info-label {
+  color: #666;
+  font-weight: 500;
+  min-width: 70px;
+}
+
+.info-value {
+  color: #333;
+  font-weight: 600;
 }
 
 .pagination {

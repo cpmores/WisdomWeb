@@ -1,634 +1,712 @@
 /**
  * API服务 - 处理与服务器的通信
- * 注意：这是一个模拟的API服务，实际项目中应该连接到真实的后端服务器
+ * 使用真实的HTTP客户端和集中配置
  */
 
-// 模拟用户数据库
-const mockUsers = [
-  {
-    id: '1',
-    username: 'admin',
-    email: 'admin@example.com',
-    password: '123456',
-    avatar: 'https://via.placeholder.com/100x100/4a90e2/ffffff?text=A',
-    tags: ['技术', '编程', 'Vue', '前端'],
-  },
-  {
-    id: '2',
-    username: 'user',
-    email: 'user@example.com',
-    password: '123456',
-    avatar: 'https://via.placeholder.com/100x100/67c23a/ffffff?text=U',
-    tags: ['学习', '笔记', '工具'],
-  },
-]
+import httpClient from './http-client.js'
+import { API_ENDPOINTS, API_CONFIG } from '../config/api.config.js'
 
-// 模拟收藏的网页数据
-const mockBookmarks = [
-  {
-    id: '1',
-    userId: '1',
-    url: 'https://vuejs.org',
-    title: 'Vue.js - 渐进式JavaScript框架',
-    tags: ['技术', '编程', 'Vue'],
-    clickCount: 5,
-    createdAt: '2024-01-15T10:30:00Z',
-  },
-  {
-    id: '2',
-    userId: '1',
-    url: 'https://github.com',
-    title: 'GitHub: Where the world builds software',
-    tags: ['技术', '编程', '工具'],
-    clickCount: 12,
-    createdAt: '2024-01-14T15:20:00Z',
-  },
-  {
-    id: '3',
-    userId: '1',
-    url: 'https://reactjs.org',
-    title: 'React – A JavaScript library for building user interfaces',
-    tags: ['技术', '编程', 'React', '前端'],
-    clickCount: 3,
-    createdAt: '2024-01-13T09:15:00Z',
-  },
-  {
-    id: '4',
-    userId: '1',
-    url: 'https://developer.mozilla.org',
-    title: 'MDN Web Docs',
-    tags: ['技术', '学习', '文档'],
-    clickCount: 8,
-    createdAt: '2024-01-12T14:30:00Z',
-  },
-  {
-    id: '5',
-    userId: '1',
-    url: 'https://stackoverflow.com',
-    title: 'Stack Overflow - Where Developers Learn, Share, & Build Careers',
-    tags: ['学习', '编程', '问答'],
-    clickCount: 15,
-    createdAt: '2024-01-11T11:45:00Z',
-  },
-  {
-    id: '6',
-    userId: '2',
-    url: 'https://stackoverflow.com',
-    title: 'Stack Overflow - Where Developers Learn, Share, & Build Careers',
-    tags: ['学习', '编程'],
-    clickCount: 2,
-    createdAt: '2024-01-13T09:15:00Z',
-  },
-]
+// ==================== 用户认证相关 ====================
 
 /**
- * 模拟网络延迟
- * @param {number} ms - 延迟毫秒数
- * @returns {Promise} 延迟Promise
- */
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
-
-/**
- * 模拟登录API
+ * 用户登录
  * @param {Object} loginData - 登录数据 {email, password}
  * @returns {Promise<Object>} 登录结果
  */
 export async function login(loginData) {
-  // 模拟网络延迟
-  await delay(1000)
+  const endpoint = API_ENDPOINTS.AUTH.LOGIN
+  const response = await httpClient.post(endpoint.url, loginData, { includeAuth: false })
 
-  // 验证用户凭据
-  const user = mockUsers.find(
-    (u) => u.email === loginData.email && u.password === loginData.password,
-  )
+  // 如果登录成功，保存JWT token和用户数据
+  if (response.token) {
+    httpClient.setAuthToken(response.token)
 
-  if (user) {
+    // 初始化用户信息变量
+    let userInfo = null
+
+    // 处理用户信息
+    if (response.user) {
+      // 只保存前端需要的用户信息
+      userInfo = {
+        id: response.user.id,
+        userId: response.user.userId,
+        username: response.user.username,
+        email: response.user.email,
+        avatar: response.user.avatar,
+        signature: response.user.signature,
+        lastLogin: response.user.lastLogin,
+        createdAt: response.user.createdAt,
+        roles: response.user.roles,
+        isVerified: response.user.isVerified,
+        isActive: response.user.isActive,
+        isOnline: response.user.isOnline,
+      }
+
+      localStorage.setItem(API_CONFIG.AUTH.USER_KEY, JSON.stringify(userInfo))
+    }
+
+    // 处理收藏数据
+    if (response.bookmarks && Array.isArray(response.bookmarks)) {
+      // 将后端返回的按标签分组的收藏数据转换为扁平化数组
+      const allBookmarks = []
+      const tagCounts = {}
+
+      response.bookmarks.forEach((tagGroup) => {
+        if (tagGroup.tag && Array.isArray(tagGroup.bookmarks)) {
+          // 统计标签数量
+          tagCounts[tagGroup.tag] = tagGroup.bookmarks.length
+
+          // 将每个收藏添加到总数组中
+          tagGroup.bookmarks.forEach((bookmark) => {
+            allBookmarks.push({
+              url: bookmark.url,
+              tag: bookmark.tag,
+              click_count: bookmark.click_count,
+              created_at: bookmark.created_at,
+            })
+          })
+        }
+      })
+
+      // 保存处理后的数据到localStorage
+      const userData = {
+        user: userInfo,
+        bookmarks: allBookmarks,
+        tags: Object.keys(tagCounts),
+        tagCounts: tagCounts,
+        totalBookmarks: allBookmarks.length,
+      }
+
+      localStorage.setItem('userData', JSON.stringify(userData))
+    }
+
+    // 返回标准化的响应格式
     return {
       success: true,
       message: '登录成功',
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        avatar: user.avatar,
-      },
-    }
-  } else {
-    return {
-      success: false,
-      message: '邮箱或密码错误',
+      token: response.token,
+      user: response.user,
+      bookmarks: response.bookmarks,
     }
   }
+
+  // 处理错误响应
+  if (typeof response === 'string') {
+    // 处理字符串错误消息
+    return {
+      success: false,
+      message: response,
+      error: response,
+    }
+  }
+
+  return response
 }
 
 /**
- * 模拟注册API
+ * 用户注册
  * @param {Object} registerData - 注册数据 {username, email, password}
  * @returns {Promise<Object>} 注册结果
  */
 export async function register(registerData) {
-  // 模拟网络延迟
-  await delay(1000)
+  const endpoint = API_ENDPOINTS.AUTH.REGISTER
 
-  // 检查邮箱是否已存在
-  const existingUser = mockUsers.find((u) => u.email === registerData.email)
+  // 只发送必要的字段到后端
+  const { username, email, password } = registerData
+  const requestData = { username, email, password }
 
-  if (existingUser) {
-    return {
-      success: false,
-      message: '该邮箱已被注册',
-    }
-  }
-
-  // 检查用户名是否已存在
-  const existingUsername = mockUsers.find((u) => u.username === registerData.username)
-
-  if (existingUsername) {
-    return {
-      success: false,
-      message: '该用户名已被使用',
-    }
-  }
-
-  // 生成新用户ID
-  const newUserId = (mockUsers.length + 1).toString()
-
-  // 添加新用户到模拟数据库
-  mockUsers.push({
-    id: newUserId,
-    username: registerData.username,
-    email: registerData.email,
-    password: registerData.password,
-    avatar: `https://via.placeholder.com/100x100/${Math.floor(Math.random() * 16777215).toString(16)}/ffffff?text=${registerData.username.charAt(0).toUpperCase()}`,
-    tags: [],
-  })
-
-  return {
-    success: true,
-    message: '注册成功',
-  }
+  return await httpClient.post(endpoint.url, requestData, { includeAuth: false })
 }
 
 /**
- * 获取用户信息API
- * @param {string} userId - 用户ID
- * @returns {Promise<Object>} 用户信息
- */
-export async function getUserInfo(userId) {
-  await delay(500)
-
-  const user = mockUsers.find((u) => u.id === userId)
-
-  if (user) {
-    return {
-      success: true,
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        avatar: user.avatar,
-        tags: user.tags,
-      },
-    }
-  } else {
-    return {
-      success: false,
-      message: '用户不存在',
-    }
-  }
-}
-
-/**
- * 用户初始化API - 登录成功后获取完整的用户数据和收藏信息
- * @param {string} userId - 用户ID
- * @param {string} password - 用户密码（用于确认）
- * @returns {Promise<Object>} 初始化数据
- */
-export async function initializeUser(userId, password) {
-  await delay(800)
-
-  // 验证用户凭据
-  const user = mockUsers.find((u) => u.id === userId && u.password === password)
-
-  if (!user) {
-    return {
-      success: false,
-      message: '用户验证失败',
-    }
-  }
-
-  // 获取用户的所有收藏
-  const userBookmarks = mockBookmarks.filter((bookmark) => bookmark.userId === userId)
-
-  // 获取用户的所有标签及数量
-  const allTags = userBookmarks.flatMap((bookmark) => bookmark.tags || [])
-  const uniqueTags = [...new Set(allTags)].sort()
-  const tagCounts = {}
-  uniqueTags.forEach((tag) => {
-    tagCounts[tag] = userBookmarks.filter(
-      (bookmark) => bookmark.tags && bookmark.tags.includes(tag),
-    ).length
-  })
-
-  return {
-    success: true,
-    message: '初始化成功',
-    data: {
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        avatar: user.avatar,
-      },
-      bookmarks: userBookmarks,
-      tags: uniqueTags,
-      tagCounts: tagCounts,
-      totalBookmarks: userBookmarks.length,
-    },
-  }
-}
-
-/**
- * 搜索建议API - 包含网址和标签建议
- * @param {string} query - 搜索查询
- * @param {string} userId - 用户ID
- * @returns {Promise<Object>} 搜索建议
- */
-export async function getSearchSuggestions(query, userId) {
-  await delay(300)
-
-  // 获取用户的收藏和标签
-  const userBookmarks = mockBookmarks.filter((bookmark) => bookmark.userId === userId)
-  const userTags = [...new Set(userBookmarks.flatMap((bookmark) => bookmark.tags || []))]
-
-  // 生成搜索建议
-  const suggestions = []
-
-  // 添加标题建议
-  userBookmarks.forEach((bookmark) => {
-    if (bookmark.title.toLowerCase().includes(query.toLowerCase())) {
-      suggestions.push(bookmark.title)
-    }
-  })
-
-  // 添加URL建议
-  userBookmarks.forEach((bookmark) => {
-    if (bookmark.url.toLowerCase().includes(query.toLowerCase())) {
-      suggestions.push(bookmark.url)
-    }
-  })
-
-  // 添加标签建议
-  userTags.forEach((tag) => {
-    if (tag.toLowerCase().includes(query.toLowerCase())) {
-      suggestions.push(`标签: ${tag}`)
-    }
-  })
-
-  // 去重并限制数量
-  const uniqueSuggestions = [...new Set(suggestions)]
-  const filteredSuggestions = uniqueSuggestions.filter((item) =>
-    item.toLowerCase().includes(query.toLowerCase()),
-  )
-
-  return {
-    success: true,
-    suggestions: filteredSuggestions.slice(0, 8),
-  }
-}
-
-/**
- * 搜索收藏的网页API - 支持网址和标签搜索
- * @param {string} query - 搜索查询
- * @param {string} userId - 用户ID
- * @returns {Promise<Object>} 搜索结果
- */
-export async function searchBookmarks(query, userId) {
-  await delay(800)
-
-  const userBookmarks = mockBookmarks.filter(
-    (bookmark) =>
-      bookmark.userId === userId &&
-      (bookmark.title.toLowerCase().includes(query.toLowerCase()) ||
-        bookmark.url.toLowerCase().includes(query.toLowerCase()) ||
-        (bookmark.tags &&
-          bookmark.tags.some((tag) => tag.toLowerCase().includes(query.toLowerCase())))),
-  )
-
-  return {
-    success: true,
-    bookmarks: userBookmarks,
-  }
-}
-
-/**
- * 添加收藏API - 接收用户ID、网页链接和标签
- * @param {Object} bookmarkData - 收藏数据 {userId, url, tags}
- * @returns {Promise<Object>} 添加结果
- */
-export async function addBookmark(bookmarkData) {
-  await delay(600)
-
-  // 生成新收藏ID
-  const newBookmarkId = (mockBookmarks.length + 1).toString()
-
-  // 添加新收藏到模拟数据库
-  const newBookmark = {
-    id: newBookmarkId,
-    userId: bookmarkData.userId,
-    url: bookmarkData.url,
-    title: bookmarkData.url, // 使用URL作为标题
-    tags: bookmarkData.tags || [], // 使用传入的标签或默认为空数组
-    clickCount: 0, // 点击次数，初始为0
-    createdAt: new Date().toISOString(),
-  }
-
-  mockBookmarks.push(newBookmark)
-
-  // 注意：不再更新用户的tags字段，因为getUserTags现在直接从收藏中提取标签
-
-  return {
-    success: true,
-    message: '收藏成功',
-    bookmark: newBookmark,
-  }
-}
-
-/**
- * 获取用户所有收藏的网页API
- * @param {string} userId - 用户ID
- * @param {number} page - 页码
- * @param {number} pageSize - 每页数量
- * @returns {Promise<Object>} 收藏列表
- */
-export async function getAllBookmarks(userId, page = 1, pageSize = 10) {
-  await delay(500)
-
-  const userBookmarks = mockBookmarks.filter((bookmark) => bookmark.userId === userId)
-
-  // 分页处理
-  const startIndex = (page - 1) * pageSize
-  const endIndex = startIndex + pageSize
-  const paginatedBookmarks = userBookmarks.slice(startIndex, endIndex)
-
-  return {
-    success: true,
-    bookmarks: paginatedBookmarks,
-    total: userBookmarks.length,
-    page: page,
-    pageSize: pageSize,
-    totalPages: Math.ceil(userBookmarks.length / pageSize),
-  }
-}
-
-/**
- * 根据标签获取收藏的网页API
- * @param {string} tag - 标签
- * @param {string} userId - 用户ID
- * @param {number} page - 页码
- * @param {number} pageSize - 每页数量
- * @returns {Promise<Object>} 收藏列表
- */
-export async function getBookmarksByTag(tag, userId, page = 1, pageSize = 10) {
-  await delay(500)
-
-  const userBookmarks = mockBookmarks.filter(
-    (bookmark) => bookmark.userId === userId && bookmark.tags.includes(tag),
-  )
-
-  // 分页处理
-  const startIndex = (page - 1) * pageSize
-  const endIndex = startIndex + pageSize
-  const paginatedBookmarks = userBookmarks.slice(startIndex, endIndex)
-
-  return {
-    success: true,
-    bookmarks: paginatedBookmarks,
-    total: userBookmarks.length,
-    page: page,
-    pageSize: pageSize,
-    totalPages: Math.ceil(userBookmarks.length / pageSize),
-  }
-}
-
-/**
- * 获取用户所有标签API
- * @param {string} userId - 用户ID
- * @returns {Promise<Object>} 标签列表和数量
- */
-export async function getUserTags(userId) {
-  await delay(300)
-
-  const user = mockUsers.find((u) => u.id === userId)
-
-  if (user) {
-    // 从用户的所有收藏中提取所有唯一的标签
-    const userBookmarks = mockBookmarks.filter((bookmark) => bookmark.userId === userId)
-    const allTags = userBookmarks.flatMap((bookmark) => bookmark.tags || [])
-
-    // 去重并排序
-    const uniqueTags = [...new Set(allTags)].sort()
-
-    // 计算每个标签的数量
-    const tagCounts = {}
-    uniqueTags.forEach((tag) => {
-      tagCounts[tag] = userBookmarks.filter(
-        (bookmark) => bookmark.tags && bookmark.tags.includes(tag),
-      ).length
-    })
-
-    return {
-      success: true,
-      tags: uniqueTags,
-      tagCounts: tagCounts,
-    }
-  } else {
-    return {
-      success: false,
-      message: '用户不存在',
-    }
-  }
-}
-
-/**
- * AI助手对话API
- * @param {string} message - 用户消息
- * @param {string} userId - 用户ID
- * @returns {Promise<Object>} AI回复
- */
-export async function chatWithAI(message, userId) {
-  await delay(1500)
-
-  // 模拟AI回复
-  const aiResponses = [
-    '这是一个很好的问题！让我为您详细解答...',
-    '根据您的需求，我建议您可以尝试以下方法...',
-    '我理解您的问题，这里有一些相关的解决方案...',
-    '这是一个常见的问题，让我为您提供一些建议...',
-    '基于您提供的信息，我认为最好的做法是...',
-  ]
-
-  const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)]
-
-  return {
-    success: true,
-    response: randomResponse,
-    timestamp: new Date().toISOString(),
-  }
-}
-
-/**
- * 退出登录API - 模拟向后端发送POST请求
- * @param {string} token - 用户token
+ * 退出登录
  * @returns {Promise<Object>} 退出结果
  */
-export async function logout(token) {
-  await delay(500)
+export async function logout() {
+  const endpoint = API_ENDPOINTS.AUTH.LOGOUT
 
-  try {
-    // 模拟后端验证token的逻辑
-    console.log('模拟向后端发送POST请求到 /api/logout')
-    console.log('请求头: Authorization: Bearer', token)
+  // 获取当前token并添加fromLogin后缀
+  const token = httpClient.getAuthToken()
+  const customHeaders = {}
 
-    // 模拟不同的响应情况
-    if (token === 'fromLogin') {
-      // 模拟成功响应
-      console.log('后端响应: Logout successful')
-      return {
-        success: true,
-        message: '退出成功',
-      }
-    } else if (token === 'invalidToken') {
-      // 模拟token无效响应
-      console.log('后端响应: Logout failed: Invalid token')
-      return {
-        success: false,
-        message: '退出失败：无效的token',
-      }
-    } else if (token === 'userNotFound') {
-      // 模拟用户不存在响应
-      console.log('后端响应: Logout failed: User not found')
-      return {
-        success: false,
-        message: '退出失败：用户不存在',
-      }
-    } else {
-      // 模拟未知错误响应
-      console.log('后端响应: Logout failed: Unknown error')
-      return {
-        success: false,
-        message: '退出失败：未知错误',
-      }
-    }
-  } catch (error) {
-    console.error('退出登录请求失败:', error)
-    return {
-      success: false,
-      message: '退出失败：网络错误',
-    }
+  if (token) {
+    customHeaders.Authorization = `${token}`
   }
+
+  const response = await httpClient.post(endpoint.url, null, {
+    headers: customHeaders,
+    includeAuth: false, // 不使用默认的Authorization头，使用自定义的
+  })
+
+  // 清除本地存储的认证信息
+  httpClient.clearAuth()
+
+  return response
 }
 
 /**
- * 检查用户登录状态
+ * 检查登录状态
  * @returns {Promise<Object>} 登录状态
  */
 export async function checkAuthStatus() {
-  await delay(300)
+  const endpoint = API_ENDPOINTS.AUTH.CHECK_STATUS
+  const response = await httpClient.get(endpoint.url)
 
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
-  const userEmail = localStorage.getItem('userEmail')
-  const userId = localStorage.getItem('userId')
-
-  if (isLoggedIn && userEmail && userId) {
+  // 处理布尔值响应格式
+  if (response.success && typeof response.data === 'boolean') {
     return {
       success: true,
-      isLoggedIn: true,
-      user: {
-        id: userId,
-        email: userEmail,
-      },
+      isLoggedIn: response.data,
+      message: response.message,
+      timestamp: response.timestamp,
     }
-  } else {
-    return {
-      success: true,
-      isLoggedIn: false,
-    }
+  }
+
+  // 处理标准JSON响应格式
+  if (response.success && response.isLoggedIn !== undefined) {
+    return response
+  }
+
+  // 处理错误响应
+  return {
+    success: false,
+    isLoggedIn: false,
+    message: response.message || '检查登录状态失败',
+    error: response.error,
+    code: response.code,
+    timestamp: response.timestamp,
   }
 }
 
+// ==================== 收藏管理相关 ====================
+
 /**
- * 记录收藏点击次数API - 发送用户ID和URL
- * @param {string} userId - 用户ID
- * @param {string} url - 点击的URL
- * @returns {Promise<Object>} 记录结果
+ * 添加收藏
+ * @param {Object} bookmarkData - 收藏数据 {url, tag}
+ * @returns {Promise<Object>} 添加结果
  */
-export async function recordBookmarkClick(userId, url) {
-  await delay(300)
+export async function addBookmark(bookmarkData) {
+  const endpoint = API_ENDPOINTS.BOOKMARKS.ADD
 
-  // 查找收藏（通过用户ID和URL）
-  const bookmark = mockBookmarks.find(
-    (bookmark) => bookmark.userId === userId && bookmark.url === url,
-  )
-
-  if (bookmark) {
-    // 增加点击次数
-    bookmark.clickCount = (bookmark.clickCount || 0) + 1
-
-    return {
-      success: true,
-      message: '点击记录成功',
-      clickCount: bookmark.clickCount,
-    }
-  } else {
-    return {
-      success: false,
-      message: '收藏不存在',
-    }
+  // 验证URL
+  if (!bookmarkData.url || !bookmarkData.url.trim()) {
+    throw new Error('URL cannot be empty')
   }
-}
 
-/**
- * 删除收藏API - 发送用户ID和URL
- * @param {string} userId - 用户ID
- * @param {string} url - 要删除的URL
- * @returns {Promise<Object>} 删除结果
- */
-export async function deleteBookmark(userId, url) {
-  await delay(500)
+  // 验证URL格式
+  try {
+    new URL(bookmarkData.url)
+  } catch (error) {
+    throw new Error('Invalid URL format')
+  }
+
+  // 验证标签长度
+  if (bookmarkData.tag && bookmarkData.tag.length > 50) {
+    throw new Error('Tag length cannot exceed 50 characters')
+  }
+
+  // 准备请求数据
+  const requestData = {
+    url: bookmarkData.url.trim(),
+    tag: bookmarkData.tag || 'default',
+  }
 
   try {
-    // 模拟向后端发送删除请求
-    console.log('模拟向后端发送删除收藏请求')
-    console.log('用户ID:', userId)
-    console.log('删除URL:', url)
+    const response = await httpClient.post(endpoint.url, requestData)
 
-    // 查找要删除的收藏
-    const bookmarkIndex = mockBookmarks.findIndex(
-      (bookmark) => bookmark.userId === userId && bookmark.url === url,
-    )
+    // 处理后端响应格式
+    if (response.local && response.crawler) {
+      // 检查本地操作状态
+      if (response.local.status === 'error') {
+        throw new Error(response.local.message)
+      }
 
-    if (bookmarkIndex !== -1) {
-      // 从数组中删除收藏
-      mockBookmarks.splice(bookmarkIndex, 1)
+      // 检查爬虫操作状态
+      if (response.crawler.status === 'error') {
+        throw new Error(response.crawler.message)
+      }
 
-      console.log('后端响应: success')
+      // 成功响应
       return {
         success: true,
-        message: '收藏删除成功',
-      }
-    } else {
-      console.log('后端响应: error - 收藏不存在')
-      return {
-        success: false,
-        message: '收藏不存在',
+        message: response.local.message,
+        data: {
+          local: response.local,
+          crawler: response.crawler,
+        },
       }
     }
+
+    return response
   } catch (error) {
-    console.error('删除收藏请求失败:', error)
-    return {
-      success: false,
-      message: '删除失败：网络错误',
-    }
+    // 处理网络错误或其他错误
+    throw error
   }
+}
+
+/**
+ * 获取所有收藏
+ * @param {string} sortBy - 排序方式 ('time' 或 'click_count', 默认: 'time')
+ * @returns {Promise<Object>} 收藏列表
+ */
+export async function getAllBookmarks(sortBy = 'time') {
+  const endpoint = API_ENDPOINTS.BOOKMARKS.GET_ALL
+
+  // 验证排序参数
+  if (sortBy && !['time', 'click_count'].includes(sortBy)) {
+    throw new Error('Invalid sortBy parameter. Must be "time" or "click_count"')
+  }
+
+  const params = new URLSearchParams({
+    sortBy: sortBy || 'time',
+  })
+
+  try {
+    const response = await httpClient.get(`${endpoint.url}?${params}`)
+
+    // 处理后端响应格式
+    if (Array.isArray(response)) {
+      // 成功响应 - 数组格式
+      return {
+        success: true,
+        data: response,
+        message: '获取收藏成功',
+      }
+    } else if (response.status === 'error') {
+      // 错误响应
+      throw new Error(response.message)
+    }
+
+    return response
+  } catch (error) {
+    // 处理网络错误或其他错误
+    throw error
+  }
+}
+
+/**
+ * 根据标签获取收藏
+ * @param {string} tag - 标签名称
+ * @returns {Promise<Object>} 收藏列表
+ */
+export async function getBookmarksByTag(tag) {
+  const endpoint = API_ENDPOINTS.BOOKMARKS.GET_BY_TAG
+
+  // 验证标签参数
+  if (!tag || !tag.trim()) {
+    throw new Error('Tag cannot be empty')
+  }
+
+  const params = new URLSearchParams({
+    tag: tag.trim(),
+  })
+
+  try {
+    const response = await httpClient.get(`${endpoint.url}?${params}`)
+
+    // 处理后端响应格式
+    if (Array.isArray(response)) {
+      // 成功响应 - 数组格式
+      return {
+        success: true,
+        data: response,
+        message: '获取收藏成功',
+      }
+    } else if (response.status === 'error') {
+      // 错误响应
+      throw new Error(response.message)
+    }
+
+    return response
+  } catch (error) {
+    // 处理网络错误或其他错误
+    throw error
+  }
+}
+
+/**
+ * 删除收藏
+ * @param {Object} bookmarkData - 收藏数据 {url, tag}
+ * @returns {Promise<Object>} 删除结果
+ */
+export async function deleteBookmark(bookmarkData) {
+  const endpoint = API_ENDPOINTS.BOOKMARKS.DELETE
+
+  // 验证URL
+  if (!bookmarkData.url || !bookmarkData.url.trim()) {
+    throw new Error('URL cannot be empty')
+  }
+
+  // 验证URL格式
+  try {
+    new URL(bookmarkData.url)
+  } catch (error) {
+    throw new Error('Invalid URL format')
+  }
+
+  // 验证标签长度
+  if (bookmarkData.tag && bookmarkData.tag.length > 50) {
+    throw new Error('Tag length cannot exceed 50 characters')
+  }
+
+  // 准备请求数据
+  const requestData = {
+    url: bookmarkData.url.trim(),
+    tag: bookmarkData.tag || 'default',
+  }
+
+  try {
+    const response = await httpClient.delete(endpoint.url, { body: requestData })
+
+    // 处理后端响应格式
+    if (response.local && response.crawler) {
+      // 检查本地操作状态
+      if (response.local.status === 'error') {
+        throw new Error(response.local.message)
+      }
+
+      // 检查爬虫操作状态
+      if (response.crawler.status === 'error') {
+        throw new Error(response.crawler.message)
+      }
+
+      // 成功响应
+      return {
+        success: true,
+        message: response.local.message,
+        data: {
+          local: response.local,
+          crawler: response.crawler,
+        },
+      }
+    }
+
+    return response
+  } catch (error) {
+    // 处理网络错误或其他错误
+    throw error
+  }
+}
+
+/**
+ * 记录收藏点击
+ * @param {string} url - 收藏的URL
+ * @returns {Promise<Object>} 记录结果
+ */
+export async function recordBookmarkClick(url) {
+  const endpoint = API_ENDPOINTS.BOOKMARKS.RECORD_CLICK
+
+  // 验证URL
+  if (!url || !url.trim()) {
+    throw new Error('URL cannot be empty')
+  }
+
+  // 验证URL格式
+  try {
+    new URL(url)
+  } catch (error) {
+    throw new Error('Invalid URL format')
+  }
+
+  // 准备请求数据
+  const requestData = {
+    url: url.trim(),
+  }
+
+  try {
+    const response = await httpClient.post(endpoint.url, requestData)
+
+    // 处理后端响应格式
+    if (typeof response === 'string') {
+      // 成功响应 - 字符串格式
+      return {
+        success: true,
+        message: response,
+        data: null,
+      }
+    } else if (response.status === 'error') {
+      // 错误响应
+      throw new Error(response.message)
+    }
+
+    return response
+  } catch (error) {
+    // 处理网络错误或其他错误
+    throw error
+  }
+}
+
+// ==================== 标签管理相关 ====================
+
+/**
+ * 获取用户标签
+ * @returns {Promise<Object>} 标签列表
+ */
+export async function getUserTags() {
+  const endpoint = API_ENDPOINTS.TAGS.GET_USER_TAGS
+  return await httpClient.get(endpoint.url)
+}
+
+// ==================== 搜索功能相关 ====================
+
+/**
+ * 多条件搜索收藏
+ * @param {Object} searchParams - 搜索参数 {tag, keyword, sortBy}
+ * @returns {Promise<Object>} 搜索结果
+ */
+export async function multiSearchBookmarks(searchParams) {
+  const endpoint = API_ENDPOINTS.SEARCH.MULTI_SEARCH
+
+  // 验证排序参数
+  if (searchParams.sortBy && !['time', 'click_count'].includes(searchParams.sortBy)) {
+    throw new Error('Invalid sortBy parameter. Must be "time" or "click_count"')
+  }
+
+  // 准备请求参数
+  const params = new URLSearchParams()
+
+  // 只有当tag不为空且不是"全部"时才添加tag参数
+  if (searchParams.tag && searchParams.tag.trim() && searchParams.tag !== '全部') {
+    params.append('tag', searchParams.tag.trim())
+  }
+
+  // 只有当keyword不为空时才添加keyword参数
+  if (searchParams.keyword && searchParams.keyword.trim()) {
+    params.append('keyword', searchParams.keyword.trim())
+  }
+
+  // 添加排序参数
+  params.append('sortBy', searchParams.sortBy || 'time')
+
+  try {
+    const response = await httpClient.get(`${endpoint.url}?${params}`)
+
+    // 处理后端响应格式
+    if (Array.isArray(response)) {
+      // 成功响应 - 数组格式
+      return {
+        success: true,
+        data: response.map((bookmark) => ({
+          ...bookmark,
+          id: `${bookmark.url}_${bookmark.tag}`, // 生成唯一ID
+          title: bookmark.url, // 使用URL作为标题
+          tags: [bookmark.tag], // 转换为标签数组格式
+          clickCount: bookmark.click_count,
+          createdAt: bookmark.created_at,
+        })),
+        message: '搜索成功',
+      }
+    } else if (response.status === 'error') {
+      // 错误响应
+      throw new Error(response.message)
+    }
+
+    return response
+  } catch (error) {
+    // 处理网络错误或其他错误
+    throw error
+  }
+}
+
+/**
+ * 前缀匹配搜索
+ * @param {string} userid - 用户唯一标识符
+ * @param {string} prefix - 要搜索的前缀（中文或英文）
+ * @returns {Promise<Object>} 匹配结果
+ */
+export async function prefixMatch(userid, prefix) {
+  const endpoint = API_ENDPOINTS.SEARCH.PREFIX_MATCH
+
+  // 验证参数
+  if (!userid || !userid.trim()) {
+    throw new Error('userid cannot be empty')
+  }
+
+  if (!prefix || !prefix.trim()) {
+    throw new Error('prefix cannot be empty')
+  }
+
+  // 准备请求参数
+  const params = new URLSearchParams({
+    userid: userid.trim(),
+    prefix: prefix.trim(),
+  })
+
+  try {
+    // 使用前缀树基础URL
+    const { getPrefixTreeApiUrl } = await import('../config/api.config.js')
+    const fullUrl = getPrefixTreeApiUrl(endpoint.url)
+    const response = await httpClient.get(`${fullUrl}?${params}`)
+
+    // 处理后端响应格式
+    if (response.results && Array.isArray(response.results)) {
+      // 成功响应 - 包含匹配结果
+      return {
+        success: true,
+        data: {
+          results: response.results,
+          userid: response.userid,
+          language: response.language,
+        },
+        message: '匹配成功',
+      }
+    } else if (response.error) {
+      // 错误响应
+      throw new Error(response.error)
+    }
+
+    return response
+  } catch (error) {
+    // 处理网络错误或其他错误
+    throw error
+  }
+}
+
+/**
+ * 前缀树登出 - 清除指定用户的缓存数据
+ * @param {string} userid - 用户唯一标识符
+ * @returns {Promise<Object>} 清除结果
+ */
+export async function prefixTreeLogout(userid) {
+  const endpoint = API_ENDPOINTS.SEARCH.PREFIX_TREE_LOGOUT
+
+  // 验证参数
+  if (!userid || !userid.trim()) {
+    throw new Error('userid cannot be empty')
+  }
+
+  // 准备请求数据
+  const requestData = {
+    userid: userid.trim(),
+  }
+
+  try {
+    // 使用前缀树基础URL
+    const { getPrefixTreeApiUrl } = await import('../config/api.config.js')
+    const fullUrl = getPrefixTreeApiUrl(endpoint.url)
+    const response = await httpClient.post(fullUrl, requestData)
+
+    // 处理后端响应格式
+    if (response.message && response.userid) {
+      // 成功响应 - 包含清除消息和用户ID
+      return {
+        success: true,
+        data: {
+          message: response.message,
+          userid: response.userid,
+        },
+        message: '用户缓存数据清除成功',
+      }
+    } else if (response.error) {
+      // 错误响应
+      throw new Error(response.error)
+    }
+
+    return response
+  } catch (error) {
+    // 处理网络错误或其他错误
+    throw error
+  }
+}
+
+/**
+ * 获取搜索历史
+ * @param {string} sortBy - 排序方式 ('time' 或 'count', 默认: 'time')
+ * @returns {Promise<Object>} 搜索历史
+ */
+export async function getSearchHistory(sortBy = 'time') {
+  const endpoint = API_ENDPOINTS.SEARCH.GET_HISTORY
+
+  // 验证排序参数
+  if (sortBy && !['time', 'count'].includes(sortBy)) {
+    throw new Error('Invalid sortBy parameter. Must be "time" or "count"')
+  }
+
+  // 准备请求参数
+  const params = new URLSearchParams({
+    sortBy: sortBy || 'time',
+  })
+
+  try {
+    const response = await httpClient.get(`${endpoint.url}?${params}`)
+
+    // 处理后端响应格式
+    if (Array.isArray(response)) {
+      // 成功响应 - 数组格式，提取query字段作为历史记录
+      const historyQueries = response
+        .map((item) => item.query)
+        .filter((query) => query && query.trim())
+
+      return {
+        success: true,
+        data: {
+          history: response,
+          queries: historyQueries,
+        },
+        message: '获取搜索历史成功',
+      }
+    } else if (response.status === 'error') {
+      // 错误响应
+      throw new Error(response.message)
+    }
+
+    return response
+  } catch (error) {
+    // 处理网络错误或其他错误
+    throw error
+  }
+}
+
+// ==================== AI助手相关 ====================
+
+/**
+ * AI对话
+ * @param {Object} chatData - 对话数据 {message, context, model}
+ * @returns {Promise<Object>} 对话结果
+ */
+export async function chatWithAI(chatData) {
+  const endpoint = API_ENDPOINTS.AI.CHAT
+  return await httpClient.post(endpoint.url, chatData)
+}
+
+// ==================== 工具函数 ====================
+
+/**
+ * 获取HTTP客户端实例
+ * @returns {HttpClient} HTTP客户端实例
+ */
+export function getHttpClient() {
+  return httpClient
+}
+
+/**
+ * 检查是否已认证
+ * @returns {boolean} 是否已认证
+ */
+export function isAuthenticated() {
+  return httpClient.isAuthenticated()
+}
+
+/**
+ * 获取当前用户信息
+ * @returns {Object|null} 用户信息
+ */
+export function getCurrentUser() {
+  const userStr = localStorage.getItem(API_CONFIG.AUTH.USER_KEY)
+  return userStr ? JSON.parse(userStr) : null
+}
+
+/**
+ * 设置当前用户信息
+ * @param {Object} user - 用户信息
+ */
+export function setCurrentUser(user) {
+  localStorage.setItem(API_CONFIG.AUTH.USER_KEY, JSON.stringify(user))
+}
+
+/**
+ * 清除当前用户信息
+ */
+export function clearCurrentUser() {
+  localStorage.removeItem(API_CONFIG.AUTH.USER_KEY)
 }

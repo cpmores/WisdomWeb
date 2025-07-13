@@ -1,11 +1,6 @@
 <template>
   <!-- 登录模态框 -->
-  <div
-    v-if="showModal && !isLoggedIn"
-    class="login-modal-overlay"
-    @click="closeModal"
-    ref="modalOverlay"
-  >
+  <div v-if="showModal" class="login-modal-overlay" @click="closeModal" ref="modalOverlay">
     <div class="login-modal" @click.stop ref="loginModal">
       <!-- 登录界面 -->
       <div v-if="!isRegisterMode" class="login-form" ref="loginForm">
@@ -78,7 +73,7 @@
 
         <!-- 密码输入框 -->
         <div class="input-group">
-          <label for="register-password">输入密码</label>
+          <label for="register-password">密码</label>
           <input
             id="register-password"
             v-model="registerForm.password"
@@ -89,21 +84,11 @@
           />
         </div>
 
-        <!-- 确认密码输入框 -->
-        <div class="input-group">
-          <label for="register-confirm-password">确认密码</label>
-          <input
-            id="register-confirm-password"
-            v-model="registerForm.confirmPassword"
-            type="password"
-            placeholder="请再次输入密码"
-            required
-            ref="registerConfirmPassword"
-          />
-        </div>
-
         <!-- 注册按钮 -->
         <div class="button-group">
+          <button @click="switchToLogin" class="btn btn-secondary" ref="backToLoginBtn">
+            返回登录
+          </button>
           <button @click="handleRegister" class="btn btn-primary" ref="submitRegisterBtn">
             注册
           </button>
@@ -124,7 +109,7 @@
 </template>
 
 <script>
-import { login, register, initializeUser } from '../services/api.js'
+import { login, register } from '../services/api.js'
 import { JQueryAnimations, JQueryDOM, JQueryEvents, JQueryUtils } from '../utils/jquery-helper.js'
 
 export default {
@@ -153,7 +138,6 @@ export default {
         username: '',
         email: '',
         password: '',
-        confirmPassword: '',
       },
     }
   },
@@ -163,7 +147,7 @@ export default {
      * 检查是否已登录
      */
     isLoggedIn() {
-      return localStorage.getItem('isLoggedIn') === 'true'
+      return !!localStorage.getItem('auth_token')
     },
   },
 
@@ -199,7 +183,6 @@ export default {
         '#register-username',
         '#register-email',
         '#register-password',
-        '#register-confirm-password',
       ]
 
       inputs.forEach((selector) => {
@@ -285,13 +268,6 @@ export default {
         const response = await login(this.loginForm)
 
         if (response.success) {
-          // 保存登录状态到本地存储
-          localStorage.setItem('isLoggedIn', 'true')
-          localStorage.setItem('userEmail', this.loginForm.email)
-          localStorage.setItem('userId', response.user.id)
-          localStorage.setItem('userPassword', this.loginForm.password) // 临时存储密码用于初始化
-          localStorage.setItem('userToken', 'fromLogin') // 保存token用于登出
-
           this.showMessage('登录成功！正在初始化...', 'success')
 
           // 使用jQuery添加成功动画
@@ -299,34 +275,16 @@ export default {
             JQueryDOM.addClass(this.$refs.loginModal, 'success-animation')
           }
 
-          // 调用初始化API
-          try {
-            const initResponse = await initializeUser(response.user.id, this.loginForm.password)
+          // 立即触发登录状态变化事件（token已在login函数中保存）
+          window.dispatchEvent(new CustomEvent('loginStatusChanged'))
 
-            if (initResponse.success) {
-              // 保存初始化数据到localStorage
-              localStorage.setItem('userData', JSON.stringify(initResponse.data))
-              localStorage.removeItem('userPassword') // 清除临时密码
+          // 发射登录成功事件
+          this.$emit('login-success')
 
-              this.showMessage('初始化完成！', 'success')
-
-              // 触发自定义事件以通知App.vue更新状态
-              window.dispatchEvent(new CustomEvent('loginStatusChanged'))
-
-              // 发射登录成功事件
-              this.$emit('login-success')
-
-              // 延迟关闭登录框
-              setTimeout(() => {
-                this.closeModal()
-              }, 1500)
-            } else {
-              this.showMessage('初始化失败：' + initResponse.message, 'error')
-            }
-          } catch (error) {
-            console.error('初始化失败:', error)
-            this.showMessage('初始化失败，请稍后重试', 'error')
-          }
+          // 延迟关闭登录框
+          setTimeout(() => {
+            this.closeModal()
+          }, 1500)
         } else {
           this.showMessage(response.message || '登录失败，请检查邮箱和密码', 'error')
 
@@ -472,12 +430,6 @@ export default {
         return false
       }
 
-      if (!this.registerForm.confirmPassword) {
-        this.showMessage('请确认密码', 'error')
-        this.highlightErrorField('#register-confirm-password')
-        return false
-      }
-
       // 邮箱格式验证
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!emailRegex.test(this.registerForm.email)) {
@@ -490,13 +442,6 @@ export default {
       if (this.registerForm.password.length < 6) {
         this.showMessage('密码长度至少6位', 'error')
         this.highlightErrorField('#register-password')
-        return false
-      }
-
-      // 密码确认验证
-      if (this.registerForm.password !== this.registerForm.confirmPassword) {
-        this.showMessage('两次输入的密码不一致', 'error')
-        this.highlightErrorField('#register-confirm-password')
         return false
       }
 
@@ -561,7 +506,6 @@ export default {
         username: '',
         email: '',
         password: '',
-        confirmPassword: '',
       }
     },
 
