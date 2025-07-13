@@ -1,0 +1,14 @@
+curl -X POST http://localhost:3003/chat \
+  -H "Content-Type: application/json" \
+  -d '{"userid":"cpmores", "message": "我是谁"}'
+
+{"response": "\n\n根据提供的文档内容，目前仅能获取到一个用户标识信息：`user: cpmores`，但文档中并未包含关于该用户（即“你”）的具体身份、背景、活动或其他个人信息。文档主要是GitHub平台的功能介绍、产品信息（如GitHub Copilot、Actions、Codespaces等）、行业解决方案及公司相关内容，没有涉及用户个人的详细描述。因此，仅能确认文档中提到的用户名为“cpmores”，但无法进一步确定你的具体身份或其他信息。"}%         
+
+➜ curl -X POST http://localhost:3003/chat \
+  -H "Content-Type: application/json" \
+  -d '{"userid":"cpmores", "message": "我是谁"}' 
+
+{"response": "\n\n根据文档内容中提到的 `user: cpmores`，您的用户名是 `cpmores`。文档中未提供更多关于您的个人身份信息（如真实姓名、职位等），仅明确记录了用户名。"}% 
+
+Docker:
+docker run -d -v "$(pwd)/data:/data" -p 3003:3003 --name ai-doc-server -e ARK_API_KEY=f7b2fcd7-1b4c-4f2b-a135-6757ef06b2df --restart unless-stopped  cpmores/ai-doc-server:v1.0
