@@ -4,13 +4,22 @@
  * 修改此文件即可更新所有API接口，无需修改源代码
  */
 
+// 获取环境变量中的API地址，如果没有则使用默认值
+const getApiBaseUrl = () => {
+  return import.meta.env.VITE_API_BASE_URL
+}
+
+const getPrefixTreeBaseUrl = () => {
+  return import.meta.env.VITE_PREFIX_TREE_BASE_URL
+}
+
 // 服务器基础配置
 export const API_CONFIG = {
-  // 服务器基础URL - 修改此处即可切换服务器
-  BASE_URL: 'http://192.168.78.116:8080/api',
+  // 服务器基础URL - 支持环境变量配置
+  BASE_URL: getApiBaseUrl(),
 
   // 前缀树服务基础URL - 前缀树相关API使用不同的服务器
-  PREFIX_TREE_BASE_URL: 'http://192.168.78.116:5000',
+  PREFIX_TREE_BASE_URL: getPrefixTreeBaseUrl(),
 
   // API版本
   VERSION: 'v1',
@@ -325,24 +334,24 @@ export const ERROR_CODES = {
 export const ENV_CONFIG = {
   // 开发环境
   DEVELOPMENT: {
-    BASE_URL: 'http://192.168.78.116:8080/api',
-    PREFIX_TREE_BASE_URL: 'http://192.168.78.116:5000',
+    BASE_URL: 'getApiBaseUrl()',
+    PREFIX_TREE_BASE_URL: 'getPrefixTreeBaseUrl()',
     TIMEOUT: 5000,
     DEBUG: true,
   },
 
   // 测试环境
   TEST: {
-    BASE_URL: 'http://192.168.78.116:8080/api',
-    PREFIX_TREE_BASE_URL: 'http://192.168.78.116:5000',
+    BASE_URL: 'getApiBaseUrl()',
+    PREFIX_TREE_BASE_URL: 'getPrefixTreeBaseUrl()',
     TIMEOUT: 8000,
     DEBUG: true,
   },
 
   // 生产环境
   PRODUCTION: {
-    BASE_URL: 'http://192.168.78.116:8080/api',
-    PREFIX_TREE_BASE_URL: 'http://192.168.78.116:5000',
+    BASE_URL: 'getApiBaseUrl()',
+    PREFIX_TREE_BASE_URL: 'getPrefixTreeBaseUrl()',
     TIMEOUT: 10000,
     DEBUG: false,
   },
