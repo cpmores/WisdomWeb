@@ -6,11 +6,13 @@
 
 // 获取环境变量中的API地址，如果没有则使用默认值
 const getApiBaseUrl = () => {
-  return import.meta.env.VITE_API_BASE_URL
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+  return apiBaseUrl
 }
 
 const getPrefixTreeBaseUrl = () => {
-  return import.meta.env.VITE_PREFIX_TREE_BASE_URL
+  const prefixTreeBaseUrl = import.meta.env.VITE_PREFIX_TREE_BASE_URL
+  return prefixTreeBaseUrl
 }
 
 // 服务器基础配置
@@ -25,7 +27,7 @@ export const API_CONFIG = {
   VERSION: 'v1',
 
   // 请求超时时间（毫秒）
-  TIMEOUT: 10000,
+  TIMEOUT: 30000,
 
   // 默认请求头
   DEFAULT_HEADERS: {
@@ -119,7 +121,7 @@ export const API_ENDPOINTS = {
     //TODO 使用了但是未实现
     // 获取用户标签
     GET_USER_TAGS: {
-      url: '/tags/user',
+      url: '/tags/usertags',
       method: 'GET',
       description: '获取用户所有标签接口',
     },
@@ -334,25 +336,25 @@ export const ERROR_CODES = {
 export const ENV_CONFIG = {
   // 开发环境
   DEVELOPMENT: {
-    BASE_URL: 'getApiBaseUrl()',
-    PREFIX_TREE_BASE_URL: 'getPrefixTreeBaseUrl()',
-    TIMEOUT: 5000,
+    BASE_URL: getApiBaseUrl(),
+    PREFIX_TREE_BASE_URL: getPrefixTreeBaseUrl(),
+    TIMEOUT: 30000,
     DEBUG: true,
   },
 
   // 测试环境
   TEST: {
-    BASE_URL: 'getApiBaseUrl()',
-    PREFIX_TREE_BASE_URL: 'getPrefixTreeBaseUrl()',
-    TIMEOUT: 8000,
+    BASE_URL: getApiBaseUrl(),
+    PREFIX_TREE_BASE_URL: getPrefixTreeBaseUrl(),
+    TIMEOUT: 30000,
     DEBUG: true,
   },
 
   // 生产环境
   PRODUCTION: {
-    BASE_URL: 'getApiBaseUrl()',
-    PREFIX_TREE_BASE_URL: 'getPrefixTreeBaseUrl()',
-    TIMEOUT: 10000,
+    BASE_URL: getApiBaseUrl(),
+    PREFIX_TREE_BASE_URL: getPrefixTreeBaseUrl(),
+    TIMEOUT: 30000,
     DEBUG: false,
   },
 }
