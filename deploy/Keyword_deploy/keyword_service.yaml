@@ -1,0 +1,13 @@
+# 7. 关键词服务Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: keyword-service
+  namespace: prod
+spec:
+  selector:
+    app: keyword-service
+  ports:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP

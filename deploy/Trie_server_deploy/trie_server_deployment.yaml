@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefix-trie-server
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prefix-trie-server
+  template:
+    metadata:
+      labels:
+        app: prefix-trie-server
+    spec:
+      containers:
+      - name: trie-server
+        image: cpmores/trie-server:v1.0
+        ports:
+        - containerPort: 3002
+        envFrom:
+        - configMapRef:
+            name: prefix-trie-config
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+        volumeMounts:
+          - name: shared-storage
+            mountPath: /app/storage
+
+      volumes:
+        - name: shared-storage
+          persistentVolumeClaim:
+          claimName: storage-pvc

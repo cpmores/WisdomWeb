@@ -1,0 +1,34 @@
+# 4. HPA自动扩缩容
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ai-agent-hpa
+  namespace: prod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ai-agent
+  minReplicas: 1         # 最低副本数，根据实际需要调整
+  maxReplicas: 10        # 最大副本数
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70    # CPU 利用率超过70%时触发扩容
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80    # 内存利用率超过80%时触发扩容
+  # 以下为示例自定义指标，需要你的集群配置支持Prometheus Adapter等指标暴露
+  - type: Pods
+    pods:
+      metric:
+        name: http_requests
+      target:
+        type: AverageValue
+        averageValue: 500          # 每个Pod平均每秒500个请求触发扩容

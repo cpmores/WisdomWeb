@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: prod
+data:
+  VITE_API_BASE_URL: "http://backend-service:8080/api"
+  VITE_PREFIX_TREE_BASE_URL: "http://prefix-tree-service:5000"

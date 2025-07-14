@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-agent
+  namespace: prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-agent
+  template:
+    metadata:
+      labels:
+        app: ai-agent
+    spec:
+      containers:
+        - name: ai-agent-container
+          image: cpmores/ai-doc-server:v1.0
+          ports:
+            - containerPort: 3003
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: ARK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-agent-secret
+                  key: ARK_API_KEY
+            - name: ARK_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-agent-config
+                  key: ARK_BASE_URL
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-agent-config
+                  key: SERVER_PORT
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-agent-config
+                  key: LOG_LEVEL
+            - name: MODEL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-agent-config
+                  key: MODEL_NAME
+            - name: TXT_FOLDER_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-agent-config
+                  key: TXT_FOLDER_PATH
+          volumeMounts:
+            - name: shared-storage
+              mountPath: /app/storage
+              readOnly: true
+      volumes:
+        - name: shared-storage
+          persistentVolumeClaim:
+            claimName: storage-pvc

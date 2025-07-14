@@ -1,0 +1,39 @@
+# 2. 前端部署 (React/Vue)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: luyaoran/frontend:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
+        env:
+        - name: VITE_API_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: VITE_API_BASE_URL
+        - name: VITE_PREFIX_TREE_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: VITE_PREFIX_TREE_BASE_URL

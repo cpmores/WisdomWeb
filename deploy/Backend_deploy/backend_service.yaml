@@ -1,0 +1,14 @@
+# 5. 后端Service (ClusterIP)
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: prod
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+  type: ClusterIP

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keyword-config
+  namespace: prod
+data:
+  TRIE_SERVER_URL: "http://trie-server.prod.svc.cluster.local:3002/trie-json"
+  FLASK_ENV: "production"
+  FLASK_APP: "app.py"

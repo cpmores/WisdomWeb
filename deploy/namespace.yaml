@@ -1,0 +1,7 @@
+# 1. 命名空间 (prod)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prod
+  labels:
+    env: production

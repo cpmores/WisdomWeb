@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-agent-config
+  namespace: prod
+data:
+  ARK_BASE_URL: "https://ark.cn-beijing.volces.com/api/v3"
+  SERVER_PORT: "3003"
+  LOG_LEVEL: "info"
+  MODEL_NAME: "doubao-1-5-thinking-pro-250415"
+  TXT_FOLDER_PATH: "/app/storage"

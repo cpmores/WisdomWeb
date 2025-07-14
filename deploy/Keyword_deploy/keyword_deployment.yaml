@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keyword-service
+  namespace: prod
+  labels:
+    app: keyword-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: keyword-service
+  template:
+    metadata:
+      labels:
+        app: keyword-service
+    spec:
+      containers:
+      - name: keyword-container
+        image: bertha6651/trie_backend:latest  # ← 请替换为你实际的镜像
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: keyword-config
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
