@@ -1,0 +1,47 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-backend
+  labels:
+    app: web-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-backend
+  template:
+    metadata:
+      labels:
+        app: web-backend
+    spec:
+      containers:
+        - name: web-backend
+          image: bertha6651/web_backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mariadb://mariadb:3306/WebSearch
+            - name: SPRING_DATASOURCE_USERNAME
+              value: WebSearch
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: WebSearch123!
+            - name: CRAWLER_URL
+              value: http://crawler:3000
+            - name: SEARCHENGINE_URL
+              value: http://search-engine:3001/search
+            - name: JWT_SECRET
+              value: MySuperSecretJWTKey
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-backend
+spec:
+  selector:
+    app: web-backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: ClusterIP

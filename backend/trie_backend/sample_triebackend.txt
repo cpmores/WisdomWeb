@@ -1,0 +1,4 @@
+Docker：
+构建docker镜像  docker build -t trie_backend .
+运行docker容器
+docker run -d -p 5000:5000 --name trie_backend -e TRIE_SERVER_URL=http://192.168.78.246:3002/trie-json trie_backend

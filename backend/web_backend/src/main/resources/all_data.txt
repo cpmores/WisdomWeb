@@ -1,0 +1,2367 @@
+package com.websearch.websearch;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@SpringBootApplication
+@EnableScheduling
+public class WebSearchApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(WebSearchApplication.class, args);
+    }
+}package com.websearch.websearch.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "user_search_count", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "keyword"})})
+public class UserSearchCount {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
+    private String keyword;
+
+    @Column(nullable = false)
+    private Integer searchCount;
+
+    @Column(nullable = false)
+    private LocalDateTime lastSearchedAt;
+
+    @PrePersist
+    @PreUpdate
+    protected void onUpdate() {
+        this.lastSearchedAt = LocalDateTime.now();
+    }
+}package com.websearch.websearch.entity;
+
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "user_hot_word", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "hot_word_id"})})
+public class UserHotWord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "hot_word_id", nullable = false)
+    private HotWord hotWord;
+}package com.websearch.websearch.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "search_history")
+public class SearchHistory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
+    private String query;
+
+    @Column(nullable = false)
+    private LocalDateTime searchedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.searchedAt = LocalDateTime.now();
+    }
+}package com.websearch.websearch.entity;
+
+import com.websearch.websearch.util.SnowflakeIdGenerator;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "`user`", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 8, unique = true)
+    private String userId;
+
+    @Column(nullable = false, length = 50)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
+    private String avatar;
+
+    @Column(length = 100)
+    private String signature;
+
+    private LocalDateTime lastLogin;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    private String roles;
+
+    @Column(nullable = false)
+    private Boolean isVerified = true;
+
+    @Column(nullable = false)
+    private Boolean isActive = true;
+
+    @Column(nullable = false)
+    private Boolean isOnline = false;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (this.userId == null) {
+            this.userId = generateUniqueUserId();
+        }
+    }
+
+    private String generateUniqueUserId() {
+        // 使用雪花算法生成 64 位 ID，取后 8 位（需确保唯一性，建议优化为完整 Snowflake 实现）
+        long snowflakeId = SnowflakeIdGenerator.nextId();
+        return String.valueOf(snowflakeId).substring(String.valueOf(snowflakeId).length() - 8);
+    }
+
+    public String getRole() {
+        return roles;
+    }
+}package com.websearch.websearch.entity;
+
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "hot_word", uniqueConstraints = {@UniqueConstraint(columnNames = "word")})
+public class HotWord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String word;
+
+    @Column(nullable = false)
+    private Integer count;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private Boolean isTrending;
+}package com.websearch.websearch.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "bookmark", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "url"})})
+public class Bookmark {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
+    private String url;
+
+    @Column
+    private String tag;
+
+    @Column(nullable = false)
+    private Integer clickCount = 0;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+}package com.websearch.websearch.controller;
+
+import com.websearch.websearch.dto.BookmarkDTO;
+import com.websearch.websearch.service.BookmarkService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/bookmarks")
+@Tag(name = "Bookmark Management", description = "APIs for managing user bookmarks")
+public class BookmarkController {
+
+    private final BookmarkService bookmarkService;
+
+    public BookmarkController(BookmarkService bookmarkService) {
+        this.bookmarkService = bookmarkService;
+    }
+
+    @PostMapping("/add")
+    @Operation(summary = "Add or Update Bookmark(s)", description = "Adds or updates a single or multiple bookmarks for the authenticated user")
+    @ApiResponse(responseCode = "200", description = "Bookmark operation completed with local and crawler results")
+    @ApiResponse(responseCode = "400", description = "Invalid input or token")
+    public ResponseEntity<?> addOrUpdateBookmark(@RequestHeader("Authorization") String token, @RequestBody BookmarkDTO bookmarkDTO) {
+        try {
+            Long userId = bookmarkService.getUserIdFromToken(token);
+            if (userId == null) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "local", Map.of("status", "error", "message", "Invalid token"),
+                        "crawler", Map.of("status", "error", "message", "Invalid token")
+                ));
+            }
+            Map<String, Object> result;
+            if (bookmarkDTO.getEntries() != null && !bookmarkDTO.getEntries().isEmpty()) {
+                // 批量操作
+                result = bookmarkService.addOrUpdateBookmarks(userId, bookmarkDTO.getEntries());
+            } else if (bookmarkDTO.getUrl() != null && !bookmarkDTO.getUrl().trim().isEmpty()) {
+                // 单条操作
+                result = bookmarkService.addOrUpdateBookmark(userId, bookmarkDTO.getUrl(), bookmarkDTO.getTag());
+            } else {
+                throw new IllegalArgumentException("URL or entries must be provided");
+            }
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "local", Map.of("status", "error", "message", e.getMessage()),
+                    "crawler", Map.of("status", "error", "message", "Operation aborted due to invalid input")
+            ));
+        }
+    }
+
+    @DeleteMapping("/remove")
+    @Operation(summary = "Remove Bookmark(s)", description = "Removes a single or multiple bookmarks for the authenticated user")
+    @ApiResponse(responseCode = "200", description = "Bookmark removal completed with local and crawler results")
+    @ApiResponse(responseCode = "400", description = "Invalid input or token")
+    public ResponseEntity<?> removeBookmark(@RequestHeader("Authorization") String token, @RequestBody BookmarkDTO bookmarkDTO) {
+        try {
+            Long userId = bookmarkService.getUserIdFromToken(token);
+            if (userId == null) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "local", Map.of("status", "error", "message", "Invalid token"),
+                        "crawler", Map.of("status", "error", "message", "Invalid token")
+                ));
+            }
+            Map<String, Object> result;
+            if (bookmarkDTO.getEntries() != null && !bookmarkDTO.getEntries().isEmpty()) {
+                // 批量操作
+                result = bookmarkService.removeBookmarks(userId, bookmarkDTO.getEntries());
+            } else if (bookmarkDTO.getUrl() != null && !bookmarkDTO.getUrl().trim().isEmpty()) {
+                // 单条操作
+                result = bookmarkService.removeBookmark(userId, bookmarkDTO.getUrl());
+            } else {
+                throw new IllegalArgumentException("URL or entries must be provided");
+            }
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "local", Map.of("status", "error", "message", e.getMessage()),
+                    "crawler", Map.of("status", "error", "message", "Operation aborted due to invalid input")
+            ));
+        }
+    }
+
+    @GetMapping("/listAll")
+    @Operation(summary = "List Bookmarks", description = "Retrieves all bookmarks for the authenticated user, optionally sorted by time or click_count")
+    @ApiResponse(responseCode = "200", description = "Bookmarks retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token")
+    public ResponseEntity<?> getBookmarks(@RequestHeader("Authorization") String token,
+                                          @RequestParam(required = false) String sortBy) {
+        try {
+            Long userId = bookmarkService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            List<Map<String, Object>> bookmarks = bookmarkService.getBookmarks(userId, sortBy);
+            return ResponseEntity.ok(bookmarks);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        }
+    }
+
+    @GetMapping("/listAllByTag")
+    @Operation(summary = "List Bookmarks by Tag", description = "Retrieves bookmarks for the authenticated user filtered by tag")
+    @ApiResponse(responseCode = "200", description = "Bookmarks retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token or tag")
+    public ResponseEntity<?> getBookmarksByTag(@RequestHeader("Authorization") String token,
+                                               @RequestParam String tag) {
+        try {
+            Long userId = bookmarkService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            if (tag == null || tag.trim().isEmpty()) {
+                throw new IllegalArgumentException("Tag cannot be empty");
+            }
+            List<Map<String, Object>> bookmarks = bookmarkService.getBookmarksByTag(userId, tag);
+            return ResponseEntity.ok(bookmarks);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        }
+    }
+
+    @GetMapping("/listGrouped")
+    @Operation(summary = "List Grouped Bookmarks", description = "Retrieves bookmarks for the authenticated user grouped by tag or month")
+    @ApiResponse(responseCode = "200", description = "Grouped bookmarks retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token or groupBy parameter")
+    public ResponseEntity<?> getGroupedBookmarks(@RequestHeader("Authorization") String token,
+                                                 @RequestParam String groupBy) {
+        try {
+            Long userId = bookmarkService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            if (!"tag".equalsIgnoreCase(groupBy) && !"month".equalsIgnoreCase(groupBy)) {
+                throw new IllegalArgumentException("Invalid groupBy parameter: must be 'tag' or 'month'");
+            }
+            Map<String, List<Map<String, Object>>> groupedBookmarks = bookmarkService.getGroupedBookmarks(userId, groupBy);
+            return ResponseEntity.ok(groupedBookmarks);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        }
+    }
+
+    @GetMapping("/listMultSearch")
+    @Operation(summary = "Search Bookmarks", description = "Searches bookmarks for the authenticated user by tag, keyword, and sort order")
+    @ApiResponse(responseCode = "200", description = "Bookmarks retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token or parameters")
+    public ResponseEntity<?> searchBookmarks(@RequestHeader("Authorization") String token,
+                                             @RequestParam(required = false) String tag,
+                                             @RequestParam(required = false) String keyword,
+                                             @RequestParam(required = false) String sortBy) {
+        try {
+            Long userId = bookmarkService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            List<Map<String, Object>> bookmarks = bookmarkService.searchBookmarks(userId, tag, keyword, sortBy);
+            return ResponseEntity.ok(bookmarks);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        }
+    }
+}package com.websearch.websearch.controller;
+
+import com.websearch.websearch.dto.LoginRequestDTO;
+import com.websearch.websearch.dto.PasswordUpdateDTO;
+import com.websearch.websearch.dto.UpdateUserDTO;
+import com.websearch.websearch.dto.UserRequestDTO;
+import com.websearch.websearch.entity.User;
+import com.websearch.websearch.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/api/users")
+@Tag(name = "User Management", description = "APIs for managing user accounts")
+public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/register")
+    @Operation(summary = "Register a new user", description = "Create a new user account and return user details")
+    @ApiResponse(responseCode = "200", description = "User registered successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid input data")
+    public ResponseEntity<?> register(@RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            User user = userService.register(userRequestDTO);
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    @Operation(summary = "Login user", description = "Authenticate user and return JWT token with user details")
+    @ApiResponse(responseCode = "200", description = "Login successful")
+    @ApiResponse(responseCode = "400", description = "Invalid credentials")
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        try {
+            UserService.UserLoginResponse response = userService.login(loginRequestDTO.getEmail(), loginRequestDTO.getPassword());
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/updatePassword")
+    @Operation(summary = "Update user password", description = "Change the user's password")
+    @ApiResponse(responseCode = "200", description = "Password updated successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid input, token, old password, or new password format")
+    public ResponseEntity<?> updatePassword(@RequestHeader("Authorization") String token,
+                                            @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
+        try {
+            Long userId = userService.getUserIdFromToken(token);
+            if (userId == null) {
+                return ResponseEntity.badRequest().body("Invalid token");
+            }
+            User user = userService.updatePassword(userId, passwordUpdateDTO);
+            return ResponseEntity.ok("Password updated successfully");
+        } catch (IllegalArgumentException e) {
+            String errorMessage = e.getMessage();
+            if ("User not found".equals(errorMessage)) {
+                return ResponseEntity.badRequest().body("User not found");
+            } else if ("Old password is incorrect".equals(errorMessage)) {
+                return ResponseEntity.badRequest().body("Old password is incorrect");
+            } else if ("New password must be at least 8 characters long and contain uppercase, lowercase, and numbers".equals(errorMessage)) {
+                return ResponseEntity.badRequest().body("New password must be at least 8 characters long and contain uppercase, lowercase, and numbers");
+            }
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "Logout user", description = "Invalidate user session")
+    @ApiResponse(responseCode = "200", description = "Logout successful")
+    @ApiResponse(responseCode = "400", description = "Invalid token")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+        try {
+            userService.logout(token);
+            return ResponseEntity.ok().body("Logout successful");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Logout failed: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/useOnlineStatus")
+    @Operation(summary = "Check user status", description = "Get the online status of a user")
+    @ApiResponse(responseCode = "200", description = "Status retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token or user not found")
+    public ResponseEntity<?> getUserStatus(@RequestHeader("Authorization") String token) {
+        try {
+            Long userId = userService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            Boolean isOnline = userService.getUserStatus(userId);
+            return ResponseEntity.ok(isOnline);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/updateAvatar")
+    @Operation(summary = "Update user avatar", description = "Update the user's avatar via Base64 or file upload")
+    @ApiResponse(responseCode = "200", description = "Avatar updated successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token, user not found, or file/image error")
+    public ResponseEntity<?> updateAvatar(@RequestHeader("Authorization") String token,
+                                          @RequestParam(value = "base64Avatar", required = false) String base64Avatar,
+                                          @RequestParam(value = "file", required = false) MultipartFile file) {
+        try {
+            Long userId = userService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            User user = userService.updateAvatar(userId, base64Avatar, file);
+            return ResponseEntity.ok("Avatar updated successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body("Failed to process uploaded file or image");
+        }
+    }
+
+    @PutMapping("/updateUserInformation")
+    @Operation(summary = "Update user information", description = "Update user's username, avatar, or signature partially")
+    @ApiResponse(responseCode = "200", description = "User information updated successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token, user not found, or invalid data")
+    public ResponseEntity<?> updateUserInformation(@RequestHeader("Authorization") String token,
+                                                   @RequestBody UpdateUserDTO updateUserDTO,
+                                                   @RequestParam(value = "base64Avatar", required = false) String base64Avatar,
+                                                   @RequestParam(value = "file", required = false) MultipartFile file) {
+        try {
+            Long userId = userService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            User user = userService.updateUserInformation(userId, updateUserDTO, base64Avatar, file);
+            return ResponseEntity.ok("User information updated successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body("Failed to process uploaded file or image");
+        }
+    }
+
+    @PutMapping("/updateSignature")
+    @Operation(summary = "Update user signature", description = "Update the user's signature")
+    @ApiResponse(responseCode = "200", description = "Signature updated successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token or user not found")
+    public ResponseEntity<?> updateSignature(@RequestHeader("Authorization") String token, @RequestParam String signature) {
+        try {
+            Long userId = userService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            User user = userService.updateSignature(userId, signature);
+            return ResponseEntity.ok("Signature updated successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/updateUsername")
+    @Operation(summary = "Update user username", description = "Change the user's username")
+    @ApiResponse(responseCode = "200", description = "Username updated successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token or user not found")
+    public ResponseEntity<?> updateUsername(@RequestHeader("Authorization") String token, @RequestParam String newUsername) {
+        try {
+            Long userId = userService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            User user = userService.updateUsername(userId, newUsername);
+            return ResponseEntity.ok("Username updated successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}package com.websearch.websearch.controller;
+
+import com.websearch.websearch.dto.BookmarkDTO;
+import com.websearch.websearch.service.BookmarkClickService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/bookmarks/click")
+@Tag(name = "Bookmark Click", description = "API for recording bookmark clicks")
+public class BookmarkClickController {
+
+    private final BookmarkClickService bookmarkClickService;
+
+    public BookmarkClickController(BookmarkClickService bookmarkClickService) {
+        this.bookmarkClickService = bookmarkClickService;
+    }
+
+    @PostMapping
+    @Operation(summary = "Record Bookmark Click", description = "Records a click on a bookmark for the authenticated user")
+    @ApiResponse(responseCode = "200", description = "Bookmark click recorded successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token or bookmark not found")
+    public ResponseEntity<?> recordBookmarkClick(@RequestHeader("Authorization") String token, @RequestBody BookmarkDTO bookmarkDTO) {
+        try {
+            Long userId = bookmarkClickService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            bookmarkClickService.recordClick(userId, bookmarkDTO.getUrl());
+            return ResponseEntity.ok("Bookmark click recorded successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}
+        package com.websearch.websearch.controller;
+
+import com.websearch.websearch.service.SearchService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/search")
+@Tag(name = "Search Management", description = "APIs for managing user searches")
+public class SearchController {
+
+    private final SearchService searchService;
+
+    public SearchController(SearchService searchService) {
+        this.searchService = searchService;
+    }
+
+    @GetMapping
+    @Operation(summary = "Perform Search", description = "Performs a search for the authenticated user with the specified query and engine")
+    @ApiResponse(responseCode = "200", description = "Search results retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token or query")
+    public ResponseEntity<?> search(@RequestHeader("Authorization") String token,
+                                    @RequestParam String query,
+                                    @RequestParam(required = false, defaultValue = "default") String engine) {
+        try {
+            Long userId = searchService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            Map<String, Object> results = searchService.search(userId, query, engine);
+            return ResponseEntity.ok(results);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/history")
+    @Operation(summary = "Get Search History", description = "Retrieves the search history for the authenticated user, optionally sorted by time or count")
+    @ApiResponse(responseCode = "200", description = "Search history retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid token")
+    public ResponseEntity<?> getSearchHistory(@RequestHeader("Authorization") String token,
+                                              @RequestParam(required = false) String sortBy) {
+        try {
+            Long userId = searchService.getUserIdFromToken(token);
+            if (userId == null) {
+                throw new IllegalArgumentException("Invalid token");
+            }
+            List<Map<String, Object>> history = searchService.getSearchHistory(userId, sortBy);
+            return ResponseEntity.ok(history);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}
+package com.websearch.websearch.repository;
+
+import com.websearch.websearch.entity.UserSearchCount;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface UserSearchCountRepository extends JpaRepository<UserSearchCount, Long> {
+    Optional<UserSearchCount> findByUserIdAndKeyword(Long userId, String keyword);
+    List<UserSearchCount> findAllByUserId(Long userId);
+}package com.websearch.websearch.repository;
+
+import com.websearch.websearch.entity.Bookmark;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
+    List<Bookmark> findByUserIdOrderByCreatedAtDesc(Long userId);
+    List<Bookmark> findByUserIdOrderByClickCountDesc(Long userId);
+    Bookmark findByUserIdAndUrl(Long userId, String url);
+
+    // 按标签查询书签（模糊匹配）
+    @Query("SELECT b FROM Bookmark b WHERE b.user.id = :userId AND b.tag LIKE %:tag%")
+    List<Bookmark> findByUserIdAndTagContaining(Long userId, String tag);
+
+    // 获取所有标签（用于分组）
+    @Query("SELECT DISTINCT b.tag FROM Bookmark b WHERE b.user.id = :userId AND b.tag IS NOT NULL")
+    List<String> findDistinctTagsByUserId(Long userId);
+}package com.websearch.websearch.repository;
+
+import com.websearch.websearch.entity.SearchHistory;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface SearchHistoryRepository extends JpaRepository<SearchHistory, Long> {
+    List<SearchHistory> findByUserIdOrderBySearchedAtDesc(Long userId);
+}package com.websearch.websearch.repository;
+
+import com.websearch.websearch.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.cache.annotation.Cacheable;
+
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Cacheable(value = "users", key = "#email")
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
+}
+package com.websearch.websearch.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
+@Service
+public class FileStorageService {
+
+    private final String uploadDir = "uploads/";
+
+    public String storeFile(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Uploaded file is empty");
+        }
+        // 创建上传目录
+        Path directoryPath = Paths.get(uploadDir);
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectories(directoryPath);
+        }
+        // 生成唯一文件名
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path filePath = directoryPath.resolve(fileName);
+        // 保存文件
+        Files.write(filePath, file.getBytes());
+        return filePath.toString();
+    }
+}package com.websearch.websearch.service;
+
+import com.websearch.websearch.dto.PasswordUpdateDTO;
+import com.websearch.websearch.dto.UpdateUserDTO;
+import com.websearch.websearch.dto.UserRequestDTO;
+import com.websearch.websearch.entity.Bookmark;
+import com.websearch.websearch.entity.SearchHistory;
+import com.websearch.websearch.entity.User;
+import com.websearch.websearch.entity.UserSearchCount;
+import com.websearch.websearch.repository.BookmarkRepository;
+import com.websearch.websearch.repository.SearchHistoryRepository;
+import com.websearch.websearch.repository.UserRepository;
+import com.websearch.websearch.repository.UserSearchCountRepository;
+import com.websearch.websearch.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+@Service
+public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    private final UserRepository userRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+    private final SearchHistoryRepository searchHistoryRepository;
+    private final UserSearchCountRepository userSearchCountRepository;
+    private final FileStorageService fileStorageService;
+
+    @Value("${default.sort.by:time}")
+    private String defaultSortBy;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+    @Value("${auto.logout.threshold.minutes:30}")
+    private long autoLogoutThresholdMinutes;
+
+    public UserService(UserRepository userRepository, BookmarkRepository bookmarkRepository, BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil,
+                       SearchHistoryRepository searchHistoryRepository, UserSearchCountRepository userSearchCountRepository,
+                       FileStorageService fileStorageService) {
+        this.userRepository = userRepository;
+        this.bookmarkRepository = bookmarkRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+        this.searchHistoryRepository = searchHistoryRepository;
+        this.userSearchCountRepository = userSearchCountRepository;
+        this.fileStorageService = fileStorageService;
+    }
+
+    public User register(UserRequestDTO userRequestDTO) {
+        if (userRepository.existsByEmail(userRequestDTO.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+        validatePassword(userRequestDTO.getPassword());
+        validateSignature(userRequestDTO.getSignature());
+        User user = new User();
+        user.setUsername(userRequestDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+        user.setEmail(userRequestDTO.getEmail());
+        user.setAvatar(userRequestDTO.getAvatar());
+        user.setSignature(userRequestDTO.getSignature());
+        return userRepository.save(user);
+    }
+
+    public UserLoginResponse login(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email, password, or account is inactive"));
+        if (!passwordEncoder.matches(password, user.getPassword()) || !user.getIsActive()) {
+            throw new IllegalArgumentException("Invalid email, password, or account is inactive");
+        }
+        // 检查用户是否已经在线
+        if (user.getIsOnline()) {
+            logger.warn("Login attempt failed for userId: {}, email: {}, user is already online", user.getId(), email);
+            throw new IllegalArgumentException("User is already logged in from another session");
+        }
+        user.setLastLogin(LocalDateTime.now());
+        user.setIsOnline(true);
+        userRepository.save(user);
+        String token = "Bearer " + jwtUtil.generateToken(user.getEmail());
+
+        // 获取用户书签并按标签分组
+        List<Bookmark> bookmarks = bookmarkRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
+        Map<String, List<Map<String, Object>>> groupedByTag = bookmarks.stream()
+                .collect(Collectors.groupingBy(
+                        b -> b.getTag() != null ? b.getTag() : "default",
+                        Collectors.mapping(this::formatBookmark, Collectors.toList())
+                ));
+
+        // 转换为与 /api/bookmarks/listAll 一致的格式
+        List<Map<String, Object>> formattedBookmarks = new ArrayList<>();
+        groupedByTag.forEach((tag, tagBookmarks) -> {
+            Map<String, Object> tagGroup = new HashMap<>();
+            tagGroup.put("tag", tag);
+            tagGroup.put("bookmarks", tagBookmarks);
+            formattedBookmarks.add(tagGroup);
+        });
+
+        logger.info("Fetched {} grouped bookmarks for userId: {} during login", formattedBookmarks.size(), user.getId());
+        return new UserLoginResponse(token, user, formattedBookmarks);
+    }
+
+    public User updatePassword(Long userId, PasswordUpdateDTO passwordUpdateDTO) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        validatePassword(passwordUpdateDTO.getNewPassword());
+        if (!passwordEncoder.matches(passwordUpdateDTO.getOldPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Old password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
+        return userRepository.save(user);
+    }
+
+    public User updateAvatar(Long userId, String base64Avatar, MultipartFile file) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        String avatarPath = null;
+
+        if (base64Avatar != null && !base64Avatar.isEmpty()) {
+            if (!isValidBase64Image(base64Avatar)) {
+                throw new IllegalArgumentException("Invalid Base64 image data");
+            }
+            avatarPath = saveBase64Image(base64Avatar);
+        } else if (file != null && !file.isEmpty()) {
+            validateFile(file);
+            avatarPath = fileStorageService.storeFile(file);
+        } else {
+            throw new IllegalArgumentException("No avatar data or file provided");
+        }
+
+        user.setAvatar(avatarPath);
+        return userRepository.save(user);
+    }
+
+    public User updateUserInformation(Long userId, UpdateUserDTO updateUserDTO, String base64Avatar, MultipartFile file) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (updateUserDTO.getUsername() != null && !updateUserDTO.getUsername().isEmpty()) {
+            user.setUsername(updateUserDTO.getUsername());
+        }
+
+        if (updateUserDTO.getSignature() != null) {
+            validateSignature(updateUserDTO.getSignature());
+            user.setSignature(updateUserDTO.getSignature());
+        }
+
+        if ((base64Avatar != null && !base64Avatar.isEmpty()) || (file != null && !file.isEmpty())) {
+            String avatarPath = null;
+            if (base64Avatar != null && !base64Avatar.isEmpty()) {
+                if (!isValidBase64Image(base64Avatar)) {
+                    throw new IllegalArgumentException("Invalid Base64 image data");
+                }
+                avatarPath = saveBase64Image(base64Avatar);
+            } else if (file != null && !file.isEmpty()) {
+                validateFile(file);
+                avatarPath = fileStorageService.storeFile(file);
+            }
+            user.setAvatar(avatarPath);
+        }
+
+        return userRepository.save(user);
+    }
+
+    private boolean isValidBase64Image(String base64) {
+        String base64Pattern = "^data:image/(jpeg|png|gif);base64,";
+        return base64.matches(base64Pattern + ".*");
+    }
+
+    private String saveBase64Image(String base64) throws IOException {
+        String[] parts = base64.split(",");
+        if (parts.length < 2) {
+            throw new IllegalArgumentException("Invalid Base64 image format");
+        }
+        String base64Data = parts[1];
+        byte[] imageBytes = java.util.Base64.getDecoder().decode(base64Data);
+        String fileName = UUID.randomUUID().toString() + ".png";
+        Path filePath = Paths.get("uploads/", fileName);
+        Files.write(filePath, imageBytes);
+        return filePath.toString();
+    }
+
+    private void validateFile(MultipartFile file) {
+        String[] allowedTypes = {"image/jpeg", "image/png", "image/gif"};
+        boolean isValidType = false;
+        for (String type : allowedTypes) {
+            if (type.equals(file.getContentType())) {
+                isValidType = true;
+                break;
+            }
+        }
+        if (!isValidType) {
+            throw new IllegalArgumentException("Only JPEG, PNG, and GIF images are allowed");
+        }
+        long maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.getSize() > maxSize) {
+            throw new IllegalArgumentException("File size must not exceed 5MB");
+        }
+    }
+
+    public User updateSignature(Long userId, String signature) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        validateSignature(signature);
+        user.setSignature(signature);
+        return userRepository.save(user);
+    }
+
+    public User updateUsername(Long userId, String newUsername) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.setUsername(newUsername);
+        return userRepository.save(user);
+    }
+
+    public void recordSearch(Long userId, String keyword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        SearchHistory searchHistory = new SearchHistory();
+        searchHistory.setUser(user);
+        searchHistory.setQuery(keyword);
+        searchHistoryRepository.save(searchHistory);
+
+        userSearchCountRepository.findByUserIdAndKeyword(userId, keyword).ifPresentOrElse(
+                count -> {
+                    count.setSearchCount(count.getSearchCount() + 1);
+                    userSearchCountRepository.save(count);
+                },
+                () -> {
+                    UserSearchCount newCount = new UserSearchCount();
+                    newCount.setUser(user);
+                    newCount.setKeyword(keyword);
+                    newCount.setSearchCount(1);
+                    userSearchCountRepository.save(newCount);
+                }
+        );
+    }
+
+    public List<SearchHistorySummary> getSearchHistory(Long userId, String sortBy) {
+        List<SearchHistory> history = searchHistoryRepository.findByUserIdOrderBySearchedAtDesc(userId);
+        Map<String, Integer> keywordCounts = userSearchCountRepository.findAllByUserId(userId).stream()
+                .collect(Collectors.toMap(UserSearchCount::getKeyword, UserSearchCount::getSearchCount));
+
+        List<SearchHistorySummary> summaries = history.stream()
+                .collect(Collectors.groupingBy(
+                        SearchHistory::getQuery,
+                        Collectors.collectingAndThen(
+                                Collectors.maxBy(Comparator.comparing(SearchHistory::getSearchedAt)),
+                                max -> {
+                                    SearchHistory latest = max.get();
+                                    return new SearchHistorySummary(
+                                            latest.getUser().getId(),
+                                            latest.getUser().getUsername(),
+                                            latest.getQuery(),
+                                            latest.getSearchedAt(),
+                                            keywordCounts.getOrDefault(latest.getQuery(), 0)
+                                    );
+                                }
+                        )
+                ))
+                .values().stream()
+                .collect(Collectors.toList());
+
+        sortBy = (sortBy == null || sortBy.isEmpty()) ? defaultSortBy : sortBy;
+        if ("count".equalsIgnoreCase(sortBy)) {
+            summaries.sort((a, b) -> {
+                int countCompare = b.getSearchCount().compareTo(a.getSearchCount());
+                return countCompare != 0 ? countCompare : b.getSearchedAt().compareTo(a.getSearchedAt());
+            });
+        } else {
+            summaries.sort((a, b) -> b.getSearchedAt().compareTo(a.getSearchedAt()));
+        }
+
+        return summaries;
+    }
+
+    public Long getUserIdFromToken(String token) {
+        String email = jwtUtil.getUsernameFromToken(token.replace("Bearer ", ""));
+        User user = userRepository.findByEmail(email)
+                .orElse(null);
+        if (user != null) {
+            logger.info("Cache lookup for user by email: {}, found: {}", email, user.getId());
+        } else {
+            logger.warn("User not found for email: {}", email);
+        }
+        return user != null ? user.getId() : null;
+    }
+
+    private void validatePassword(String password) {
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+        if (!Pattern.matches(passwordRegex, password)) {
+            throw new IllegalArgumentException("New password must be at least 8 characters long and contain uppercase, lowercase, and numbers");
+        }
+    }
+
+    private void validateSignature(String signature) {
+        if (signature != null && signature.length() > 100) {
+            throw new IllegalArgumentException("Signature must not exceed 100 characters");
+        }
+    }
+
+    public void logout(String token) {
+        Long userId = getUserIdFromToken(token);
+        if (userId != null) {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            user.setIsOnline(false);
+            userRepository.save(user);
+        }
+    }
+
+    @Scheduled(fixedRate = 300000)
+    public void checkInactiveUsers() {
+        LocalDateTime threshold = LocalDateTime.now().minus(autoLogoutThresholdMinutes, ChronoUnit.MINUTES);
+        List<User> inactiveUsers = userRepository.findAll().stream()
+                .filter(user -> user.getIsOnline() && (user.getLastLogin() == null || user.getLastLogin().isBefore(threshold)))
+                .peek(user -> user.setIsOnline(false))
+                .collect(Collectors.toList());
+        if (!inactiveUsers.isEmpty()) {
+            userRepository.saveAll(inactiveUsers);
+        }
+    }
+
+    public Boolean getUserStatus(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return user.getIsOnline();
+    }
+
+    private Map<String, Object> formatBookmark(Bookmark bookmark) {
+        return Map.ofEntries(
+                Map.entry("url", (Object) bookmark.getUrl()),
+                Map.entry("tag", (Object) (bookmark.getTag() != null ? bookmark.getTag() : "default")),
+                Map.entry("click_count", (Object) bookmark.getClickCount()),
+                Map.entry("created_at", (Object) bookmark.getCreatedAt().toString())
+        );
+    }
+
+    public static class SearchHistorySummary {
+        private final Long userId;
+        private final String username;
+        private final String query;
+        private final LocalDateTime searchedAt;
+        private final Integer searchCount;
+
+        public SearchHistorySummary(Long userId, String username, String query, LocalDateTime searchedAt, Integer searchCount) {
+            this.userId = userId;
+            this.username = username;
+            this.query = query;
+            this.searchedAt = searchedAt;
+            this.searchCount = searchCount;
+        }
+
+        public Long getUserId() { return userId; }
+        public String getUsername() { return username; }
+        public String getQuery() { return query; }
+        public LocalDateTime getSearchedAt() { return searchedAt; }
+        public Integer getSearchCount() { return searchCount; }
+    }
+
+    public static class UserLoginResponse {
+        private final String token;
+        private final User user;
+        private final List<Map<String, Object>> bookmarks;
+
+        public UserLoginResponse(String token, User user, List<Map<String, Object>> bookmarks) {
+            this.token = token;
+            this.user = user;
+            this.bookmarks = bookmarks;
+        }
+
+        public String getToken() { return token; }
+        public User getUser() { return user; }
+        public List<Map<String, Object>> getBookmarks() { return bookmarks; }
+    }
+}package com.websearch.websearch.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+@Component
+public class SearchEngineClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(SearchEngineClient.class);
+
+    private final RestTemplate restTemplate;
+
+    @Value("${searchengine.url:http://searchengine-service:3001/search}")
+    private String searchEngineUrl;
+
+
+    public SearchEngineClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public List<Map<String, Object>> search(String userId, String query) {
+        String endpoint = searchEngineUrl;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, String> requestBody = Map.of(
+                "userid", userId,
+                "search_string", query
+        );
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
+
+        try {
+            logger.info("Sending search request to {}: userId={}, query={}", endpoint, userId, query);
+            Map<String, Object> response = restTemplate.postForObject(endpoint, request, Map.class);
+
+            if (response == null || !response.containsKey("message") || !"Search completed successfully".equals(response.get("message"))) {
+                String errorMessage = response != null && response.containsKey("message") ? (String) response.get("message") : "Unknown error from search engine";
+                logger.error("Search engine request failed for userId: {}, query: {}, error: {}", userId, query, errorMessage);
+                throw new IllegalStateException("Search engine error: " + errorMessage);
+            }
+
+            Map<String, Object> searchOutput = (Map<String, Object>) response.get("searchOutput");
+            if (searchOutput == null || !searchOutput.containsKey("urlList")) {
+                logger.warn("Invalid search output for userId: {}, query: {}", userId, query);
+                return Collections.emptyList();
+            }
+
+            Map<String, Double> urlList = (Map<String, Double>) searchOutput.get("urlList");
+            List<Map<String, Object>> formattedResults = new ArrayList<>();
+            for (Map.Entry<String, Double> entry : urlList.entrySet()) {
+                formattedResults.add(Map.of(
+                        "url", entry.getKey(),
+                        "score", entry.getValue()
+                ));
+            }
+
+            logger.info("Search engine returned {} URLs for userId: {}, query: {}", formattedResults.size(), userId, query);
+            return formattedResults;
+        } catch (Exception e) {
+            logger.error("Search engine request failed for userId: {}, query: {}, error: {}", userId, query, e.getMessage());
+            throw new IllegalStateException("Search engine request failed: " + e.getMessage());
+        }
+    }
+}package com.websearch.websearch.service;
+
+import com.websearch.websearch.entity.Bookmark;
+import com.websearch.websearch.entity.User;
+import com.websearch.websearch.repository.BookmarkRepository;
+import com.websearch.websearch.repository.UserRepository;
+import com.websearch.websearch.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BookmarkClickService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookmarkClickService.class);
+
+    private final UserRepository userRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final JwtUtil jwtUtil;
+
+    public BookmarkClickService(UserRepository userRepository, BookmarkRepository bookmarkRepository, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.bookmarkRepository = bookmarkRepository;
+        this.jwtUtil = jwtUtil;
+    }
+
+    public void recordClick(Long userId, String url) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        Bookmark bookmark = bookmarkRepository.findByUserIdAndUrl(userId, url);
+        if (bookmark == null) {
+            throw new IllegalArgumentException("Bookmark not found for url: " + url);
+        }
+
+        bookmark.setClickCount(bookmark.getClickCount() + 1);
+        bookmarkRepository.save(bookmark);
+        logger.info("Bookmark click recorded for userId: {}, url: {}, new click count: {}", user.getUserId(), url, bookmark.getClickCount());
+    }
+
+    public Long getUserIdFromToken(String token) {
+        String email = jwtUtil.getUsernameFromToken(token.replace("Bearer ", ""));
+        User user = userRepository.findByEmail(email)
+                .orElse(null);
+        if (user != null) {
+            logger.info("Cache lookup for user by email: {}, found: {}", email, user.getId());
+        } else {
+            logger.warn("User not found for email: {}", email);
+        }
+        return user != null ? user.getId() : null;
+    }
+}
+package com.websearch.websearch.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Component
+public class CrawlerClient {
+    private static final Logger logger = LoggerFactory.getLogger(CrawlerClient.class);
+
+    private final RestTemplate restTemplate;
+
+    @Value("${crawler.url:http://crawler-service:3000}")
+    private String crawlerUrl;
+
+    public CrawlerClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public Map<String, Object> sendToCrawler(String userId, String url, String tag, String operation) {
+        String endpoint = crawlerUrl + "/receive-json";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, String> requestBody = Map.of(
+                "url", url,
+                "tag", tag != null ? tag : "",
+                "userid", userId,
+                "operation", operation
+        );
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
+        try {
+            logger.info("Sending request to crawler: endpoint={}, operation={}, userId={}, url={}", endpoint, operation, userId, url);
+            Map<String, Object> response = restTemplate.postForObject(endpoint, request, Map.class);
+            if (response == null || !response.containsKey("message")) {
+                logger.error("Invalid crawler response: endpoint={}, userId={}, url={}", endpoint, userId, url);
+                throw new IllegalStateException("Invalid crawler response");
+            }
+            String message = (String) response.get("message");
+            if (!"Processing completed successfully".equals(message)) {
+                logger.error("Crawler failed to process for userId: {}, url: {}, operation: {}, error: {}", userId, url, operation, message);
+                throw new IllegalStateException("Crawler processing failed: " + message);
+            }
+            logger.info("Crawler processed successfully for userId: {}, url: {}, operation: {}", userId, url, operation);
+            return response;
+        } catch (Exception e) {
+            logger.error("Crawler request failed: endpoint={}, userId={}, url={}, operation={}, error={}", endpoint, userId, url, operation, e.getMessage());
+            throw new IllegalStateException("Crawler request failed: " + e.getMessage());
+        }
+    }
+}package com.websearch.websearch.service;
+
+import com.websearch.websearch.dto.BookmarkDTO;
+import com.websearch.websearch.entity.Bookmark;
+import com.websearch.websearch.entity.User;
+import com.websearch.websearch.repository.BookmarkRepository;
+import com.websearch.websearch.repository.UserRepository;
+import com.websearch.websearch.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Service
+public class BookmarkService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookmarkService.class);
+
+    private final UserRepository userRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final CrawlerClient crawlerClient;
+    private final SearchEngineClient searchEngineClient;
+    private final JwtUtil jwtUtil;
+
+    public BookmarkService(UserRepository userRepository, BookmarkRepository bookmarkRepository,
+                           CrawlerClient crawlerClient, SearchEngineClient searchEngineClient, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.bookmarkRepository = bookmarkRepository;
+        this.crawlerClient = crawlerClient;
+        this.searchEngineClient = searchEngineClient;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Transactional
+    public Map<String, Object> addOrUpdateBookmark(Long userId, String url, String tag) {
+        if (url == null || url.trim().isEmpty()) {
+            throw new IllegalArgumentException("URL cannot be empty");
+        }
+        if (tag != null && tag.length() > 50) {
+            throw new IllegalArgumentException("Tag cannot exceed 50 characters");
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> localResult = new HashMap<>();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        try {
+            Bookmark bookmark = bookmarkRepository.findByUserIdAndUrl(userId, url);
+            if (bookmark == null) {
+                bookmark = new Bookmark();
+                bookmark.setUser(user);
+                bookmark.setUrl(url);
+                bookmark.setTag(tag != null && !tag.trim().isEmpty() ? tag : "default");
+                bookmark.setClickCount(0);
+            } else {
+                bookmark.setTag(tag != null && !tag.trim().isEmpty() ? tag : "default");
+            }
+            bookmarkRepository.save(bookmark);
+            localResult.put("status", "success");
+            localResult.put("message", bookmark.getId() == null ? "Bookmark added successfully" : "Bookmark updated successfully");
+            localResult.put("url", url);
+            logger.info("Local bookmark operation successful for userId: {}, url: {}, tag: {}", user.getUserId(), url, bookmark.getTag());
+        } catch (Exception e) {
+            localResult.put("status", "error");
+            localResult.put("message", "Failed to add or update bookmark: " + e.getMessage());
+            localResult.put("url", url);
+            logger.error("Local bookmark operation failed for userId: {}, url: {}, error: {}", user.getUserId(), url, e.getMessage());
+            response.put("local", localResult);
+            response.put("crawler", Map.of("status", "error", "message", "Operation aborted due to local failure", "url", url));
+            return response;
+        }
+
+        Map<String, Object> crawlerResult;
+        try {
+            crawlerResult = crawlerClient.sendToCrawler(user.getUserId(), url, tag != null ? tag : "default", "append");
+            crawlerResult.put("status", "success");
+            crawlerResult.put("url", url);
+        } catch (IllegalStateException e) {
+            Bookmark bookmark = bookmarkRepository.findByUserIdAndUrl(userId, url);
+            if (bookmark != null) {
+                bookmarkRepository.delete(bookmark);
+                logger.info("Rolled back local bookmark for userId: {}, url: {} due to crawler failure", user.getUserId(), url);
+            }
+            localResult.put("status", "error");
+            localResult.put("message", "Bookmark operation rolled back due to crawler failure");
+            crawlerResult = Map.of(
+                    "status", "error",
+                    "message", e.getMessage(),
+                    "receivedData", Map.of("url", url, "tag", tag != null ? tag : "default", "userid", user.getUserId(), "operation", "append"),
+                    "url", url
+            );
+            logger.error("Crawler failed for userId: {}, url: {}, error: {}", user.getUserId(), url, e.getMessage());
+        }
+
+        response.put("local", localResult);
+        response.put("crawler", crawlerResult);
+        return response;
+    }
+
+    @Transactional
+    public Map<String, Object> addOrUpdateBookmarks(Long userId, List<BookmarkDTO.BookmarkEntry> entries) {
+        if (entries == null || entries.isEmpty()) {
+            throw new IllegalArgumentException("Bookmark entries cannot be empty");
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        List<Map<String, Object>> localResults = new ArrayList<>();
+        List<Map<String, Object>> crawlerResults = new ArrayList<>();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        for (BookmarkDTO.BookmarkEntry entry : entries) {
+            Map<String, Object> singleResponse = addOrUpdateBookmark(userId, entry.getUrl(), entry.getTag());
+            localResults.add((Map<String, Object>) singleResponse.get("local"));
+            crawlerResults.add((Map<String, Object>) singleResponse.get("crawler"));
+        }
+
+        response.put("local", localResults);
+        response.put("crawler", crawlerResults);
+        logger.info("Batch bookmark operation completed for userId: {}, entries: {}", userId, entries.size());
+        return response;
+    }
+
+    @Transactional
+    public Map<String, Object> removeBookmark(Long userId, String url) {
+        if (url == null || url.trim().isEmpty()) {
+            throw new IllegalArgumentException("URL cannot be empty");
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> localResult = new HashMap<>();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        try {
+            Bookmark bookmark = bookmarkRepository.findByUserIdAndUrl(userId, url);
+            if (bookmark == null) {
+                localResult.put("status", "error");
+                localResult.put("message", "Bookmark not found for url: " + url);
+                localResult.put("url", url);
+                logger.warn("Local bookmark not found for userId: {}, url: {}", user.getUserId(), url);
+                response.put("local", localResult);
+                response.put("crawler", Map.of("status", "error", "message", "Operation aborted due to bookmark not found", "url", url));
+                return response;
+            }
+            bookmarkRepository.delete(bookmark);
+            localResult.put("status", "success");
+            localResult.put("message", "Bookmark removed successfully");
+            localResult.put("url", url);
+            logger.info("Local bookmark removed for userId: {}, url: {}", user.getUserId(), url);
+        } catch (Exception e) {
+            localResult.put("status", "error");
+            localResult.put("message", "Failed to remove bookmark: " + e.getMessage());
+            localResult.put("url", url);
+            logger.error("Local bookmark removal failed for userId: {}, url: {}, error: {}", user.getUserId(), url, e.getMessage());
+            response.put("local", localResult);
+            response.put("crawler", Map.of("status", "error", "message", "Operation aborted due to local failure", "url", url));
+            return response;
+        }
+
+        Map<String, Object> crawlerResult;
+        try {
+            crawlerResult = crawlerClient.sendToCrawler(user.getUserId(), url, "default", "remove");
+            crawlerResult.put("status", "success");
+            crawlerResult.put("url", url);
+        } catch (IllegalStateException e) {
+            // Check if bookmark exists before re-inserting
+            Bookmark existingBookmark = bookmarkRepository.findByUserIdAndUrl(userId, url);
+            if (existingBookmark == null) {
+                Bookmark bookmark = new Bookmark();
+                bookmark.setUser(user);
+                bookmark.setUrl(url);
+                bookmark.setTag("default");
+                bookmark.setClickCount(0);
+                bookmarkRepository.save(bookmark);
+                logger.info("Rolled back local bookmark for userId: {}, url: {} due to crawler failure", user.getUserId(), url);
+            } else {
+                logger.info("Bookmark already exists for userId: {}, url: {}, skipping re-insertion", user.getUserId(), url);
+            }
+            localResult.put("status", "error");
+            localResult.put("message", "Bookmark removal rolled back due to crawler failure");
+            crawlerResult = Map.of(
+                    "status", "error",
+                    "message", e.getMessage(),
+                    "receivedData", Map.of("url", url, "tag", "default", "userid", user.getUserId(), "operation", "remove"),
+                    "url", url
+            );
+            logger.error("Crawler failed for userId: {}, url: {}, error: {}", user.getUserId(), url, e.getMessage());
+        }
+
+        response.put("local", localResult);
+        response.put("crawler", crawlerResult);
+        return response;
+    }
+
+    @Transactional
+    public Map<String, Object> removeBookmarks(Long userId, List<BookmarkDTO.BookmarkEntry> entries) {
+        if (entries == null || entries.isEmpty()) {
+            throw new IllegalArgumentException("Bookmark entries cannot be empty");
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        List<Map<String, Object>> localResults = new ArrayList<>();
+        List<Map<String, Object>> crawlerResults = new ArrayList<>();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        for (BookmarkDTO.BookmarkEntry entry : entries) {
+            Map<String, Object> singleResponse = removeBookmark(userId, entry.getUrl());
+            localResults.add((Map<String, Object>) singleResponse.get("local"));
+            crawlerResults.add((Map<String, Object>) singleResponse.get("crawler"));
+        }
+
+        response.put("local", localResults);
+        response.put("crawler", crawlerResults);
+        logger.info("Batch bookmark removal completed for userId: {}, entries: {}", userId, entries.size());
+        return response;
+    }
+
+    public List<Map<String, Object>> getBookmarks(Long userId, String sortBy) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        List<Bookmark> bookmarks;
+        if ("click_count".equalsIgnoreCase(sortBy)) {
+            bookmarks = bookmarkRepository.findByUserIdOrderByClickCountDesc(userId);
+        } else {
+            bookmarks = bookmarkRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        }
+
+        Map<String, List<Map<String, Object>>> groupedByTag = bookmarks.stream()
+                .collect(Collectors.groupingBy(
+                        b -> b.getTag() != null ? b.getTag() : "default",
+                        Collectors.mapping(this::formatBookmark, Collectors.toList())
+                ));
+
+        List<Map<String, Object>> result = new ArrayList<>();
+        groupedByTag.forEach((tag, tagBookmarks) -> {
+            Map<String, Object> tagGroup = new HashMap<>();
+            tagGroup.put("tag", tag);
+            tagGroup.put("bookmarks", tagBookmarks);
+            result.add(tagGroup);
+        });
+
+        logger.info("Fetched {} grouped bookmarks for userId: {}, sortBy: {}", result.size(), userId, sortBy);
+        return result;
+    }
+
+    public List<Map<String, Object>> getBookmarksByTag(Long userId, String tag) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        List<Bookmark> bookmarks = bookmarkRepository.findByUserIdAndTagContaining(userId, tag);
+        logger.info("Fetched {} bookmarks for userId: {} with tag: {}", bookmarks.size(), userId, tag);
+        return formatBookmarks(bookmarks);
+    }
+
+    public Map<String, List<Map<String, Object>>> getGroupedBookmarks(Long userId, String groupBy) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        List<Bookmark> bookmarks = bookmarkRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        Map<String, List<Map<String, Object>>> groupedBookmarks = new HashMap<>();
+
+        if ("tag".equalsIgnoreCase(groupBy)) {
+            List<String> tags = bookmarkRepository.findDistinctTagsByUserId(userId);
+            for (String tag : tags) {
+                List<Map<String, Object>> tagBookmarks = bookmarks.stream()
+                        .filter(b -> tag.equals(b.getTag()))
+                        .map(this::formatBookmark)
+                        .collect(Collectors.toList());
+                if (!tagBookmarks.isEmpty()) {
+                    groupedBookmarks.put(tag != null ? tag : "default", tagBookmarks);
+                }
+            }
+            List<Map<String, Object>> noTagBookmarks = bookmarks.stream()
+                    .filter(b -> b.getTag() == null || b.getTag().isEmpty())
+                    .map(this::formatBookmark)
+                    .collect(Collectors.toList());
+            if (!noTagBookmarks.isEmpty()) {
+                groupedBookmarks.put("default", noTagBookmarks);
+            }
+        } else if ("month".equalsIgnoreCase(groupBy)) {
+            groupedBookmarks = bookmarks.stream()
+                    .collect(Collectors.groupingBy(
+                            b -> b.getCreatedAt().getYear() + "-" + String.format("%02d", b.getCreatedAt().getMonthValue()),
+                            Collectors.mapping(this::formatBookmark, Collectors.toList())
+                    ));
+        } else {
+            throw new IllegalArgumentException("Invalid groupBy parameter: " + groupBy);
+        }
+
+        logger.info("Fetched {} grouped bookmarks for userId: {}, groupBy: {}", groupedBookmarks.size(), userId, groupBy);
+        return groupedBookmarks;
+    }
+
+    public List<Map<String, Object>> searchBookmarks(Long userId, String tag, String keyword, String sortBy) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        List<Bookmark> bookmarks = bookmarkRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+        if (tag != null && !tag.isEmpty()) {
+            bookmarks = bookmarks.stream()
+                    .filter(b -> b.getTag() != null && b.getTag().contains(tag))
+                    .collect(Collectors.toList());
+        }
+
+        if (keyword != null && !keyword.isEmpty()) {
+            try {
+                List<Map<String, Object>> searchResults = searchEngineClient.search(user.getUserId(), keyword);
+                List<String> urls = searchResults.stream()
+                        .map(result -> (String) result.get("url"))
+                        .collect(Collectors.toList());
+                bookmarks = bookmarks.stream()
+                        .filter(b -> urls.contains(b.getUrl()) || (b.getTag() != null && b.getTag().contains(keyword)))
+                        .collect(Collectors.toList());
+                logger.info("SearchEngineClient returned {} URLs for keyword: {}, matched {} bookmarks for userId: {}",
+                        urls.size(), keyword, bookmarks.size(), userId);
+            } catch (Exception e) {
+                logger.error("SearchEngineClient failed for userId: {}, keyword: {}, error: {}", userId, keyword, e.getMessage());
+                bookmarks = bookmarks.stream()
+                        .filter(b -> b.getUrl().contains(keyword) || (b.getTag() != null && b.getTag().contains(keyword)))
+                        .collect(Collectors.toList());
+            }
+        }
+
+        if ("click_count".equalsIgnoreCase(sortBy)) {
+            bookmarks.sort((a, b) -> b.getClickCount().compareTo(a.getClickCount()));
+        } else {
+            bookmarks.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+        }
+
+        logger.info("Fetched {} bookmarks for userId: {} with tag: {}, keyword: {}, sortBy: {}",
+                bookmarks.size(), userId, tag, keyword, sortBy);
+        return formatBookmarks(bookmarks);
+    }
+
+    public Long getUserIdFromToken(String token) {
+        String email = jwtUtil.getUsernameFromToken(token.replace("Bearer ", ""));
+        User user = userRepository.findByEmail(email)
+                .orElse(null);
+        if (user != null) {
+            logger.info("Cache lookup for user by email: {}, found: {}", email, user.getId());
+        } else {
+            logger.warn("User not found for email: {}", email);
+        }
+        return user != null ? user.getId() : null;
+    }
+
+    private List<Map<String, Object>> formatBookmarks(List<Bookmark> bookmarks) {
+        return bookmarks.stream()
+                .map(this::formatBookmark)
+                .collect(Collectors.toList());
+    }
+
+    private Map<String, Object> formatBookmark(Bookmark bookmark) {
+        return Map.ofEntries(
+                Map.entry("url", (Object) bookmark.getUrl()),
+                Map.entry("tag", (Object) (bookmark.getTag() != null ? bookmark.getTag() : "default")),
+                Map.entry("click_count", (Object) bookmark.getClickCount()),
+                Map.entry("created_at", (Object) bookmark.getCreatedAt().toString())
+        );
+    }
+}package com.websearch.websearch.service;
+
+import com.websearch.websearch.entity.SearchHistory;
+import com.websearch.websearch.entity.User;
+import com.websearch.websearch.entity.UserSearchCount;
+import com.websearch.websearch.repository.SearchHistoryRepository;
+import com.websearch.websearch.repository.UserRepository;
+import com.websearch.websearch.repository.UserSearchCountRepository;
+import com.websearch.websearch.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@Service
+public class SearchService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SearchService.class);
+
+    private final UserRepository userRepository;
+    private final SearchHistoryRepository searchHistoryRepository;
+    private final UserSearchCountRepository userSearchCountRepository;
+    private final SearchEngineClient searchEngineClient;
+    private final JwtUtil jwtUtil;
+
+    @Value("${default.sort.by:time}")
+    private String defaultSortBy;
+
+    public SearchService(UserRepository userRepository, SearchHistoryRepository searchHistoryRepository,
+                         UserSearchCountRepository userSearchCountRepository, SearchEngineClient searchEngineClient,
+                         JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.searchHistoryRepository = searchHistoryRepository;
+        this.userSearchCountRepository = userSearchCountRepository;
+        this.searchEngineClient = searchEngineClient;
+        this.jwtUtil = jwtUtil;
+    }
+
+    public Map<String, Object> search(Long userId, String query, String engine) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // 记录搜索历史
+        SearchHistory searchHistory = new SearchHistory();
+        searchHistory.setUser(user);
+        searchHistory.setQuery(query);
+        searchHistoryRepository.save(searchHistory);
+
+        // 更新搜索计数
+        userSearchCountRepository.findByUserIdAndKeyword(userId, query).ifPresentOrElse(
+                count -> {
+                    count.setSearchCount(count.getSearchCount() + 1);
+                    userSearchCountRepository.save(count);
+                },
+                () -> {
+                    UserSearchCount newCount = new UserSearchCount();
+                    newCount.setUser(user);
+                    newCount.setKeyword(query);
+                    newCount.setSearchCount(1);
+                    userSearchCountRepository.save(newCount);
+                }
+        );
+
+        // 调用搜索客户端
+        List<Map<String, Object>> searchResults = searchEngineClient.search(user.getUserId(), query);
+        logger.info("Search executed for userId: {}, query: {}, engine: {}, results: {}", user.getUserId(), query, engine, searchResults.size());
+
+        // 构造前端友好的响应
+        return Map.of(
+                "message", "Search completed successfully",
+                "results", searchResults,
+                "urlCount", searchResults.size(),
+                "userId", user.getUserId(),
+                "query", query
+        );
+    }
+
+    public List<Map<String, Object>> getSearchHistory(Long userId, String sortBy) {
+        List<SearchHistory> history = searchHistoryRepository.findByUserIdOrderBySearchedAtDesc(userId);
+        Map<String, Integer> keywordCounts = userSearchCountRepository.findAllByUserId(userId).stream()
+                .collect(Collectors.toMap(UserSearchCount::getKeyword, UserSearchCount::getSearchCount));
+
+        List<Map<String, Object>> summaries = history.stream()
+                .collect(Collectors.groupingBy(
+                        SearchHistory::getQuery,
+                        Collectors.collectingAndThen(
+                                Collectors.maxBy(java.util.Comparator.comparing(SearchHistory::getSearchedAt)),
+                                max -> {
+                                    SearchHistory latest = max.get();
+                                    return Map.of(
+                                            "userId", (Object) latest.getUser().getId(),
+                                            "username", (Object) latest.getUser().getUsername(),
+                                            "query", (Object) latest.getQuery(),
+                                            "searchedAt", (Object) latest.getSearchedAt().toString(),
+                                            "searchCount", (Object) keywordCounts.getOrDefault(latest.getQuery(), 0)
+                                    );
+                                }
+                        )
+                ))
+                .values().stream()
+                .collect(Collectors.toList());
+
+        sortBy = (sortBy == null || sortBy.isEmpty()) ? defaultSortBy : sortBy;
+        if ("count".equalsIgnoreCase(sortBy)) {
+            summaries.sort((a, b) -> {
+                int countCompare = ((Integer) b.get("searchCount")).compareTo((Integer) a.get("searchCount"));
+                return countCompare != 0 ? countCompare : ((String) b.get("searchedAt")).compareTo((String) a.get("searchedAt"));
+            });
+        } else {
+            summaries.sort((a, b) -> ((String) b.get("searchedAt")).compareTo((String) a.get("searchedAt")));
+        }
+
+        logger.info("Fetched {} search history entries for userId: {}", summaries.size(), userId);
+        return summaries;
+    }
+
+    public Long getUserIdFromToken(String token) {
+        String email = jwtUtil.getUsernameFromToken(token.replace("Bearer ", ""));
+        User user = userRepository.findByEmail(email)
+                .orElse(null);
+        if (user != null) {
+            logger.info("Cache lookup for user by email: {}, found: {}", email, user.getId());
+        } else {
+            logger.warn("User not found for email: {}", email);
+        }
+        return user != null ? user.getId() : null;
+    }
+}package com.websearch.websearch.dto;
+
+import com.websearch.websearch.service.UserService;
+import lombok.Data;
+
+import java.util.List;
+import java.util.Map;
+
+@Data
+public class SearchResultDTO {
+    private String userId;
+    private String username;
+    private String email;
+    private List<Map<String, Object>> searchResults;
+    private List<UserService.SearchHistorySummary> recentSearches;
+}
+        package com.websearch.websearch.dto;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class BookmarkDTO {
+    private String url; // 用于单条操作
+    private String tag; // 用于单条操作
+    private List<BookmarkEntry> entries; // 用于批量操作
+
+    @Data
+    public static class BookmarkEntry {
+        private String url;
+        private String tag;
+    }
+}
+package com.websearch.websearch.dto;
+
+
+import lombok.Data;
+
+@Data
+public class PasswordUpdateDTO {
+    private String oldPassword;
+    private String newPassword;
+}
+package com.websearch.websearch.dto;
+
+import lombok.Data;
+
+@Data
+public class SearchRequestDTO {
+    private String keyword;
+}package com.websearch.websearch.dto;
+
+import lombok.Data;
+
+@Data
+public class LoginRequestDTO {
+    private String email;
+    private String password;
+}package com.websearch.websearch.dto;
+
+import lombok.Data;
+
+@Data
+public class UpdateUserDTO {
+    private String username;
+    private String avatar;
+    private String signature;
+}package com.websearch.websearch.dto;
+
+import lombok.Data;
+
+@Data
+public class UserRequestDTO {
+    private String username;
+    private String password;
+    private String email;
+    private String avatar;
+    private String signature;
+}package com.websearch.websearch.util;
+
+public class SnowflakeIdGenerator {
+    private static final long EPOCH = 1609459200000L; // 2021-01-01 00:00:00 UTC
+    private static final long WORKER_ID_BITS = 5L;
+    private static final long DATACENTER_ID_BITS = 5L;
+    private static final long SEQUENCE_BITS = 12L;
+
+    private static final long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
+    private static final long MAX_DATACENTER_ID = ~(-1L << DATACENTER_ID_BITS);
+    private static final long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
+
+    private static final long WORKER_ID_SHIFT = SEQUENCE_BITS;
+    private static final long DATACENTER_ID_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS;
+    private static final long TIMESTAMP_LEFT_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS + DATACENTER_ID_BITS;
+
+    private static long workerId;
+    private static long datacenterId;
+    private static long sequence = 0L;
+    private static long lastTimestamp = -1L;
+
+    static {
+        workerId = 1L; // 需配置
+        datacenterId = 1L; // 需配置
+        if (workerId > MAX_WORKER_ID || workerId < 0) {
+            throw new IllegalArgumentException("Worker ID must be between 0 and " + MAX_WORKER_ID);
+        }
+        if (datacenterId > MAX_DATACENTER_ID || datacenterId < 0) {
+            throw new IllegalArgumentException("Datacenter ID must be between 0 and " + MAX_DATACENTER_ID);
+        }
+    }
+
+    public static synchronized long nextId() {
+        long timestamp = System.currentTimeMillis();
+
+        if (timestamp < lastTimestamp) {
+            throw new RuntimeException("Clock moved backwards. Refusing to generate ID.");
+        }
+
+        if (lastTimestamp == timestamp) {
+            sequence = (sequence + 1) & SEQUENCE_MASK;
+            if (sequence == 0) {
+                timestamp = tilNextMillis(lastTimestamp);
+            }
+        } else {
+            sequence = 0L;
+        }
+
+        lastTimestamp = timestamp;
+
+        return ((timestamp - EPOCH) << TIMESTAMP_LEFT_SHIFT)
+                | (datacenterId << DATACENTER_ID_SHIFT)
+                | (workerId << WORKER_ID_SHIFT)
+                | sequence;
+    }
+
+    private static long tilNextMillis(long lastTimestamp) {
+        long timestamp = System.currentTimeMillis();
+        while (timestamp <= lastTimestamp) {
+            timestamp = System.currentTimeMillis();
+        }
+        return timestamp;
+    }
+}package com.websearch.websearch.util;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+
+@Component
+public class JwtUtil {
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private long expiration;
+
+    public String generateToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    public String getUsernameFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(secret)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(secret)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}package com.websearch.websearch.config;
+
+import com.websearch.websearch.entity.User;
+import com.websearch.websearch.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
+    private final UserRepository userRepository;
+
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    logger.warn("User not found with email: {}", email);
+                    return new UsernameNotFoundException("User not found with email: " + email);
+                });
+        logger.info("User found with email: {}, id: {}", email, user.getId());
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .roles(user.getRole() != null ? user.getRole() : "USER")
+                .build();
+    }
+}package com.websearch.websearch.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SwaggerConfig {
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        final String securitySchemeName = "bearerAuth";
+
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Web Search API")
+                        .version("1.0")
+                        .description("Spring Boot JWT + Swagger"))
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                .components(new io.swagger.v3.oas.models.Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                        )
+                );
+    }
+}package com.websearch.websearch.config;
+
+import com.websearch.websearch.util.JwtUtil;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+
+import java.util.Arrays;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtFilter jwtFilter() {
+        return new JwtFilter(jwtUtil, userDetailsService);
+    }
+
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // 允许前端域名
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 允许的请求方法
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // 允许的请求头
+        configuration.setAllowCredentials(true); // 允许发送凭据（如 cookies 或 Authorization 头）
+        configuration.setMaxAge(3600L); // 预检请求缓存时间（秒）
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // 应用于所有路径
+        return source;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 启用 CORS
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/users/register", "/api/users/login", "/swagger-ui/**", "/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+                        .requestMatchers("/api/search/**").authenticated()
+                        .requestMatchers("/api/users/status").authenticated()
+                        .requestMatchers("/api/users/password").authenticated()
+                        .requestMatchers("/api/users/logout").authenticated()
+                        .requestMatchers("/api/users/avatar").authenticated()
+                        .requestMatchers("/api/users/signature").authenticated()
+                        .requestMatchers("/api/users/username").authenticated()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+}package com.websearch.websearch.config;
+
+import com.websearch.websearch.util.JwtUtil;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@Component
+public class JwtFilter extends OncePerRequestFilter {
+
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
+
+    @Autowired
+    public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+            if (jwtUtil.validateToken(token)) {
+                String username = jwtUtil.getUsernameFromToken(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (userDetails != null) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    System.out.println("UserDetails not found for username: " + username); // 调试日志
+                }
+            } else {
+                System.out.println("Invalid token: " + token); // 调试日志
+            }
+        } else {
+            System.out.println("No Authorization header or invalid format"); // 调试日志
+        }
+        chain.doFilter(request, response);
+    }
+}package com.websearch.websearch.config;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGenericException(Exception ex) {
+        return ResponseEntity.status(500).body("Internal server error: " + ex.getMessage());
+    }
+}
+package com.websearch.websearch.config;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
+
+@Configuration
+public class RestTemplateConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(RestTemplateConfig.class);
+
+    @Bean
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getInterceptors().add(new LoggingInterceptor());
+        return restTemplate;
+    }
+
+    static class LoggingInterceptor implements ClientHttpRequestInterceptor {
+        @Override
+        public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+            // Log request details
+            String requestBody = body.length > 0 ? new String(body, StandardCharsets.UTF_8) : "No body";
+            logger.info("Outgoing Request: Method={}, URL={}, Headers={}, Body={}",
+                    request.getMethod(),
+                    request.getURI(),
+                    request.getHeaders(),
+                    requestBody);
+
+            // Execute the request
+            ClientHttpResponse response = execution.execute(request, body);
+
+            // Log response details
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getBody(), StandardCharsets.UTF_8));
+            String responseBody = reader.lines().collect(Collectors.joining("\n"));
+            logger.info("Response: Status={}, Headers={}, Body={}",
+                    response.getStatusCode().value(),
+                    response.getHeaders(),
+                    responseBody);
+
+            // Return a new response to ensure the body can be read again
+            return new BufferingClientHttpResponseWrapper(response, responseBody);
+        }
+    }
+
+    // Wrapper to allow multiple reads of response body
+    static class BufferingClientHttpResponseWrapper implements ClientHttpResponse {
+        private final ClientHttpResponse response;
+        private final byte[] body;
+
+        BufferingClientHttpResponseWrapper(ClientHttpResponse response, String responseBody) throws IOException {
+            this.response = response;
+            this.body = responseBody.getBytes(StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public org.springframework.http.HttpStatusCode getStatusCode() throws IOException {
+            return response.getStatusCode();
+        }
+
+
+
+        @Override
+        public String getStatusText() throws IOException {
+            return response.getStatusText();
+        }
+
+        @Override
+        public void close() {
+            response.close();
+        }
+
+        @Override
+        public InputStream getBody() throws IOException {
+            return new ByteArrayInputStream(body);
+        }
+
+        @Override
+        public org.springframework.http.HttpHeaders getHeaders() {
+            return response.getHeaders();
+        }
+    }
+}
