@@ -1,0 +1,12 @@
+{
+    "name": "json-julia-server",
+    "version": "1.0.0",
+    "description": "Node.js server to receive JSON data and process with Julia crawler",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.18.2"
+    }
+}

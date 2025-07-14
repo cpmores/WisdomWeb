@@ -1,0 +1,25 @@
+{
+  "cpmores": [
+    {
+      "is_inverted": true,
+      "is_trie": false,
+      "path": "./data/cpmores/zjuers.com/_index.txt",
+      "tag": "Test",
+      "url": "https://zjuers.com"
+    },
+    {
+      "is_inverted": true,
+      "is_trie": false,
+      "path": "./data/cpmores/github.com/_index.txt",
+      "tag": "Test",
+      "url": "https://github.com"
+    },
+    {
+      "is_inverted": true,
+      "is_trie": false,
+      "path": "./data/cpmores/www.bing.com/_search.txt",
+      "tag": "Test",
+      "url": "https://www.bing.com/search?q=bilibili&qs=n&form=QBRE&sp=-1&ghc=1&lq=0&pq=bilibili&sc=17-8&sk=&cvid=21A95E9434764EC3914B22AEFA8E8E1A"
+    }
+  ]
+}

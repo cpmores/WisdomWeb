@@ -1,0 +1,18 @@
+{
+  "cpmores": [
+    {
+      "is_inverted": true,
+      "is_trie": false,
+      "path": "../data/cpmores/github.com/_index.txt",
+      "tag": "Math",
+      "url": "https://github.com"
+    },
+    {
+      "is_inverted": true,
+      "is_trie": false,
+      "path": "../data/cpmores/zjuers.com/_index.txt",
+      "tag": "Math",
+      "url": "https://zjuers.com"
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+url: https://github.com
+user: cpmores
+tag: Test
+Skip to content
+Navigation Menu
+Toggle navigation
+Sign in
+Product
+GitHub Copilot
+Write better code with AI
+GitHub Models
+New
+Manage and compare prompts
+GitHub Advanced Security
+Find and fix vulnerabilities
+Actions
+Automate any workflow
+Codespaces
+Instant dev environments
+Issues
+Plan and track work
+Code Review
+Manage code changes
+Discussions
+Collaborate outside of code
+Code Search
+Find more, search less
+Explore
+Why GitHub
+All features
+Documentation
+GitHub Skills
+Blog
+Solutions
+By company size
+Enterprises
+Small and medium teams
+Startups
+Nonprofits
+By use case
+DevSecOps
+DevOps
+CI/CD
+View all use cases
+By industry
+Healthcare
+Financial services
+Manufacturing
+Government
+View all industries
+View all solutions
+Resources
+Topics
+AI
+DevOps
+Security
+Software Development
+View all
+Explore
+Learning Pathways
+Events & Webinars
+Ebooks & Whitepapers
+Customer Stories
+Partners
+Executive Insights
+Open Source
+GitHub Sponsors
+Fund open source developers
+The ReadME Project
+GitHub community articles
+Repositories
+Topics
+Trending
+Collections
+Enterprise
+Enterprise platform
+AI-powered developer platform
+Available add-ons
+GitHub Advanced Security
+Enterprise-grade security features
+Copilot for business
+Enterprise-grade AI features
+Premium Support
+Enterprise-grade 24/7 support
+Pricing
+Search or jump to...
+Search code, repositories, users, issues, pull requests...
+Search
+Clear
+Search syntax tips
+Provide feedback
+We read every piece of feedback, and take your input very seriously.
+Include my email address so I can be contacted
+Cancel
+Submit feedback
+Saved searches
+Use saved searches to filter your results more quickly
+Name
+Query
+To see all available qualifiers, see our
+documentation
+.
+Cancel
+Create saved search
+Sign in
+Sign up
+Resetting focus
+You signed in with another tab or window.
+Reload
+to refresh your session.
+You signed out in another tab or window.
+Reload
+to refresh your session.
+You switched accounts on another tab or window.
+Reload
+to refresh your session.
+Dismiss alert
+Build and ship software on a single, collaborative platform
+Join the world’s most widely adopted AI-powered developer platform.
+Enter your email
+Sign up for GitHub
+Try GitHub Copilot
+GitHub features
+A demonstration animation of a code editor using GitHub Copilot Chat, where the user requests GitHub Copilot to refactor duplicated logic and extract it into a reusable function for a given code snippet.
+Code
+Plan
+Collaborate
+Automate
+Secure
+Code
+Build code quickly and more securely with GitHub Copilot embedded throughout your workflows.
+GitHub is used by
+Accelerate performance
+With GitHub Copilot embedded throughout the platform, you can simplify your toolchain, automate tasks, and improve the developer experience.
+A Copilot chat window with extensions enabled. The user inputs the @ symbol to reveal a list of five Copilot Extensions. @Sentry is selected from the list, which shifts the window to a chat directly with that extension. There are three sample prompts at the bottom of the chat window, allowing the user to Get incident information, Edit status on incident, or List the latest issues. The last one is activated to send the prompt: @Sentry List the latest issues. The extension then lists several new issues and their metadata.
+Work 55% faster.
+Jump to footnote
+1
+Increase productivity with AI-powered coding assistance, including code completion, chat, and more.
+Explore GitHub Copilot
+Duolingo boosts developer speed by 25% with GitHub Copilot
+Read customer story
+2024 Gartner® Magic Quadrant™ for AI Code Assistants
+Read report
+Automate any workflow
+Optimize your process with simple and secured CI/CD.
+A list of workflows displays a heading ‘45,167 workflow runs’ at the top. Below are five rows of completed workflows accompanied by their completion time and their duration formatted in minutes and seconds.
+Discover GitHub Actions
+Get up and running in seconds
+Start building instantly with a comprehensive dev environment in the cloud.
+A GitHub Codespaces setup for the landing page of a game called OctoInvaders. On the left is a code editor with some HTML and Javascript files open. On the right is a live render of the page. In front of this split editor window is a screenshot of two active GitHub Codespaces environments with their branch names and a button to ‘Create codespace on main.’
+Check out GitHub Codespaces
+Build on the go
+Manage projects and chat with GitHub Copilot from anywhere.
+Two smartphone screens side by side. The left screen shows a Notification inbox, listing issues and pull requests from different repositories like TensorFlow and GitHub’s OctoArcade octoinvaders. The right screen shows a new conversation in GitHub Copilot chat.
+Download GitHub Mobile
+Integrate the tools you love
+Sync with 17,000+ integrations and a growing library of Copilot Extensions.
+A grid of fifty app tiles displays logos for integrations and extensions for companies like Stripe, Slack, and Docker. The tiles extend beyond the bounds of the image to indicate a wide array of apps.
+Visit GitHub Marketplace
+Built-in application security
+where found means fixed
+Use AI to find and fix vulnerabilities—freeing your teams to ship more secure software faster.
+Apply fixes in seconds.
+Spend less time fixing vulnerabilities and more time building features with Copilot Autofix.
+Explore GitHub Advanced Security
+Solve security debt.
+Leverage AI-assisted security campaigns to reduce application vulnerabilities and zero-day attacks.
+Discover security campaigns
+Dependencies you can depend on.
+Update vulnerable dependencies with supported fixes for breaking changes.
+Learn about Dependabot
+Your secrets, your business: protected.
+Detect, prevent, and remediate leaked secrets across your organization.
+Read about secret scanning
+7x faster
+vulnerability fixes with GitHub
+Jump to footnote
+2
+90% coverage
+of alert types in all supported languages with Copilot Autofix
+Work together, achieve more
+Collaborate with your teams, use management tools that sync with your projects, and code from anywhere—all on a single, integrated platform.
+Your workflows, your way.
+Plan effectively with an adaptable spreadsheet that syncs with your work.
+Jump into GitHub Projects
+“
+It helps us onboard new software engineers and get them productive right away. We have all our source code, issues, and pull requests in one place... GitHub is a complete platform that frees us from menial tasks and enables us to do our best work.
+Fabian Faulhaber
+Application manager at Mercedes-Benz
+Keep track of your tasks
+Create issues and manage projects with tools that adapt to your code.
+Display of task tracking within an issue, showing the status of related sub-issues and their connection to the main issue.
+Explore GitHub Issues
+Share ideas and ask questions
+Create space for open-ended conversations alongside your project.
+A GitHub Discussions thread where a GitHub user suggests a power-up idea involving Hubot revealing a path and protecting Mona. The post has received 5 upvotes and several reactions. Below, three other users add to the discussion, suggesting Hubot could provide different power-ups depending on levels and appreciating the collaboration idea.
+Discover GitHub Discussions
+Review code changes together
+Create review processes that improve code quality and fit neatly into your workflow.
+Two code review approvals by helios-ackmore and amanda-knox, which are followed by three successful checks for ‘Build,’ ‘Test,’ and ‘Publish.’
+Learn about code review
+Fund open source projects
+Become an open source partner and support the tools and libraries that power your work.
+A GitHub Sponsors popup displays ‘$15,000 a month’ with a progress bar showing 87% towards a $15,000 goal.
+Dive into GitHub Sponsors
+From startups to enterprises,
+GitHub scales
+with teams of any size in any industry.
+By industry
+By size
+By use case
+By industry
+Technology
+Figma streamlines development and strengthens security
+Read customer story
+Automotive
+Mercedes-Benz standardizes source code and automates onboarding
+Read customer story
+Financial services
+Mercado Libre cuts coding time by 50%
+Read customer story
+Explore customer stories
+View all solutions
+Millions of developers and businesses call GitHub home
+Whether you’re scaling your development process or just learning how to code, GitHub is where you belong. Join the world’s most widely adopted AI-powered developer platform to build the technologies that redefine what’s possible.
+Enter your email
+Sign up for GitHub
+Try GitHub Copilot
+Footnotes
+Survey: The AI wave continues to grow on software development teams, 2024.
+This 7X times factor is based on data from the industry’s longest running analysis of fix rates Veracode State of Software Security 2023, which cites the average time to fix 50% of flaws as 198 days vs. GitHub’s fix rates of 72% of flaws with in 28 days which is at a minimum of 7X faster when compared.
+Site-wide Links
+Subscribe to our developer newsletter
+Get tips, technical guides, and best practices. Twice a month.
+Subscribe
+Product
+Features
+Enterprise
+Copilot
+AI
+Security
+Pricing
+Team
+Resources
+Roadmap
+Compare GitHub
+Platform
+Developer API
+Partners
+Education
+GitHub CLI
+GitHub Desktop
+GitHub Mobile
+Support
+Docs
+Community Forum
+Professional Services
+Premium Support
+Skills
+Status
+Contact GitHub
+Company
+About
+Why GitHub
+Customer stories
+Blog
+The ReadME Project
+Careers
+Newsroom
+Inclusion
+Social Impact
+Shop
+©
+2025
+GitHub, Inc.
+Terms
+Privacy
+(Updated 02/2024)
+02/2024
+Sitemap
+What is Git?
+Manage cookies
+Do not share my personal information
+GitHub on LinkedIn
+Instagram
+GitHub on Instagram
+GitHub on YouTube
+GitHub on X
+TikTok
+GitHub on TikTok
+Twitch
+GitHub on Twitch
+GitHub’s organization on GitHub
+You can’t perform that action at this time.

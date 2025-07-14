@@ -1,0 +1,8 @@
+{
+    "cmake.sourceDirectory": "/home/blanche/ZorinOS/Assignments/NUS_tur/WisdomWeb/search-engine",
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "algorithm": "cpp",
+        "iostream": "cpp"
+    }
+}

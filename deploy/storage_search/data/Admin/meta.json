@@ -1,0 +1,11 @@
+{
+  "Admin": [
+    {
+      "is_inverted": true,
+      "is_trie": false,
+      "path": "../data/Admin/zjuers.com/_index.txt",
+      "tag": "Math",
+      "url": "https://zjuers.com"
+    }
+  ]
+}

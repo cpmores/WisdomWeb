@@ -1,0 +1,116 @@
+{
+	"kind" : "toolchains",
+	"toolchains" : 
+	[
+		{
+			"compiler" : 
+			{
+				"id" : "GNU",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"/home/blanche/miniconda3/envs/notebook/lib/gcc/x86_64-conda-linux-gnu/11.2.0/include",
+						"/home/blanche/miniconda3/envs/notebook/lib/gcc/x86_64-conda-linux-gnu/11.2.0/include-fixed",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/include",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/usr/include"
+					],
+					"linkDirectories" : 
+					[
+						"/home/blanche/miniconda3/envs/notebook/lib/gcc/x86_64-conda-linux-gnu/11.2.0",
+						"/home/blanche/miniconda3/envs/notebook/lib/gcc",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/lib64",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/lib64",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/usr/lib64",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/lib",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/lib",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/usr/lib"
+					],
+					"linkFrameworkDirectories" : [],
+					"linkLibraries" : 
+					[
+						"gcc",
+						"gcc_s",
+						"c",
+						"gcc",
+						"gcc_s"
+					]
+				},
+				"path" : "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-gcc",
+				"version" : "11.2.0"
+			},
+			"language" : "C",
+			"sourceFileExtensions" : 
+			[
+				"c",
+				"m"
+			]
+		},
+		{
+			"compiler" : 
+			{
+				"id" : "GNU",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/include/c++/11.2.0",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/include/c++/11.2.0/x86_64-conda-linux-gnu",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/include/c++/11.2.0/backward",
+						"/home/blanche/miniconda3/envs/notebook/lib/gcc/x86_64-conda-linux-gnu/11.2.0/include",
+						"/home/blanche/miniconda3/envs/notebook/lib/gcc/x86_64-conda-linux-gnu/11.2.0/include-fixed",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/include",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/usr/include"
+					],
+					"linkDirectories" : 
+					[
+						"/home/blanche/miniconda3/envs/notebook/lib/gcc/x86_64-conda-linux-gnu/11.2.0",
+						"/home/blanche/miniconda3/envs/notebook/lib/gcc",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/lib64",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/lib64",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/usr/lib64",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/lib",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/lib",
+						"/home/blanche/miniconda3/envs/notebook/x86_64-conda-linux-gnu/sysroot/usr/lib"
+					],
+					"linkFrameworkDirectories" : [],
+					"linkLibraries" : 
+					[
+						"stdc++",
+						"m",
+						"gcc_s",
+						"gcc",
+						"c",
+						"gcc_s",
+						"gcc"
+					]
+				},
+				"path" : "/home/blanche/miniconda3/envs/notebook/bin/x86_64-conda-linux-gnu-g++",
+				"version" : "11.2.0"
+			},
+			"language" : "CXX",
+			"sourceFileExtensions" : 
+			[
+				"C",
+				"M",
+				"c++",
+				"cc",
+				"cpp",
+				"cxx",
+				"mm",
+				"mpp",
+				"CPP",
+				"ixx",
+				"cppm",
+				"ccm",
+				"cxxm",
+				"c++m"
+			]
+		}
+	],
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}
