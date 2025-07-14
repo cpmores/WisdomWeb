@@ -1,0 +1,8 @@
+Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0N0BleGFtcGxlLmNvbSIsImlhdCI6MTc1MjA0NDYzMywiZXhwIjoxNzUyMTMxMDMzfQ.1j6oJYh9Ced__Ev6T5bS9Vbx19AgXQlczqu3VKPqFSFP9LridN8Uzo58eOi7qlM9KEDtBwvNRpk8ampfrSdfqw
+
+curl -X GET http://localhost:8080/api/user/status -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0N0BleGFtcGxlLmNvbSIsImlhdCI6MTc1MjA0NDYzMywiZXhwIjoxNzUyMTMxMDMzfQ.1j6oJYh9Ced__Ev6T5bS9Vbx19AgXQlczqu3VKPqFSFP9LridN8Uzo58eOi7qlM9KEDtBwvNRpk8ampfrSdfqw"
+
+find /home/bertha/study/大二下/nus/cloud_computer/project/backend/WebSearch/src/main/java/com/websearch/websearch -type f -exec cat {} + > all_data.txt
+
+
+curl -X POST -H "Content-Type: application/json" -d '{"url":"https://www.scu.edu.cn/index/js/xs.htm","tag":"scu","userid":"82313472", "operation":"append"}' http://192.168.78.246:3000/receive-json

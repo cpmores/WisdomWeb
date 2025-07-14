@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    container_name: mariadb
+    restart: always
+    environment:
+      MARIADB_DATABASE: WebSearch
+      MARIADB_USER: WebSearch
+      MARIADB_PASSWORD: WebSearch123!
+      MARIADB_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
+
+  backend:
+    build: .
+    container_name: web_backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/WebSearch
+      SPRING_DATASOURCE_USERNAME: WebSearch
+      SPRING_DATASOURCE_PASSWORD: WebSearch123!
+      SEARCHENGINE_URL: http://192.168.78.246:3001/search
+      CRAWLER_URL: http://192.168.78.246:3000
+      JWT_SECRET: 4jF5g9k3mP2qW7rT8xY1zA0vB6nC4uL9tE2hJ3kI5mO7pQ8rS9uV0wX1yZ2aB4cD6eF8gI0jK2lM4nP6qS8tU0vW2xY4zA6bC8dE0fG2hI4jK6

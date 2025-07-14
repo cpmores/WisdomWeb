@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trie-backend
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: trie-backend
+  template:
+    metadata:
+      labels:
+        app: trie-backend
+    spec:
+      containers:
+      - name: trie-backend
+        image: bertha6651/trie_backend:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: TRIE_SERVER_URL
+          value: "http://trie-server:3002/trie-json"
+        - name: FLASK_ENV
+          value: "production"
+        - name: FLASK_APP
+          value: "app.py"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
