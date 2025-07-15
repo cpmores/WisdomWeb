@@ -178,11 +178,12 @@ export default {
             JQueryDOM.addClass(this.$refs.tagModal, 'success-animation')
           }
 
+          // 立即通知父组件刷新所有书签和标签
+          this.$emit('refresh-all')
+
           // 延迟关闭模态框
           setTimeout(() => {
             this.closeModal()
-            // 触发父组件更新
-            this.$emit('bookmark-added')
           }, 1500)
         } else {
           this.showMessage(response.message || '添加收藏失败', 'error')
@@ -248,7 +249,7 @@ export default {
 
         const response = await getUserTags(userId)
         if (response.success) {
-          this.userTags = response.tags || []
+          this.userTags = response.tag || []
         }
       } catch (error) {
         console.error('加载用户标签失败:', error)

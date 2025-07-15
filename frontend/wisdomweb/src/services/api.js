@@ -4,7 +4,7 @@
  */
 
 import httpClient from './http-client.js'
-import { API_ENDPOINTS, API_CONFIG } from '../config/api.config.js'
+import { API_ENDPOINTS, API_CONFIG, getAiApiBaseUrl } from '../config/api.config.js'
 
 // ==================== 用户认证相关 ====================
 
@@ -444,7 +444,15 @@ export async function recordBookmarkClick(url) {
  */
 export async function getUserTags() {
   const endpoint = API_ENDPOINTS.TAGS.GET_USER_TAGS
-  return await httpClient.get(endpoint.url)
+  const response = await httpClient.get(endpoint.url)
+  // 适配服务器返回的新格式：对象数组 [{tag, urlCount}, ...]
+  if (response && Array.isArray(response.data)) {
+    // 直接返回对象数组
+    return response.data
+  } else {
+    // 兼容旧格式或错误情况
+    return []
+  }
 }
 
 // ==================== 搜索功能相关 ====================
@@ -660,13 +668,70 @@ export async function getSearchHistory(sortBy = 'time') {
 // ==================== AI助手相关 ====================
 
 /**
- * AI对话
- * @param {Object} chatData - 对话数据 {message, context, model}
- * @returns {Promise<Object>} 对话结果
+ * AI助手对话
+ * @param {Object} chatData - {userid, message, is_first_chat}
+ * @returns {Promise<Object|string>} AI回复
  */
-export async function chatWithAI(chatData) {
+/*export async function chatWithAI(chatData) {
   const endpoint = API_ENDPOINTS.AI.CHAT
-  return await httpClient.post(endpoint.url, chatData)
+  // 使用AI专用BASE_URL
+  const aiBaseUrl = API_CONFIG.AI_BASE_URL || getAiApiBaseUrl() || ''
+  const url = aiBaseUrl ? `${aiBaseUrl}${endpoint.url}` : endpoint.url
+  try {
+    const response = await httpClient.post(url, chatData, { includeAuth: true })
+    return response
+  } catch (error) {
+    return error.message || 'AI对话请求失败'
+  }
+}*/
+
+// src/services/api.js
+export async function chatWithAI(payload) {
+  const aiBaseUrl = API_CONFIG.AI_BASE_URL || getAiApiBaseUrl() || ''
+  const endpoint = API_ENDPOINTS.AI.CHAT
+  const url = aiBaseUrl ? `${aiBaseUrl}${endpoint.url}` : endpoint.url
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.body) {
+    throw new Error('No response body')
+  }
+
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+  let buffer = ''
+
+  // async generator
+  async function* streamChunks() {
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      buffer += decoder.decode(value, { stream: true })
+      let lines = buffer.split('\n')
+      buffer = lines.pop() // 最后一行可能是不完整的
+      for (const line of lines) {
+        if (line.trim()) {
+          try {
+            yield JSON.parse(line)
+          } catch (e) {
+            // 跳过解析失败的行
+          }
+        }
+      }
+    }
+    // 处理最后一行
+    if (buffer.trim()) {
+      try {
+        yield JSON.parse(buffer)
+      } catch (e) {}
+    }
+  }
+
+  return streamChunks()
 }
 
 // ==================== 工具函数 ====================

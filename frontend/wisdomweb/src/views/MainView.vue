@@ -270,6 +270,7 @@
         <div class="ai-chat-header">
           <h3>AI助手</h3>
           <button @click="showAIChat = false" class="close-btn">×</button>
+          <button @click="startNewChat" class="new-chat-btn">新增对话</button>
         </div>
 
         <div class="ai-chat-messages" ref="chatMessages">
@@ -297,7 +298,7 @@
       :show-tag-modal="showTagModal"
       :bookmark-url="bookmarkUrl"
       @close="closeTagModal"
-      @bookmark-added="onBookmarkAdded"
+      @refresh-all="onRefreshAll"
     />
   </div>
 </template>
@@ -314,6 +315,7 @@ import {
   prefixMatch,
   getSearchHistory,
   multiSearchBookmarks,
+  prefixTreeLogout,
 } from '../services/api.js'
 import TagManager from '../components/TagManager.vue'
 import WordCloud from '../components/WordCloud.vue'
@@ -366,6 +368,7 @@ export default {
       showAIChat: false,
       aiInput: '',
       chatMessages: [],
+      isFirstChat: true,
       isDragging: false,
       dragOffset: { x: 0, y: 0 },
     }
@@ -402,6 +405,13 @@ export default {
 
     // 初始化AI悬浮球位置
     this.initAIBallPosition()
+
+    // BOM检测：监听页面关闭，自动登出
+    window.addEventListener('beforeunload', this.handleWindowClose)
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('beforeunload', this.handleWindowClose)
   },
 
   methods: {
@@ -454,11 +464,15 @@ export default {
 
         const response = await getUserTags(userId)
 
-        if (response.success) {
-          this.userTags = response.tags
-          this.tagCounts = response.tagCounts || {}
+        if (Array.isArray(response)) {
+          this.userTags = response.map((item) => item.tag)
+          this.tagCounts = {}
+          response.forEach((item) => {
+            this.tagCounts[item.tag] = item.urlCount
+          })
         } else {
-          console.error('获取用户标签失败:', response.message)
+          this.userTags = []
+          this.tagCounts = {}
         }
       } catch (error) {
         console.error('加载用户标签失败:', error)
@@ -612,9 +626,9 @@ export default {
     },
 
     /**
-     * 添加收藏 - 显示标签管理对话框
+     * 添加收藏 - 显示标签管理对话框，并刷新标签和书签
      */
-    handleAddBookmark() {
+    async handleAddBookmark() {
       if (!this.bookmarkUrl.trim()) {
         alert('请输入要收藏的网页链接')
         return
@@ -627,6 +641,9 @@ export default {
         alert('请输入有效的网页链接')
         return
       }
+      //TODO
+      // 点击收藏时立即刷新标签和书签
+      await this.refreshTagsAndBookmarks()
 
       // 显示标签管理对话框
       this.showTagModal = true
@@ -917,6 +934,15 @@ export default {
     },
 
     /**
+     * 新增对话，清空对话内容，重置isFirstChat
+     */
+    startNewChat() {
+      this.chatMessages = []
+      this.aiInput = ''
+      this.isFirstChat = true
+    },
+
+    /**
      * 发送AI消息 - 用户输入的内容会出现在对话框上方
      */
     async sendAIMessage() {
@@ -929,7 +955,6 @@ export default {
         content: this.aiInput,
         timestamp: new Date().toISOString(),
       }
-
       this.chatMessages.push(userMessage)
       const messageToSend = this.aiInput
       this.aiInput = ''
@@ -940,30 +965,71 @@ export default {
       })
 
       try {
-        const userId = localStorage.getItem('userId')
-        // 将输入的内容发送给后端
-        const response = await chatWithAI(messageToSend, userId)
+        //TODO
 
-        if (response.success) {
-          // 后端将回答发送过来后，会显示在对话框中
-          const aiMessage = {
-            id: Date.now() + 1,
-            type: 'ai',
-            content: response.response,
-            timestamp: response.timestamp,
+        const userData = localStorage.getItem('userData')
+
+        const userIdJson = JSON.parse(userData)
+        const userId = userIdJson['user']['userId']
+
+        // 发送is_first_chat字段
+        const payload = {
+          userid: userId,
+          message: messageToSend,
+          is_first_chat: this.isFirstChat,
+        }
+        // 发送后将isFirstChat设为false
+        this.isFirstChat = false
+
+        // 新增：流式处理AI回复
+        let aiReply = ''
+        // 先插入一条空的AI消息
+        const aiMessage = {
+          id: Date.now() + 1,
+          type: 'ai',
+          content: '',
+          timestamp: new Date().toISOString(),
+        }
+        this.chatMessages.push(aiMessage)
+        this.$nextTick(() => {
+          this.scrollToBottom()
+        })
+
+        // 假设chatWithAI返回的是一个异步可迭代对象（如fetch+ReadableStream），否则需后端配合
+        const stream = await chatWithAI(payload)
+
+        if (stream && typeof stream[Symbol.asyncIterator] === 'function') {
+          for await (const chunk of stream) {
+            // chunk: { response: '...', status: 'sending'|'done' }
+            if (chunk.status === 'sending') {
+              aiReply += chunk.response
+              aiMessage.content = aiReply
+              this.$forceUpdate()
+              this.$nextTick(() => {
+                this.scrollToBottom()
+              })
+              console.log('AI回复:', aiReply)
+            } else if (chunk.status === 'done') {
+              break
+            }
           }
-
-          this.chatMessages.push(aiMessage)
-
-          // 滚动到底部
-          this.$nextTick(() => {
-            this.scrollToBottom()
-          })
+        } else {
+          // 兼容非流式返回
+          let resp = stream
+          if (typeof resp === 'string') {
+            aiReply = resp
+          } else if (resp && resp.response) {
+            aiReply = resp.response
+          } else {
+            aiReply = 'AI助手未返回有效内容。'
+          }
+          aiMessage.content = aiReply
+          this.$forceUpdate()
         }
       } catch (error) {
-        console.error('AI对话失败:', error)
+        // 错误处理
         const errorMessage = {
-          id: Date.now() + 1,
+          id: Date.now() + 2,
           type: 'ai',
           content: '抱歉，我暂时无法回答您的问题，请稍后重试。',
           timestamp: new Date().toISOString(),
@@ -1170,6 +1236,74 @@ export default {
       } catch (error) {
         console.error('退出登录失败:', error)
         this.showErrorMessage('退出登录失败，请稍后重试')
+      }
+    },
+
+    async onRefreshAll() {
+      // 并行刷新所有书签和标签
+      await Promise.all([this.loadAllBookmarks(), this.loadUserTags()])
+      this.showSuccessMessage('收藏添加成功！')
+    },
+
+    /**
+     * 并行刷新标签和书签，更新词云、标签筛选栏和网址展示框
+     */
+    async refreshTagsAndBookmarks() {
+      const [tagsResp, bookmarksResp] = await Promise.all([
+        getUserTags(),
+        getAllBookmarks(this.currentSortBy),
+      ])
+      // 处理标签
+      if (Array.isArray(tagsResp)) {
+        this.userTags = tagsResp.map((item) => item.tag)
+        this.tagCounts = {}
+        tagsResp.forEach((item) => {
+          this.tagCounts[item.tag] = item.urlCount
+        })
+      } else {
+        this.userTags = []
+        this.tagCounts = {}
+      }
+      // 处理书签
+      if (bookmarksResp && bookmarksResp.success && Array.isArray(bookmarksResp.data)) {
+        const allBookmarks = []
+        let totalCount = 0
+        bookmarksResp.data.forEach((group) => {
+          if (group.bookmarks && Array.isArray(group.bookmarks)) {
+            group.bookmarks.forEach((bookmark) => {
+              allBookmarks.push({
+                ...bookmark,
+                id: `${bookmark.url}_${bookmark.tag}`,
+                title: bookmark.url,
+                tags: [bookmark.tag],
+                clickCount: bookmark.click_count,
+                createdAt: bookmark.created_at,
+              })
+            })
+            totalCount += group.bookmarks.length
+          }
+        })
+        this.bookmarks = allBookmarks
+        this.totalBookmarksCount = totalCount
+        this.totalPages = 1
+      } else {
+        this.bookmarks = []
+        this.totalBookmarksCount = 0
+        this.totalPages = 1
+      }
+    },
+
+    async handleWindowClose(event) {
+      try {
+        const userId = localStorage.getItem('userId')
+        if (userId) {
+          // 前缀树登出
+          await prefixTreeLogout(userId)
+        }
+        // 常规登出
+        await logout()
+      } catch (error) {
+        // 关闭页面时不提示错误
       }
     },
   },
@@ -2024,6 +2158,26 @@ export default {
 
 .ai-send-btn:hover {
   background: #357abd;
+}
+
+.new-chat-btn {
+  padding: 8px 16px;
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.new-chat-btn:hover {
+  background: #e9ecef;
+  border-color: #4a90e2;
+  color: #4a90e2;
 }
 
 /* 成功消息动画 */

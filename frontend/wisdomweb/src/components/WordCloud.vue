@@ -2,7 +2,7 @@
   <div class="word-cloud-container">
     <canvas ref="canvas" class="word-cloud-canvas"></canvas>
     <div v-if="!hasData" class="no-data">
-      <p>暂无标签数据</p>
+      <p></p>
     </div>
   </div>
 </template>
