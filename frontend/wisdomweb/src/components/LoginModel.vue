@@ -1,7 +1,9 @@
 <template>
+  <transition name="modal">
   <!-- 登录模态框 -->
   <div v-if="showModal" class="login-modal-overlay" @click="closeModal" ref="modalOverlay">
     <div class="login-modal" @click.stop ref="loginModal">
+      
       <!-- 登录界面 -->
       <div v-if="!isRegisterMode" class="login-form" ref="loginForm">
         <h2 class="modal-title">用户登录</h2>
@@ -106,6 +108,7 @@
       </div>
     </div>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -530,11 +533,12 @@ export default {
 /* 模态框遮罩层 */
 .login-modal-overlay {
   position: fixed;
+  z-index: 1000;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -595,9 +599,14 @@ export default {
 
 /* 按钮组 */
 .button-group {
-  display: flex;
-  gap: 12px;
-  margin-top: 30px;
+  margin-left: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'ReadexPro';
+  transition: background-color 0.2s;
 }
 
 /* 按钮样式 */

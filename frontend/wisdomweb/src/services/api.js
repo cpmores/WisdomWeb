@@ -444,16 +444,36 @@ export async function recordBookmarkClick(url) {
  */
 export async function getUserTags() {
   const endpoint = API_ENDPOINTS.TAGS.GET_USER_TAGS
+  //TODO 数据类型未解决
   const response = await httpClient.get(endpoint.url)
   // 适配服务器返回的新格式：对象数组 [{tag, urlCount}, ...]
-  if (response && Array.isArray(response.data)) {
-    // 直接返回对象数组
-    return response.data
-  } else {
-    // 兼容旧格式或错误情况
-    return []
+  console.log(response)
+  console.log(typeof response)//object
+  console.log(response[0])
+
+  let data = []
+  for (const item of response) {
+    data.push({
+      tag: item.tag,
+      urlCount: item.urlCount,
+    })
   }
-}
+
+  console.log(data)
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data)
+      } catch (e) {
+        data = []
+      }
+    }
+    if (Array.isArray(data)) {
+      return data // JS对象数组
+    } else {
+      return []
+    }
+
+}  
 
 // ==================== 搜索功能相关 ====================
 

@@ -126,7 +126,6 @@ export const API_ENDPOINTS = {
 
   // 标签管理相关
   TAGS: {
-    //TODO 使用了但是未实现
     // 获取用户标签
     GET_USER_TAGS: {
       url: '/bookmarks/listTagsWithCounts',

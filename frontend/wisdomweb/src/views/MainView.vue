@@ -437,7 +437,7 @@ export default {
     },
 
     /**
-     * 加载用户标签
+     * 获取最新用户标签，存入存储中，并加载用户标签
      */
     async loadUserTags() {
       try {
@@ -461,15 +461,27 @@ export default {
           console.error('无法获取用户ID，跳过加载用户标签')
           return
         }
-
+        // 向后端发送请求，获取用户标签
+        //TODO 已解决将数据存入localStorage
         const response = await getUserTags(userId)
+        console.log(response)
 
         if (Array.isArray(response)) {
-          this.userTags = response.map((item) => item.tag)
-          this.tagCounts = {}
+          // 先存localStorage
+          let tagCounts = {}
           response.forEach((item) => {
-            this.tagCounts[item.tag] = item.urlCount
+            tagCounts[item.tag] = item.urlCount
           })
+          let userData = localStorage.getItem('userData')
+          if (userData) {
+            userData = JSON.parse(userData)
+            Object.assign(userData.tagCounts, tagCounts)
+            console.log(userData)
+            localStorage.setItem('userData', JSON.stringify(userData))
+          }
+          // 再更新内存
+          this.userTags = response.map((item) => item.tag)
+          this.tagCounts = tagCounts
         } else {
           this.userTags = []
           this.tagCounts = {}
@@ -965,8 +977,6 @@ export default {
       })
 
       try {
-        
-
         const userData = localStorage.getItem('userData')
 
         const userIdJson = JSON.parse(userData)
@@ -1213,6 +1223,8 @@ export default {
 
           // 关闭用户中心
           this.showUserCenter = false
+          // 跳转到PortalView
+          this.$router.push('/')
         } else {
           // 显示错误消息
           this.showErrorMessage(response.message)
@@ -1254,6 +1266,7 @@ export default {
         getAllBookmarks(this.currentSortBy),
       ])
       // 处理标签
+
       if (Array.isArray(tagsResp)) {
         this.userTags = tagsResp.map((item) => item.tag)
         this.tagCounts = {}
@@ -1291,6 +1304,13 @@ export default {
         this.totalBookmarksCount = 0
         this.totalPages = 1
       }
+    },
+
+    async refreshAllModules() {
+      // 并行获取标签和书签
+      await Promise.all([this.loadUserTags(), this.loadAllBookmarks()])
+      // 可选：可在此处添加提示或回调
+      // this.showSuccessMessage('数据已刷新！')
     },
 
     async handleWindowClose(event) {
