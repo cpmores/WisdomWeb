@@ -3,19 +3,21 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-COPY vite.config.js ./
-COPY src ./src
-COPY public ./public
-COPY .env ./
-COPY .env.production ./
-COPY index.html ./
+COPY . ./
 
 RUN npm install
+
+ENV VITE_API_BASE_URL=http://192.168.213.116:8080/api
+ENV VITE_PREFIX_TREE_BASE_URL=http://default-prefix.com
+ENV VITE_AI_API_BASE_URL=http://ai_service_ip:port/api
+
 RUN npm run build
+
 
 # 2. 生产环境阶段
 FROM nginx:alpine
+
+
 
 # 拷贝构建产物
 COPY --from=builder /app/dist /usr/share/nginx/html
