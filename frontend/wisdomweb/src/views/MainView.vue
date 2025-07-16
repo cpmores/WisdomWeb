@@ -1200,12 +1200,12 @@ export default {
       try {
         // 获取用户token和用户ID
         const token = localStorage.getItem('userToken') || 'fromLogin'
-        const userId = localStorage.getItem('userId')
-
+        const id = localStorage.getItem('id')
+        //TODO：前缀树登出
         // 先调用前缀树登出API清除用户缓存数据
-        if (userId) {
+        if (id) {
           try {
-            await prefixTreeLogout(userId)
+            await prefixTreeLogout(id)
             console.log('用户缓存数据清除成功')
           } catch (error) {
             console.error('清除用户缓存数据失败:', error)

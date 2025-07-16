@@ -597,15 +597,15 @@ export async function prefixMatch(idnum, prefix) {
  */
 export async function prefixTreeLogout(userid) {
   const endpoint = API_ENDPOINTS.SEARCH.PREFIX_TREE_LOGOUT
-
+  const id = String(userid)
   // 验证参数
-  if (!userid || !userid.trim()) {
+  if (!id || !id.trim()) {
     throw new Error('userid cannot be empty')
   }
 
   // 准备请求数据
   const requestData = {
-    userid: userid.trim(),
+    id: id.trim(),
   }
 
   try {
@@ -621,7 +621,7 @@ export async function prefixTreeLogout(userid) {
         success: true,
         data: {
           message: response.message,
-          userid: response.userid,
+          id: response.id,
         },
         message: '用户缓存数据清除成功',
       }
