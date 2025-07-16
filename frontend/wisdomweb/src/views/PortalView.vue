@@ -1,4 +1,5 @@
 <template>
+  <BackgroundAnimation />
   <div class="portal-view">
     <!-- 门户界面背景 -->
     <div class="logo-container" ref="logoContainer">
@@ -6,12 +7,11 @@
       <LogoCore class="logo-core" ref="logoCore" />
     </div>
     <div class="btn-container" ref="btnContainer">
-      <button class="portal-btn" @click="showLoginModal = true">Login</button>
-      <button class="portal-btn" @click="showRegisterModal = true">Register</button>
+      <button class="portal-btn" @click="showLoginModal = true">Start Your Journey</button>
     </div>
   </div>
-    
-    <!-- 登录模态框 -->
+
+  <!-- 登录模态框 -->
   <div>
     <LoginModel
       :show-modal="showLoginModal"
@@ -28,6 +28,7 @@ import { ref } from 'vue'
 import ArcText from '../components/ArcText.vue'
 import { onMounted } from 'vue'
 import LogoCore from '../components/LogoCore.vue'
+import BackgroundAnimation from '../components/BackgroundAnimation.vue'
 
 export default {
   name: 'PortalView',
@@ -35,12 +36,12 @@ export default {
     LoginModel,
     ArcText,
     LogoCore,
+    BackgroundAnimation,
   },
   data() {
-    const logoContainer = ref(null);
-    const logoCore = ref(null);
-    const btnContainer = ref(null);
-
+    const logoContainer = ref(null)
+    const logoCore = ref(null)
+    const btnContainer = ref(null)
 
     return {
       logoContainer,
@@ -63,14 +64,14 @@ export default {
   },
 
   mounted() {
-    this.logoContainer = this.$refs.logoContainer;
-    this.logoCore = this.$refs.logoCore;
-    this.btnContainer = this.$refs.btnContainer;
+    this.logoContainer = this.$refs.logoContainer
+    this.logoCore = this.$refs.logoCore
+    this.btnContainer = this.$refs.btnContainer
 
-    gsap.set(this.logoContainer, { scale: 1.5 });
-    gsap.set(this.btnContainer, { opacity: 0, y: 50 });
+    gsap.set(this.logoContainer, { scale: 1.5 })
+    gsap.set(this.btnContainer, { opacity: 0, y: 50 })
 
-    const timeline = gsap.timeline();
+    const timeline = gsap.timeline()
     timeline
       .add(() => this.logoCore.animate())
       .to(this.logoContainer, {
@@ -82,107 +83,32 @@ export default {
             opacity: 1,
             y: 0,
             duration: 0.6,
-            ease: Power3.out
-          });
-        }
-      });
-  }
+            ease: Power3.out,
+          })
+        },
+      })
+  },
 }
-
 </script>
 
 <style scoped>
 .portal-view {
-width: 100vw;
+  width: 100vw;
   height: 100vh;
-  background-color: #fdf1e9;
+  background-color: transparent;
   display: flex;
+  gap: 10vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: visible;
   position: relative;
+  z-index: 2;
+  pointer-events: none;
 }
 
-.portal-background {
-  width: 100%;
-  max-width: 1200px;
-  text-align: center;
-}
 
-.portal-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 60px;
-}
 
-.site-info {
-  color: white;
-  max-width: 800px;
-}
-
-.site-title {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  letter-spacing: 2px;
-}
-
-.site-description {
-  font-size: 1.3rem;
-  margin-bottom: 40px;
-  opacity: 0.9;
-  line-height: 1.6;
-}
-
-.site-features {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-}
-
-.feature-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition:
-    transform 0.3s ease,
-    background 0.3s ease;
-}
-
-.feature-item:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.feature-icon {
-  font-size: 2rem;
-}
-
-.feature-text {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.login-prompt {
-  color: white;
-  text-align: center;
-}
-
-.login-prompt p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  opacity: 0.9;
-}
 
 .login-btn {
   background: rgba(255, 255, 255, 0.2);
@@ -211,16 +137,17 @@ width: 100vw;
   align-items: center;
   justify-content: center;
   width: 340px;
-  height: 34vh;
+  height: 340px;
   margin-bottom: 0px;
+  pointer-events: none;
 }
 
 .logo-core {
   position: absolute;
-  top: 13vh;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1; /* Place behind ArcText to avoid overlap */
+  z-index: 5; /* Place behind ArcText to avoid overlap */
   width: 100px; /* Adjust based on LogoCore's size */
   height: 100px; /* Adjust based on LogoCore's size */
 }
@@ -229,7 +156,7 @@ width: 100vw;
   margin-top: 0px;
 }
 
-.portal-btn{
+.portal-btn {
   background-color: #663311;
   color: #fff;
   border: none;
@@ -238,10 +165,18 @@ width: 100vw;
   border-radius: 24px;
   font-size: 1.2rem;
   font-family: 'ReadexPro', serif;
-  width: 130px;
+  width: 200px;
   cursor: pointer;
   box-shadow: 0 2px 8px #0001;
-  transition: background 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  pointer-events: auto;
+}
+
+.particle-animation {
+  z-index: 5;
+  position: relative;
 }
 
 /* 响应式设计 */

@@ -46,16 +46,16 @@ export default {
 
 <style scoped>
 .logo-core {
-  position: absolute;
+  /* position: absolute;
   left: 50%;
-  top: 50%;
+  top: 50%; */
   transform: translate(-50%, -50%);
   width: 120px;
   height: 160px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 3;
+  z-index: 5;
 }
 
 .database {

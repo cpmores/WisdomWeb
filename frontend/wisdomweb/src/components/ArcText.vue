@@ -21,13 +21,13 @@ export default {
 
 <style scoped>
 .logo-arc-text {
-  position: absolute;
+  position: relative;
   left: 0;
   top: 0;
   pointer-events: none;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 5;
 }
 
 .logo-arc-text text {
@@ -40,7 +40,7 @@ export default {
 }
 
 .logo-arc-text text:nth-child(2) {
-  animation-delay: 1s;
+  animation-delay: 0.5s;
 }
 
 @keyframes fadeIn {
