@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Readex';
+    src: url('./fonts/ReadexPro-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Readex';
+    src: url('./fonts/ReadexPro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Readex';
+    src: url('./fonts/ReadexPro-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}

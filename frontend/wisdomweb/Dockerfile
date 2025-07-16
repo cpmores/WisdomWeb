@@ -7,9 +7,9 @@ COPY . ./
 
 RUN npm install
 
-ENV VITE_API_BASE_URL=http://192.168.213.116:8080/api
-ENV VITE_PREFIX_TREE_BASE_URL=http://default-prefix.com
-ENV VITE_AI_API_BASE_URL=http://ai_service_ip:port/api
+ENV VITE_API_BASE_URL=http://backend:8080/api
+ENV VITE_PREFIX_TREE_BASE_URL=http://keyword-service:5000
+ENV VITE_AI_API_BASE_URL=http://ai-agent:3003
 
 RUN npm run build
 

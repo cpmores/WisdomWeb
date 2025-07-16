@@ -151,21 +151,10 @@ export default {
      */
     getRandomColor() {
       const colors = [
-        '#4a90e2',
-        '#67c23a',
-        '#e6a23c',
-        '#f56c6c',
-        '#909399',
-        '#409eff',
-        '#67c23a',
-        '#e6a23c',
-        '#f56c6c',
-        '#909399',
-        '#36cfc9',
-        '#73d13d',
-        '#ffc53d',
-        '#ff7875',
-        '#d3adf7',
+          '#001524',
+          '#15616D',
+          '#FF7D00',
+          '#78290F'
       ]
       return colors[Math.floor(Math.random() * colors.length)]
     },
@@ -298,9 +287,10 @@ export default {
   position: relative;
   width: 100%;
   height: 300px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #FFECD1;
   border-radius: 12px;
   overflow: hidden;
+  opacity: 1;
 }
 
 .word-cloud-canvas {

@@ -538,16 +538,16 @@ export async function multiSearchBookmarks(searchParams) {
 
 /**
  * 前缀匹配搜索
- * @param {string} userid - 用户唯一标识符
+ * @param {string} id - 用户标识符
  * @param {string} prefix - 要搜索的前缀（中文或英文）
  * @returns {Promise<Object>} 匹配结果
  */
-export async function prefixMatch(userid, prefix) {
+export async function prefixMatch(idnum, prefix) {
   const endpoint = API_ENDPOINTS.SEARCH.PREFIX_MATCH
-
+  const id = String(idnum)
   // 验证参数
-  if (!userid || !userid.trim()) {
-    throw new Error('userid cannot be empty')
+  if (!id || !id.trim()) {
+    throw new Error('id cannot be empty')
   }
 
   if (!prefix || !prefix.trim()) {
@@ -556,7 +556,7 @@ export async function prefixMatch(userid, prefix) {
 
   // 准备请求参数
   const params = new URLSearchParams({
-    userid: userid.trim(),
+    userid: id.trim(),
     prefix: prefix.trim(),
   })
 
@@ -573,7 +573,7 @@ export async function prefixMatch(userid, prefix) {
         success: true,
         data: {
           results: response.results,
-          userid: response.userid,
+          id: response.id,
           language: response.language,
         },
         message: '匹配成功',
