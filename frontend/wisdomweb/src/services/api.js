@@ -592,7 +592,7 @@ export async function prefixMatch(idnum, prefix) {
 
 /**
  * 前缀树登出 - 清除指定用户的缓存数据
- * @param {string} userid - 用户唯一标识符
+ * @param {string} id - 用户标识符
  * @returns {Promise<Object>} 清除结果
  */
 export async function prefixTreeLogout(userid) {
@@ -600,7 +600,7 @@ export async function prefixTreeLogout(userid) {
   const id = String(userid)
   // 验证参数
   if (!id || !id.trim()) {
-    throw new Error('userid cannot be empty')
+    throw new Error('id cannot be empty')
   }
 
   // 准备请求数据
