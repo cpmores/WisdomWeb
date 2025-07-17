@@ -5,7 +5,7 @@
       <BackgroundAnimation />
       <!-- 用户中心入口 -->
       <div class="user-center-trigger" @click="showUserCenter = true">
-        <img src="../components/icons/me.png" alt="用户头像" class="user-avatar" />
+        <img src="../components/icons/me.png" alt="user avatar" class="user-avatar" />
       </div>
 
       <div class="logo-container">
@@ -170,9 +170,9 @@
           </div>
         </div>
         <div v-if="bookmarks.length === 0" class="no-bookmarks">
-          <p v-if="selectedTag">没有找到包含"{{ selectedTag }}"标签的收藏</p>
-          <p v-else-if="searchQuery">没有找到包含"{{ searchQuery }}"的收藏</p>
-          <p v-else>暂无收藏内容</p>
+          <p v-if="selectedTag">No bookmarks found for "{{ selectedTag }}"</p>
+          <p v-else-if="searchQuery">No bookmarks found for "{{ searchQuery }}"</p>
+          <p v-else>No bookmarks found</p>
         </div>
         <div v-else class="bookmarks-list">
           <div v-for="bookmark in bookmarks" :key="bookmark.id" class="bookmark-item">
@@ -183,7 +183,7 @@
                   <button
                     @click="handleDeleteBookmark(bookmark)"
                     class="delete-btn"
-                    title="删除收藏"
+                    title="delete bookmark"
                   >
                     <img src="../components/icons/delete.png" class="delete-icon" />
                   </button>
@@ -251,7 +251,7 @@
             <p class="user-name">User Name: {{ userInfo.username }}</p>
             <p class="user-email">Email: {{ userInfo.email }}</p>
           </div>
-          <button @click="handleLogout" class="logout-btn">退出登录</button>
+          <button @click="handleLogout" class="logout-btn">Logout</button>
         </div>
       </div>
     </div>
@@ -1123,7 +1123,7 @@ export default {
      */
     getMostUsedTag() {
       if (Object.keys(this.tagCounts).length === 0) {
-        return '暂无'
+        return 'No tags'
       }
 
       const maxCount = Math.max(...Object.values(this.tagCounts))
@@ -1131,7 +1131,7 @@ export default {
         (tag) => this.tagCounts[tag] === maxCount,
       )
 
-      return mostUsedTags[0] || '暂无'
+      return mostUsedTags[0] || 'No tags'
     },
 
     /**
@@ -1140,7 +1140,7 @@ export default {
     async handleDeleteBookmark(bookmark) {
       try {
         // 确认删除
-        if (!confirm(`确定要删除收藏"${bookmark.title}"吗？`)) {
+        if (!confirm(`Are you sure you want to delete the bookmark "${bookmark.title}"?`)) {
           return
         }
 
@@ -1151,7 +1151,7 @@ export default {
 
         if (response.success) {
           // 显示成功消息
-          this.showSuccessMessage('收藏删除成功！')
+          this.showSuccessMessage('Bookmark deleted successfully!')
 
           // 从当前列表中移除该收藏
           const index = this.bookmarks.findIndex((b) => b.id === bookmark.id)
@@ -1174,21 +1174,21 @@ export default {
           this.totalPages = Math.ceil(this.totalBookmarksCount / this.pageSize)
         } else {
           // 显示错误消息
-          const errorMessage = response.message || '删除失败'
-          alert(`删除失败：${errorMessage}`)
+          const errorMessage = response.message || 'Delete bookmark failed'
+          alert(`Delete bookmark failed: ${errorMessage}`)
           this.showErrorMessage(errorMessage)
         }
       } catch (error) {
-        console.error('删除收藏失败:', error)
+        console.error('Delete bookmark failed:', error)
 
         // 显示具体的错误信息
-        let errorMessage = '删除收藏失败，请稍后重试'
+        let errorMessage = 'Delete bookmark failed, please try again later'
         if (error.message) {
           errorMessage = error.message
         }
 
         // 弹出错误提示框
-        alert(`删除失败：${errorMessage}`)
+        alert(`Delete bookmark failed: ${errorMessage}`)
         this.showErrorMessage(errorMessage)
       }
     },
@@ -1218,7 +1218,7 @@ export default {
 
         if (response.success) {
           // 显示成功消息
-          this.showSuccessMessage('退出登录成功！')
+          this.showSuccessMessage('Logout successfully!')
 
           // 清除本地存储
           localStorage.removeItem('isLoggedIn')
