@@ -1,111 +1,113 @@
 <template>
-  <!-- 登录模态框 -->
-  <div v-if="showModal" class="login-modal-overlay" @click="closeModal" ref="modalOverlay">
-    <div class="login-modal" @click.stop ref="loginModal">
-      <!-- 登录界面 -->
-      <div v-if="!isRegisterMode" class="login-form" ref="loginForm">
-        <h2 class="modal-title">用户登录</h2>
+  <transition name="modal">
+    <!-- 登录模态框 -->
+    <div v-if="showModal" class="login-modal-overlay" @click="closeModal" ref="modalOverlay">
+      <div class="login-modal" @click.stop ref="loginModal">
+        <!-- 登录界面 -->
+        <div v-if="!isRegisterMode" class="login-form" ref="loginForm">
+          <h2 class="modal-title">User Login</h2>
 
-        <!-- 邮箱输入框 -->
-        <div class="input-group">
-          <label for="login-email">邮箱</label>
-          <input
-            id="login-email"
-            v-model="loginForm.email"
-            type="email"
-            placeholder="请输入邮箱地址"
-            required
-            ref="loginEmail"
-          />
+          <!-- 邮箱输入框 -->
+          <div class="input-group">
+            <label for="login-email">email</label>
+            <input
+              id="login-email"
+              v-model="loginForm.email"
+              type="email"
+              placeholder="Please enter your email"
+              required
+              ref="loginEmail"
+            />
+          </div>
+
+          <!-- 密码输入框 -->
+          <div class="input-group">
+            <label for="login-password">password</label>
+            <input
+              id="login-password"
+              v-model="loginForm.password"
+              type="password"
+              placeholder="Please enter your password"
+              required
+              ref="loginPassword"
+            />
+          </div>
+
+          <!-- 登录/注册按钮 -->
+          <div class="button-group">
+            <button @click="switchToRegister" class="btn btn-secondary" ref="registerBtn">
+              register
+            </button>
+            <button @click="handleLogin" class="btn btn-primary" ref="loginBtn">login</button>
+          </div>
         </div>
 
-        <!-- 密码输入框 -->
-        <div class="input-group">
-          <label for="login-password">密码</label>
-          <input
-            id="login-password"
-            v-model="loginForm.password"
-            type="password"
-            placeholder="请输入密码"
-            required
-            ref="loginPassword"
-          />
+        <!-- 注册界面 -->
+        <div v-else class="register-form" ref="registerForm">
+          <h2 class="modal-title">User Register</h2>
+
+          <!-- 用户名输入框 -->
+          <div class="input-group">
+            <label for="register-username">User name</label>
+            <input
+              id="register-username"
+              v-model="registerForm.username"
+              type="text"
+              placeholder="Please enter your user name"
+              required
+              ref="registerUsername"
+            />
+          </div>
+
+          <!-- 邮箱输入框 -->
+          <div class="input-group">
+            <label for="register-email">email</label>
+            <input
+              id="register-email"
+              v-model="registerForm.email"
+              type="email"
+              placeholder="Please enter your email"
+              required
+              ref="registerEmail"
+            />
+          </div>
+
+          <!-- 密码输入框 -->
+          <div class="input-group">
+            <label for="register-password">password</label>
+            <input
+              id="register-password"
+              v-model="registerForm.password"
+              type="password"
+              placeholder="Please enter your password:at least 8 characters with numbers and uppercase letters"
+              required
+              ref="registerPassword"
+            />
+          </div>
+
+          <!-- 注册按钮 -->
+          <div class="button-group">
+            <button @click="switchToLogin" class="btn btn-secondary" ref="backToLoginBtn">
+              back
+            </button>
+            <button @click="handleRegister" class="btn btn-primary" ref="submitRegisterBtn">
+              register
+            </button>
+          </div>
         </div>
 
-        <!-- 登录/注册按钮 -->
-        <div class="button-group">
-          <button @click="switchToRegister" class="btn btn-secondary" ref="registerBtn">
-            注册
-          </button>
-          <button @click="handleLogin" class="btn btn-primary" ref="loginBtn">登录</button>
-        </div>
-      </div>
-
-      <!-- 注册界面 -->
-      <div v-else class="register-form" ref="registerForm">
-        <h2 class="modal-title">用户注册</h2>
-
-        <!-- 用户名输入框 -->
-        <div class="input-group">
-          <label for="register-username">用户名</label>
-          <input
-            id="register-username"
-            v-model="registerForm.username"
-            type="text"
-            placeholder="请输入用户名"
-            required
-            ref="registerUsername"
-          />
+        <!-- 消息提示 -->
+        <div v-if="message" :class="['message', messageType]" ref="messageBox">
+          {{ message }}
         </div>
 
-        <!-- 邮箱输入框 -->
-        <div class="input-group">
-          <label for="register-email">邮箱</label>
-          <input
-            id="register-email"
-            v-model="registerForm.email"
-            type="email"
-            placeholder="请输入邮箱地址"
-            required
-            ref="registerEmail"
-          />
+        <!-- 加载动画 -->
+        <div v-if="isLoading" class="loading-overlay" ref="loadingOverlay">
+          <div class="loading-spinner"></div>
         </div>
-
-        <!-- 密码输入框 -->
-        <div class="input-group">
-          <label for="register-password">密码</label>
-          <input
-            id="register-password"
-            v-model="registerForm.password"
-            type="password"
-            placeholder="请输入密码"
-            required
-            ref="registerPassword"
-          />
-        </div>
-
-        <!-- 注册按钮 -->
-        <div class="button-group">
-          <button @click="switchToLogin" class="btn btn-secondary" ref="backToLoginBtn">
-            返回登录
-          </button>
-          <button @click="handleRegister" class="btn btn-primary" ref="submitRegisterBtn">
-            注册
-          </button>
-        </div>
-      </div>
-
-      <!-- 消息提示 -->
-      <div v-if="message" :class="['message', messageType]" ref="messageBox">
-        {{ message }}
-      </div>
-
-      <!-- 加载动画 -->
-      <div v-if="isLoading" class="loading-overlay" ref="loadingOverlay">
-        <div class="loading-spinner"></div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -522,6 +524,11 @@ export default {
         this.$emit('close')
       }
     },
+
+    test() {
+      console.log('test')
+      this.$emit('login-success')
+    },
   },
 }
 </script>
@@ -530,11 +537,12 @@ export default {
 /* 模态框遮罩层 */
 .login-modal-overlay {
   position: fixed;
+  z-index: 1000;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -543,7 +551,7 @@ export default {
 
 /* 登录模态框 */
 .login-modal {
-  background: white;
+  background: #fff6ef;
   border-radius: 12px;
   padding: 40px;
   width: 400px;
@@ -595,14 +603,23 @@ export default {
 
 /* 按钮组 */
 .button-group {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'ReadexPro';
+  transition: background-color 0.2s;
   display: flex;
-  gap: 12px;
-  margin-top: 30px;
+  justify-content: space-between;
+  align-items: center;
+  align-items: center;
 }
 
 /* 按钮样式 */
 .btn {
-  flex: 1;
+  /* flex: 1; */
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
@@ -613,24 +630,28 @@ export default {
 }
 
 .btn-primary {
-  background-color: #4a90e2;
+  background-color: #4f1c00;
   color: white;
+  width: 120px;
 }
 
 .btn-primary:hover {
-  background-color: #357abd;
+  background-color: #4f1c00;
   transform: translateY(-2px);
+  width: 120px;
 }
 
 .btn-secondary {
-  background-color: #f8f9fa;
-  color: #6c757d;
+  background-color: #4f1c00;
+  color: white;
   border: 2px solid #e1e5e9;
+  width: 120px;
 }
 
 .btn-secondary:hover {
-  background-color: #e9ecef;
+  background-color: #4f1c00;
   transform: translateY(-2px);
+  width: 120px;
 }
 
 /* 消息提示样式 */

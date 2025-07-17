@@ -2,9 +2,15 @@
   <div class="main-view">
     <!-- 主界面 -->
     <div class="main-interface">
+      <BackgroundAnimation />
       <!-- 用户中心入口 -->
       <div class="user-center-trigger" @click="showUserCenter = true">
-        <img :src="userInfo.avatar" alt="用户头像" class="user-avatar" />
+        <img src="../components/icons/me.png" alt="用户头像" class="user-avatar" />
+      </div>
+
+      <div class="logo-container">
+        <img src="../components/icons/data-one.png" class="logo-icon" />
+        <span class="logo-text">WisdomWeb</span>
       </div>
 
       <!-- 搜索与收藏区域 -->
@@ -18,18 +24,18 @@
               @focus="handleSearchFocus"
               @blur="hideSuggestions"
               type="text"
-              placeholder="搜索网址、标题或标签..."
+              placeholder="Search by URL, tag, or title..."
               class="search-input"
             />
-            <button @click="handleSearch" class="search-btn">搜索</button>
+            <button @click="handleSearch" class="search-btn">Start</button>
           </div>
 
           <!-- 搜索排序选择 -->
           <div class="search-sort-container">
-            <label for="search-sort" class="sort-label">排序方式：</label>
+            <label for="search-sort" class="sort-label">sort by：</label>
             <select id="search-sort" v-model="searchSortBy" class="search-sort-select">
-              <option value="time">按时间</option>
-              <option value="click_count">按点击量</option>
+              <option value="time" class="search-sort-option">time</option>
+              <option value="click_count" class="search-sort-option">click</option>
             </select>
           </div>
 
@@ -44,7 +50,7 @@
             <!-- 前缀匹配结果 -->
             <div v-if="prefixMatchResults.length > 0">
               <div class="suggestions-header">
-                <span class="suggestions-title">匹配结果</span>
+                <span class="suggestions-title">results</span>
                 <span class="suggestions-count">({{ prefixMatchResults.length }})</span>
               </div>
               <div
@@ -60,7 +66,7 @@
             <!-- 搜索历史记录 -->
             <div v-if="showHistory && searchHistory.length > 0">
               <div class="suggestions-header">
-                <span class="suggestions-title">搜索历史</span>
+                <span class="suggestions-title">history</span>
                 <span class="suggestions-count">({{ searchHistory.length }})</span>
               </div>
               <div
@@ -69,7 +75,7 @@
                 @click="selectSuggestion(historyItem)"
                 class="suggestion-item history-item"
               >
-                <span class="history-icon">🕒</span>
+                <span class="history-icon"> </span>
                 {{ historyItem }}
               </div>
             </div>
@@ -77,14 +83,14 @@
         </div>
 
         <!-- 收藏输入框 -->
-        <div class="bookmark-container">
+        <div class="bookmark-container" style="position: relative">
           <input
             v-model="bookmarkUrl"
             type="text"
-            placeholder="输入要收藏的网页链接..."
+            placeholder="Enter the link of the web page you want to save..."
             class="bookmark-input"
           />
-          <button @click="handleAddBookmark" class="bookmark-btn">收藏</button>
+          <button @click="handleAddBookmark" class="bookmark-btn">Save</button>
         </div>
       </div>
     </div>
@@ -93,26 +99,23 @@
     <div class="sub-interface">
       <!-- 可视化模块 -->
       <div class="visualization-module">
-        <h2>数据可视化</h2>
         <div class="visualization-content">
           <div class="chart-section">
-            <h3>标签词云</h3>
-            <p class="chart-description">展示您收藏中使用的所有标签，字体大小代表使用频率</p>
             <WordCloud :tags="userTags" :tag-counts="tagCounts" />
           </div>
 
           <div class="stats-section">
             <div class="stat-item">
               <div class="stat-number">{{ totalBookmarksCount }}</div>
-              <div class="stat-label">总收藏数</div>
+              <div class="stat-label">Total Saved</div>
             </div>
             <div class="stat-item">
               <div class="stat-number">{{ userTags.length }}</div>
-              <div class="stat-label">标签种类</div>
+              <div class="stat-label">Tags</div>
             </div>
             <div class="stat-item">
               <div class="stat-number">{{ getMostUsedTag() }}</div>
-              <div class="stat-label">最常用标签</div>
+              <div class="stat-label">Most Used Tag</div>
             </div>
           </div>
         </div>
@@ -120,20 +123,18 @@
 
       <!-- 用户选择模块 -->
       <div class="user-selection-module">
-        <h3>标签筛选</h3>
-        <div v-if="userTags.length === 0" class="no-tags">
-          <p>暂无标签，添加收藏时可以为收藏添加标签</p>
-        </div>
+        <h3>Tags</h3>
+        <div v-if="userTags.length === 0" class="no-tags"></div>
         <div v-else class="tags-container">
           <button @click="selectAllBookmarks" :class="['tag-btn', { active: selectedTag === '' }]">
-            全部 ({{ totalBookmarksCount }})
+            Total ({{ totalBookmarksCount }})
           </button>
           <button
             v-for="tag in userTags"
             :key="tag"
             @click="selectTag(tag)"
             :class="['tag-btn', { active: selectedTag === tag }]"
-            :title="`点击查看包含「${tag}」标签的收藏`"
+            :title="`click「${tag}」`"
           >
             {{ tag }} ({{ getTagCount(tag) }})
           </button>
@@ -144,27 +145,27 @@
       <div class="display-module">
         <div class="display-header">
           <h3>
-            收藏列表
-            <span v-if="selectedTag" class="filter-info"> (筛选: {{ selectedTag }}) </span>
+            Saved List
+            <span v-if="selectedTag" class="filter-info"> (filter: {{ selectedTag }}) </span>
             <span v-if="searchQuery && !selectedTag" class="search-info">
-              (搜索: {{ searchQuery }})
+              (search: {{ searchQuery }})
             </span>
           </h3>
 
           <!-- 排序按钮 - 只在显示全部收藏时显示 -->
           <div v-if="!selectedTag && !searchQuery" class="sort-controls">
-            <span class="sort-label">排序方式：</span>
+            <span class="sort-label">sort by：</span>
             <button
               @click="changeSortBy('time')"
               :class="['sort-btn', { active: currentSortBy === 'time' }]"
             >
-              按时间
+              time
             </button>
             <button
               @click="changeSortBy('click_count')"
               :class="['sort-btn', { active: currentSortBy === 'click_count' }]"
             >
-              按点击次数
+              clicked
             </button>
           </div>
         </div>
@@ -179,16 +180,12 @@
               <div class="bookmark-header">
                 <h4 class="bookmark-title">{{ bookmark.title }}</h4>
                 <div class="bookmark-actions">
-                  <div class="bookmark-click-count">
-                    <span class="click-icon">👆</span>
-                    <span class="click-number">{{ bookmark.clickCount || 0 }}</span>
-                  </div>
                   <button
                     @click="handleDeleteBookmark(bookmark)"
                     class="delete-btn"
                     title="删除收藏"
                   >
-                    🗑️
+                    <img src="../components/icons/delete.png" class="delete-icon" />
                   </button>
                 </div>
               </div>
@@ -206,11 +203,11 @@
               </div>
               <div class="bookmark-info">
                 <div class="bookmark-date">
-                  <span class="info-label">收藏时间：</span>
+                  <span class="info-label">Collection Time：</span>
                   <span class="info-value">{{ formatDate(bookmark.createdAt) }}</span>
                 </div>
                 <div class="bookmark-clicks">
-                  <span class="info-label">点击次数：</span>
+                  <span class="info-label">click count：</span>
                   <span class="info-value">{{ bookmark.clickCount || 0 }}</span>
                 </div>
               </div>
@@ -225,7 +222,7 @@
             :disabled="currentPage === 1"
             class="page-btn"
           >
-            上一页
+            Page Up
           </button>
           <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
           <button
@@ -233,7 +230,7 @@
             :disabled="currentPage === totalPages"
             class="page-btn"
           >
-            下一页
+            Page Down
           </button>
         </div>
       </div>
@@ -243,16 +240,16 @@
     <div v-if="showUserCenter" class="user-center-overlay" @click="showUserCenter = false">
       <div class="user-center-modal" @click.stop>
         <div class="user-center-header">
-          <h2>用户中心</h2>
+          <h2>User Center</h2>
           <button @click="showUserCenter = false" class="close-btn">返回</button>
         </div>
 
         <div class="user-center-content">
-          <img :src="userInfo.avatar" alt="用户头像" class="user-center-avatar" />
+          <img src="../components/icons/me.png" class="user-center-avatar" />
           <div class="user-info">
-            <p class="user-id">用户ID: {{ userInfo.id }}</p>
-            <p class="user-name">用户名: {{ userInfo.username }}</p>
-            <p class="user-email">邮箱: {{ userInfo.email }}</p>
+            <p class="user-id">User ID: {{ userInfo.id }}</p>
+            <p class="user-name">User Name: {{ userInfo.username }}</p>
+            <p class="user-email">Email: {{ userInfo.email }}</p>
           </div>
           <button @click="handleLogout" class="logout-btn">退出登录</button>
         </div>
@@ -261,15 +258,16 @@
 
     <!-- AI助手悬浮球 -->
     <div ref="aiBall" class="ai-assistant-ball" @mousedown="startDrag" @click="showAIChat = true">
-      🤖
+      <img src="../components/icons/robot.png" class="robot-icon" />
     </div>
 
     <!-- AI助手对话框 -->
     <div v-if="showAIChat" class="ai-chat-overlay" @click="showAIChat = false">
       <div class="ai-chat-modal" @click.stop>
         <div class="ai-chat-header">
-          <h3>AI助手</h3>
+          <h3>AI assistant</h3>
           <button @click="showAIChat = false" class="close-btn">×</button>
+          <button @click="startNewChat" class="new-chat-btn">New Chat</button>
         </div>
 
         <div class="ai-chat-messages" ref="chatMessages">
@@ -277,6 +275,7 @@
             <div class="message-content">{{ message.content }}</div>
             <div class="message-time">{{ formatTime(message.timestamp) }}</div>
           </div>
+          <MusicBarAnimation v-if="showAIMusicBar" />
         </div>
 
         <div class="ai-chat-input">
@@ -284,10 +283,10 @@
             v-model="aiInput"
             @keyup.enter="sendAIMessage"
             type="text"
-            placeholder="输入您的问题..."
+            placeholder="Let's chat"
             class="ai-input"
           />
-          <button @click="sendAIMessage" class="ai-send-btn">提交</button>
+          <button @click="sendAIMessage" class="ai-send-btn">submit</button>
         </div>
       </div>
     </div>
@@ -297,7 +296,7 @@
       :show-tag-modal="showTagModal"
       :bookmark-url="bookmarkUrl"
       @close="closeTagModal"
-      @bookmark-added="onBookmarkAdded"
+      @refresh-all="onRefreshAll"
     />
   </div>
 </template>
@@ -314,15 +313,21 @@ import {
   prefixMatch,
   getSearchHistory,
   multiSearchBookmarks,
+  prefixTreeLogout,
 } from '../services/api.js'
 import TagManager from '../components/TagManager.vue'
 import WordCloud from '../components/WordCloud.vue'
+import BackgroundAnimation from '../components/BackgroundAnimation.vue'
+import '../assets/font.css'
+import MusicBarAnimation from '../components/MusicBarAnimation.vue'
 
 export default {
   name: 'MainView',
   components: {
     TagManager,
     WordCloud,
+    BackgroundAnimation,
+    MusicBarAnimation,
   },
   data() {
     return {
@@ -366,8 +371,10 @@ export default {
       showAIChat: false,
       aiInput: '',
       chatMessages: [],
+      isFirstChat: true,
       isDragging: false,
       dragOffset: { x: 0, y: 0 },
+      showAIMusicBar: false,
     }
   },
 
@@ -402,6 +409,13 @@ export default {
 
     // 初始化AI悬浮球位置
     this.initAIBallPosition()
+
+    // BOM检测：监听页面关闭，自动登出
+    window.addEventListener('beforeunload', this.handleWindowClose)
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('beforeunload', this.handleWindowClose)
   },
 
   methods: {
@@ -427,7 +441,7 @@ export default {
     },
 
     /**
-     * 加载用户标签
+     * 获取最新用户标签，存入存储中，并加载用户标签
      */
     async loadUserTags() {
       try {
@@ -451,14 +465,30 @@ export default {
           console.error('无法获取用户ID，跳过加载用户标签')
           return
         }
-
+        // 向后端发送请求，获取用户标签
+        //TODO 已解决将数据存入localStorage
         const response = await getUserTags(userId)
+        console.log(response)
 
-        if (response.success) {
-          this.userTags = response.tags
-          this.tagCounts = response.tagCounts || {}
+        if (Array.isArray(response)) {
+          // 先存localStorage
+          let tagCounts = {}
+          response.forEach((item) => {
+            tagCounts[item.tag] = item.urlCount
+          })
+          let userData = localStorage.getItem('userData')
+          if (userData) {
+            userData = JSON.parse(userData)
+            Object.assign(userData.tagCounts, tagCounts)
+            console.log(userData)
+            localStorage.setItem('userData', JSON.stringify(userData))
+          }
+          // 再更新内存
+          this.userTags = response.map((item) => item.tag)
+          this.tagCounts = tagCounts
         } else {
-          console.error('获取用户标签失败:', response.message)
+          this.userTags = []
+          this.tagCounts = {}
         }
       } catch (error) {
         console.error('加载用户标签失败:', error)
@@ -506,27 +536,28 @@ export default {
 
         try {
           // 获取userId - 优先从userData中获取，如果没有则从user_info中获取
-          let userId = null
+          //TODO 需要修改
+          let Id = null
           const userData = localStorage.getItem('userData')
           if (userData) {
             const parsedUserData = JSON.parse(userData)
-            userId = parsedUserData.user?.userId || parsedUserData.user?.id
+            Id = parsedUserData.user?.id
           }
 
-          if (!userId) {
+          if (!Id) {
             const userInfo = localStorage.getItem('user_info')
             if (userInfo) {
               const parsedUserInfo = JSON.parse(userInfo)
-              userId = parsedUserInfo.userId || parsedUserInfo.id
+              Id = parsedUserInfo.id
             }
           }
 
-          if (!userId) {
+          if (!Id) {
             console.error('无法获取用户ID，跳过前缀匹配')
             return
           }
-
-          const response = await prefixMatch(userId, this.searchQuery)
+          console.log(Id)
+          const response = await prefixMatch(Id, this.searchQuery)
           if (response.success) {
             this.prefixMatchResults = response.data.results
             this.searchSuggestions = this.prefixMatchResults // 使用前缀匹配结果作为搜索建议
@@ -612,9 +643,9 @@ export default {
     },
 
     /**
-     * 添加收藏 - 显示标签管理对话框
+     * 添加收藏 - 显示标签管理对话框，并刷新标签和书签
      */
-    handleAddBookmark() {
+    async handleAddBookmark() {
       if (!this.bookmarkUrl.trim()) {
         alert('请输入要收藏的网页链接')
         return
@@ -627,6 +658,9 @@ export default {
         alert('请输入有效的网页链接')
         return
       }
+      //TODO
+      // 点击收藏时立即刷新标签和书签
+      await this.refreshTagsAndBookmarks()
 
       // 显示标签管理对话框
       this.showTagModal = true
@@ -917,6 +951,15 @@ export default {
     },
 
     /**
+     * 新增对话，清空对话内容，重置isFirstChat
+     */
+    startNewChat() {
+      this.chatMessages = []
+      this.aiInput = ''
+      this.isFirstChat = true
+    },
+
+    /**
      * 发送AI消息 - 用户输入的内容会出现在对话框上方
      */
     async sendAIMessage() {
@@ -929,7 +972,6 @@ export default {
         content: this.aiInput,
         timestamp: new Date().toISOString(),
       }
-
       this.chatMessages.push(userMessage)
       const messageToSend = this.aiInput
       this.aiInput = ''
@@ -939,36 +981,80 @@ export default {
         this.scrollToBottom()
       })
 
+      // 显示AI动画
+      this.showAIMusicBar = true
+
       try {
-        const userId = localStorage.getItem('userId')
-        // 将输入的内容发送给后端
-        const response = await chatWithAI(messageToSend, userId)
+        const userData = localStorage.getItem('userData')
+        const userIdJson = JSON.parse(userData)
+        const userId = userIdJson['user']['userId']
+        // 发送is_first_chat字段
+        const payload = {
+          userid: userId,
+          message: messageToSend,
+          is_first_chat: this.isFirstChat,
+        }
+        // 发送后将isFirstChat设为false
+        this.isFirstChat = false
 
-        if (response.success) {
-          // 后端将回答发送过来后，会显示在对话框中
-          const aiMessage = {
-            id: Date.now() + 1,
-            type: 'ai',
-            content: response.response,
-            timestamp: response.timestamp,
+        // 新增：流式处理AI回复
+        let aiReply = ''
+        // 先插入一条空的AI消息
+        const aiMessage = {
+          id: Date.now() + 1,
+          type: 'ai',
+          content: '',
+          timestamp: new Date().toISOString(),
+        }
+        this.chatMessages.push(aiMessage)
+        this.$nextTick(() => {
+          this.scrollToBottom()
+        })
+
+        // 假设chatWithAI返回的是一个异步可迭代对象（如fetch+ReadableStream），否则需后端配合
+        const stream = await chatWithAI(payload)
+
+        if (stream && typeof stream[Symbol.asyncIterator] === 'function') {
+          for await (const chunk of stream) {
+            // chunk: { response: '...', status: 'sending'|'done' }
+            if (chunk.status === 'sending') {
+              aiReply += chunk.response
+              aiMessage.content = aiReply
+              this.$forceUpdate()
+              this.$nextTick(() => {
+                this.scrollToBottom()
+              })
+              console.log('AI回复:', aiReply)
+            } else if (chunk.status === 'done') {
+              this.showAIMusicBar = false
+              break
+            }
           }
-
-          this.chatMessages.push(aiMessage)
-
-          // 滚动到底部
-          this.$nextTick(() => {
-            this.scrollToBottom()
-          })
+          this.showAIMusicBar = false
+        } else {
+          // 兼容非流式返回
+          let resp = stream
+          if (typeof resp === 'string') {
+            aiReply = resp
+          } else if (resp && resp.response) {
+            aiReply = resp.response
+          } else {
+            aiReply = 'AI助手未返回有效内容。'
+          }
+          aiMessage.content = aiReply
+          this.$forceUpdate()
+          this.showAIMusicBar = false
         }
       } catch (error) {
-        console.error('AI对话失败:', error)
+        // 错误处理
         const errorMessage = {
-          id: Date.now() + 1,
+          id: Date.now() + 2,
           type: 'ai',
           content: '抱歉，我暂时无法回答您的问题，请稍后重试。',
           timestamp: new Date().toISOString(),
         }
         this.chatMessages.push(errorMessage)
+        this.showAIMusicBar = false
       }
     },
 
@@ -1114,12 +1200,12 @@ export default {
       try {
         // 获取用户token和用户ID
         const token = localStorage.getItem('userToken') || 'fromLogin'
-        const userId = localStorage.getItem('userId')
-
+        const id = localStorage.getItem('id')
+        //TODO：前缀树登出
         // 先调用前缀树登出API清除用户缓存数据
-        if (userId) {
+        if (id) {
           try {
-            await prefixTreeLogout(userId)
+            await prefixTreeLogout(id)
             console.log('用户缓存数据清除成功')
           } catch (error) {
             console.error('清除用户缓存数据失败:', error)
@@ -1147,6 +1233,8 @@ export default {
 
           // 关闭用户中心
           this.showUserCenter = false
+          // 跳转到PortalView
+          this.$router.push('/')
         } else {
           // 显示错误消息
           this.showErrorMessage(response.message)
@@ -1172,6 +1260,82 @@ export default {
         this.showErrorMessage('退出登录失败，请稍后重试')
       }
     },
+
+    async onRefreshAll() {
+      // 并行刷新所有书签和标签
+      await Promise.all([this.loadAllBookmarks(), this.loadUserTags()])
+      this.showSuccessMessage('收藏添加成功！')
+    },
+
+    /**
+     * 并行刷新标签和书签，更新词云、标签筛选栏和网址展示框
+     */
+    async refreshTagsAndBookmarks() {
+      const [tagsResp, bookmarksResp] = await Promise.all([
+        getUserTags(),
+        getAllBookmarks(this.currentSortBy),
+      ])
+      // 处理标签
+
+      if (Array.isArray(tagsResp)) {
+        this.userTags = tagsResp.map((item) => item.tag)
+        this.tagCounts = {}
+        tagsResp.forEach((item) => {
+          this.tagCounts[item.tag] = item.urlCount
+        })
+      } else {
+        this.userTags = []
+        this.tagCounts = {}
+      }
+      // 处理书签
+      if (bookmarksResp && bookmarksResp.success && Array.isArray(bookmarksResp.data)) {
+        const allBookmarks = []
+        let totalCount = 0
+        bookmarksResp.data.forEach((group) => {
+          if (group.bookmarks && Array.isArray(group.bookmarks)) {
+            group.bookmarks.forEach((bookmark) => {
+              allBookmarks.push({
+                ...bookmark,
+                id: `${bookmark.url}_${bookmark.tag}`,
+                title: bookmark.url,
+                tags: [bookmark.tag],
+                clickCount: bookmark.click_count,
+                createdAt: bookmark.created_at,
+              })
+            })
+            totalCount += group.bookmarks.length
+          }
+        })
+        this.bookmarks = allBookmarks
+        this.totalBookmarksCount = totalCount
+        this.totalPages = 1
+      } else {
+        this.bookmarks = []
+        this.totalBookmarksCount = 0
+        this.totalPages = 1
+      }
+    },
+
+    async refreshAllModules() {
+      // 并行获取标签和书签
+      await Promise.all([this.loadUserTags(), this.loadAllBookmarks()])
+      // 可选：可在此处添加提示或回调
+      // this.showSuccessMessage('数据已刷新！')
+    },
+
+    async handleWindowClose(event) {
+      /*try {
+        const userId = localStorage.getItem('userId')
+        if (userId) {
+          // 前缀树登出
+          await prefixTreeLogout(userId)
+        }
+        // 常规登出
+        await logout()
+      } catch (error) {
+        // 关闭页面时不提示错误
+      }*/
+    },
   },
 }
 </script>
@@ -1189,7 +1353,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
   z-index: 1;
 }
 
@@ -1198,8 +1362,17 @@ export default {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 10;
+  z-index: 100;
   cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .user-avatar {
@@ -1224,6 +1397,7 @@ export default {
   width: 80%;
   max-width: 600px;
   text-align: center;
+  z-index: 100;
 }
 
 .search-container {
@@ -1252,6 +1426,8 @@ export default {
   font-size: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   outline: none;
+  font-family: 'Readex';
+  font-weight: 300;
 }
 
 .search-btn {
@@ -1259,17 +1435,24 @@ export default {
   right: 5px;
   top: 5px;
   padding: 10px 20px;
-  background: #4a90e2;
+  background: #4f1c00;
   color: white;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   font-size: 14px;
   transition: background 0.3s ease;
+  font-family: 'Readex';
+  font-weight: normal;
+}
+
+.search-sort-option {
+  font-family: 'Readex';
+  font-weight: normal;
 }
 
 .search-btn:hover {
-  background: #357abd;
+  background: #b98b73;
 }
 
 .search-sort-select {
@@ -1285,11 +1468,11 @@ export default {
 }
 
 .search-sort-select:hover {
-  border-color: #4a90e2;
+  border-color: #fff6ef;
 }
 
 .search-sort-select:focus {
-  border-color: #4a90e2;
+  border-color: #fff6ef;
   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
@@ -1305,6 +1488,8 @@ export default {
   margin-top: 5px;
   max-height: 300px;
   overflow-y: auto;
+  font-family: 'Readex';
+  font-weight: 300;
 }
 
 .suggestions-header {
@@ -1336,6 +1521,8 @@ export default {
   cursor: pointer;
   border-bottom: 1px solid #f0f0f0;
   transition: background 0.3s ease;
+  font-family: 'Readex';
+  font-weight: 300;
 }
 
 .suggestion-item:hover {
@@ -1371,38 +1558,47 @@ export default {
 .bookmark-container {
   display: flex;
   gap: 10px;
+  position: relative;
 }
 
 .bookmark-input {
   flex: 1;
+  width: 100%;
   padding: 15px 20px;
   border: none;
   border-radius: 25px;
   font-size: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   outline: none;
+  font-family: 'Readex';
+  font-weight: 300;
 }
 
 .bookmark-btn {
-  padding: 15px 30px;
-  background: #67c23a;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  padding: 10px 20px;
+  background: #4f1c00;
   color: white;
   border: none;
-  border-radius: 25px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   transition: background 0.3s ease;
+  font-family: 'Readex';
+  font-weight: normal;
 }
 
 .bookmark-btn:hover {
-  background: #5daf34;
+  background: #b98b73;
 }
 
 /* 副界面 */
 .sub-interface {
   position: relative;
   top: 100vh;
-  background: white;
+  background: #e3d5ca;
   min-height: 100vh;
   z-index: 2;
   padding: 40px 20px;
@@ -1413,7 +1609,7 @@ export default {
 .visualization-module {
   text-align: center;
   padding: 40px 20px;
-  background: #f8f9fa;
+  background: #d5bdaf;
   border-radius: 12px;
   margin-bottom: 40px;
 }
@@ -1432,6 +1628,7 @@ export default {
 
 .chart-section {
   text-align: center;
+  background: #d5bdaf;
 }
 
 .chart-section h3 {
@@ -1470,7 +1667,7 @@ export default {
 .stat-number {
   font-size: 32px;
   font-weight: bold;
-  color: #4a90e2;
+  color: #2a6f97;
   margin-bottom: 8px;
 }
 
@@ -1512,7 +1709,7 @@ export default {
   padding: 8px 16px;
   background: #f8f9fa;
   color: #495057;
-  border: 2px solid #e9ecef;
+  border: 2px solid #f8f9fa;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1523,16 +1720,14 @@ export default {
 }
 
 .tag-btn:hover {
-  background: #e9ecef;
-  border-color: #4a90e2;
+  background: #2a6f97;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
 }
 
 .tag-btn.active {
-  background: #4a90e2;
+  background: #2a6f97;
   color: white;
-  border-color: #4a90e2;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
 }
@@ -1593,7 +1788,7 @@ export default {
 }
 
 .bookmark-item {
-  background: white;
+  background: #b7b7a4;
   border: 1px solid #e9ecef;
   border-radius: 8px;
   padding: 20px;
@@ -1625,21 +1820,8 @@ export default {
   gap: 8px;
 }
 
-.bookmark-click-count {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: #f8f9fa;
-  padding: 4px 8px;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
-  font-size: 12px;
-  color: #666;
-  white-space: nowrap;
-}
-
 .delete-btn {
-  background: #dc3545;
+  background: #b7b7a4;
   color: white;
   border: none;
   border-radius: 50%;
@@ -1654,8 +1836,13 @@ export default {
   opacity: 0.7;
 }
 
+.delete-icon {
+  width: 20px;
+  height: 20px;
+}
+
 .delete-btn:hover {
-  background: #c82333;
+  background: #b98b73;
   opacity: 1;
   transform: scale(1.1);
 }
@@ -1689,7 +1876,7 @@ export default {
 }
 
 .bookmark-tag {
-  background: #e3f2fd;
+  background: #6b705c;
   color: #1976d2;
   padding: 4px 8px;
   border-radius: 12px;
@@ -1726,7 +1913,8 @@ export default {
 .sort-label {
   color: #666;
   font-size: 14px;
-  font-weight: 500;
+  font-family: 'Readex';
+  font-weight: normal;
 }
 
 .sort-btn {
@@ -1746,9 +1934,9 @@ export default {
 }
 
 .sort-btn.active {
-  background: #4a90e2;
+  background: #2a6f97;
   color: white;
-  border-color: #4a90e2;
+  border-color: #2a6f97;
 }
 
 /* 收藏信息 */
@@ -1882,7 +2070,7 @@ export default {
 .logout-btn {
   margin-top: 20px;
   padding: 10px 20px;
-  background: #dc3545;
+  background: #b98b73;
   color: white;
   border: none;
   border-radius: 6px;
@@ -1899,7 +2087,7 @@ export default {
   position: fixed;
   width: 60px;
   height: 60px;
-  background: #4a90e2;
+  background: #f5f5f0;
   color: white;
   border-radius: 50%;
   display: flex;
@@ -1911,6 +2099,12 @@ export default {
   z-index: 999;
   transition: transform 0.3s ease;
   user-select: none;
+  border: 5px solid #4f1c00;
+}
+
+.robot-icon {
+  width: 40px;
+  height: 40px;
 }
 
 .ai-assistant-ball:hover {
@@ -1974,7 +2168,7 @@ export default {
 
 .message.user {
   align-self: flex-end;
-  background: #4a90e2;
+  background: #2a6f97;
   color: white;
 }
 
@@ -2014,7 +2208,7 @@ export default {
 
 .ai-send-btn {
   padding: 12px 20px;
-  background: #4a90e2;
+  background: #2a6f97;
   color: white;
   border: none;
   border-radius: 8px;
@@ -2026,6 +2220,43 @@ export default {
   background: #357abd;
 }
 
+.new-chat-btn {
+  padding: 8px 16px;
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.new-chat-btn:hover {
+  background: #e9ecef;
+  border-color: #4a90e2;
+  color: #4a90e2;
+}
+
+.logo-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  width: 30px;
+  height: 30px;
+}
+
+.logo-text {
+  position: absolute;
+  top: 25px;
+  left: 60px;
+  z-index: 100;
+  font-family: 'Readex';
+  font-weight: bold;
+}
 /* 成功消息动画 */
 @keyframes slideInRight {
   from {
