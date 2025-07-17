@@ -192,6 +192,7 @@
               <a
                 :href="bookmark.url"
                 class="bookmark-url"
+                target="_blank"
                 @click="handleBookmarkClick(bookmark, $event)"
               >
                 {{ bookmark.url }}
@@ -1324,17 +1325,17 @@ export default {
     },
 
     async handleWindowClose(event) {
-      /*try {
-        const userId = localStorage.getItem('userId')
-        if (userId) {
+      try {
+        const id = localStorage.getItem('id')
+        if (id) {
           // 前缀树登出
-          await prefixTreeLogout(userId)
+          await prefixTreeLogout(id)
         }
         // 常规登出
         await logout()
       } catch (error) {
         // 关闭页面时不提示错误
-      }*/
+      }
     },
   },
 }
