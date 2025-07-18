@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: keyword-container
-        image: bertha6651/trie_backend:latest  # ← 请替换为你实际的镜像
+        image: bertha6651/trie_backend:v1
         ports:
         - containerPort: 5000
         envFrom:
