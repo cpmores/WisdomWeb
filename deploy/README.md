@@ -79,7 +79,7 @@ kubectl apply -f Ingress_deploy/             # 配置 Ingress 网关
 
 ## 数据卷与存储说明
 
-* 大部分服务使用 `hostPath` 或 `persistentVolumeClaim` 进行持久化挂载
+* 大部分服务使用 `persistentVolumeClaim` 进行持久化挂载
 * Trie 数据默认挂载路径为：`/data/<userid>/trie_*.json`
 
 ## 测试建议
