@@ -29,12 +29,12 @@ public class SearchEngineClient {
         this.restTemplate = restTemplate;
     }
 
-    public List<Map<String, Object>> search(String userId, String query) {
+    public List<Map<String, Object>> search(Long userId, String query) {
         String endpoint = searchEngineUrl;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         Map<String, String> requestBody = Map.of(
-                "userid", userId,
+                "userid", String.valueOf(userId),
                 "search_string", query
         );
         HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);

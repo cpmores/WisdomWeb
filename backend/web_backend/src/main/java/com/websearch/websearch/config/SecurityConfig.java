@@ -40,17 +40,17 @@ public class SecurityConfig {
     }
 
 
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // 允许前端域名
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 允许的请求方法
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // 允许的请求头
-        configuration.setAllowCredentials(true); // 允许发送凭据（如 cookies 或 Authorization 头）
-        configuration.setMaxAge(3600L); // 预检请求缓存时间（秒）
+        configuration.addAllowedOriginPattern("*"); // 临时调试用，生产建议精确写域名
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // 应用于所有路径
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
@@ -77,3 +77,5 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
+

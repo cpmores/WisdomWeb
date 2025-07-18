@@ -4,17 +4,20 @@ from typing import Dict, List, Any
 import requests
 from urllib.parse import unquote
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # 导入 CORS
+from flask_cors import CORS
 
 import os
 
 # 从环境变量读取前缀树服务器地址，设置默认值
-TRIE_SERVER_URL = os.getenv("TRIE_SERVER_URL", "http://trie-server:3002/trie-json")
-
-
+TRIE_SERVER_URL = os.getenv("TRIE_SERVER_URL", "http://192.168.213.246:3002/trie-json")
 
 app = Flask(__name__)
-CORS(app)  # 开启 CORS 支持
+CORS(app,
+     resources={r"/*": {"origins": "*"}},
+     supports_credentials=True,
+     methods=["GET", "POST", "OPTIONS"],
+     allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
+
 app.config['JSON_AS_ASCII'] = False  # 确保 JSON 响应支持中文
 
 # 配置日志
@@ -23,8 +26,6 @@ logger = logging.getLogger(__name__)
 
 # 存储前缀树的全局字典，按用户分类，非持久化
 trie_storage = {}
-
-
 
 class TrieNode:
     def __init__(self, alpha: str, is_end: bool, is_word: bool, slice: str):
@@ -117,17 +118,22 @@ def store_trie_data(userid: str, data: Dict[str, Any]):
         if userid not in trie_storage:
             trie_storage[userid] = {"chinese": None, "english": None}
 
-        if "chinese_trie" in data["trieOutput"] and data["trieOutput"]["chinese_trie"].get("root"):
-            trie_storage[userid]["chinese"] = TrieNode.from_dict(data["trieOutput"]["chinese_trie"]["root"])
+        # 处理中文前缀树
+        chinese_trie = data.get("trieOutput", {}).get("chinese_trie", {})
+        if isinstance(chinese_trie, dict) and chinese_trie.get("root"):
+            trie_storage[userid]["chinese"] = TrieNode.from_dict(chinese_trie["root"])
             logger.info(f"Chinese trie stored for user {userid}, root alpha: {trie_storage[userid]['chinese'].alpha}")
         else:
-            logger.warning(f"No valid chinese_trie found in server response for user {userid}")
+            logger.warning(f"No valid chinese_trie found in server response for user {userid}: {chinese_trie}")
 
-        if "english_trie" in data["trieOutput"] and data["trieOutput"]["english_trie"].get("root"):
-            trie_storage[userid]["english"] = TrieNode.from_dict(data["trieOutput"]["english_trie"]["root"])
+        # 处理英文前缀树
+        english_trie = data.get("trieOutput", {}).get("english_trie", {})
+        if isinstance(english_trie, dict) and english_trie.get("root"):
+            trie_storage[userid]["english"] = TrieNode.from_dict(english_trie["root"])
             logger.info(f"English trie stored for user {userid}, root alpha: {trie_storage[userid]['english'].alpha}")
         else:
-            logger.warning(f"No valid english_trie found in server response for user {userid}")
+            logger.warning(f"No valid english_trie found in server response for user {userid}: {english_trie}")
+
     except (KeyError, ValueError) as e:
         logger.error(f"Error storing trie data for user {userid}: {str(e)}")
         raise
@@ -152,11 +158,15 @@ def search():
             store_trie_data(userid, data)
         except Exception as e:
             logger.error(f"Failed to fetch or store trie data for user {userid}: {str(e)}")
-            return jsonify({'error': 'Failed to fetch trie data', 'userid': userid}), 500
+            return jsonify({'error': f'Failed to fetch trie data: {str(e)}', 'userid': userid}), 500
 
     if not trie_storage[userid][language]:
         logger.error(f"No {language} trie found for user {userid}")
-        return jsonify({'error': f'No {language} trie found for user', 'userid': userid}), 404
+        return jsonify({
+            'error': f'No {language} trie found for user',
+            'userid': userid,
+            'details': 'Check if the trie server returned valid data or try logging out and back in'
+        }), 404
 
     trie = trie_storage[userid][language]
     results = search_trie(trie, prefix, language)

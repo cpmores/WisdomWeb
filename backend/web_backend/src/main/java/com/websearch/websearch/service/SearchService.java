@@ -7,6 +7,7 @@ import com.websearch.websearch.repository.SearchHistoryRepository;
 import com.websearch.websearch.repository.UserRepository;
 import com.websearch.websearch.repository.UserSearchCountRepository;
 import com.websearch.websearch.util.JwtUtil;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,9 @@ public class SearchService {
         this.jwtUtil = jwtUtil;
     }
 
+
+
+    @Transactional
     public Map<String, Object> search(Long userId, String query, String engine) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -48,41 +52,45 @@ public class SearchService {
         SearchHistory searchHistory = new SearchHistory();
         searchHistory.setUser(user);
         searchHistory.setQuery(query);
-        searchHistoryRepository.save(searchHistory);
+        SearchHistory savedHistory = searchHistoryRepository.save(searchHistory);
+        logger.info("Saved search history for userId: {}, query: {}, historyId: {}", userId, query, savedHistory.getId());
 
         // 更新搜索计数
         userSearchCountRepository.findByUserIdAndKeyword(userId, query).ifPresentOrElse(
                 count -> {
                     count.setSearchCount(count.getSearchCount() + 1);
-                    userSearchCountRepository.save(count);
+                    UserSearchCount savedCount = userSearchCountRepository.save(count);
+                    logger.info("Updated search count for userId: {}, keyword: {}, count: {}", userId, query, savedCount.getSearchCount());
                 },
                 () -> {
                     UserSearchCount newCount = new UserSearchCount();
                     newCount.setUser(user);
                     newCount.setKeyword(query);
                     newCount.setSearchCount(1);
-                    userSearchCountRepository.save(newCount);
+                    UserSearchCount savedCount = userSearchCountRepository.save(newCount);
+                    logger.info("Created search count for userId: {}, keyword: {}, count: {}", userId, query, savedCount.getSearchCount());
                 }
         );
 
         // 调用搜索客户端
-        List<Map<String, Object>> searchResults = searchEngineClient.search(user.getUserId(), query);
-        logger.info("Search executed for userId: {}, query: {}, engine: {}, results: {}", user.getUserId(), query, engine, searchResults.size());
+        List<Map<String, Object>> searchResults = searchEngineClient.search(userId, query);
+        logger.info("Search executed for userId: {}, query: {}, engine: {}, results: {}", userId, query, engine, searchResults.size());
 
-        // 构造前端友好的响应
         return Map.of(
                 "message", "Search completed successfully",
                 "results", searchResults,
                 "urlCount", searchResults.size(),
-                "userId", user.getUserId(),
                 "query", query
         );
     }
 
     public List<Map<String, Object>> getSearchHistory(Long userId, String sortBy) {
         List<SearchHistory> history = searchHistoryRepository.findByUserIdOrderBySearchedAtDesc(userId);
+        logger.info("Raw search history entries for userId: {}, count: {}", userId, history.size());
         Map<String, Integer> keywordCounts = userSearchCountRepository.findAllByUserId(userId).stream()
                 .collect(Collectors.toMap(UserSearchCount::getKeyword, UserSearchCount::getSearchCount));
+        logger.info("Search count entries for userId: {}, count: {}", userId, keywordCounts.size());
+
 
         List<Map<String, Object>> summaries = history.stream()
                 .collect(Collectors.groupingBy(
@@ -92,8 +100,7 @@ public class SearchService {
                                 max -> {
                                     SearchHistory latest = max.get();
                                     return Map.of(
-                                            "userId", (Object) latest.getUser().getId(),
-                                            "username", (Object) latest.getUser().getUsername(),
+
                                             "query", (Object) latest.getQuery(),
                                             "searchedAt", (Object) latest.getSearchedAt().toString(),
                                             "searchCount", (Object) keywordCounts.getOrDefault(latest.getQuery(), 0)
