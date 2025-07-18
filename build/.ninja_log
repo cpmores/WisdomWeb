@@ -1,6 +1,0 @@
-# ninja log v6
-2	1418	1751865426258147848	CMakeFiles/main.dir/src/main.cpp.o	a94d5a4109d4a72d
-2	19	1751865426259652902	CMakeFiles/wisdom_tests.dir/src/wisdom.cpp.o	ce416d96d7d62f5a
-1418	1476	1751865427675142209	main	bc8d6d5d2323e9a6
-2	712	1751865426259354341	CMakeFiles/wisdom_tests.dir/test/test_main.cpp.o	ef4781cfa3d0951d
-713	761	1751865426969145019	wisdom_tests	394b5fcbd3ce92f3
