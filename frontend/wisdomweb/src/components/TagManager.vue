@@ -3,25 +3,25 @@
   <div v-if="showTagModal" class="tag-modal-overlay" @click="closeModal" ref="modalOverlay">
     <div class="tag-modal" @click.stop ref="tagModal">
       <div class="tag-modal-header">
-        <h2>添加收藏</h2>
+        <h2>Add bookmark</h2>
         <button @click="closeModal" class="close-btn">×</button>
       </div>
 
       <!-- 网页信息显示 -->
       <div class="url-display">
-        <h3>网页地址</h3>
+        <h3>Web page address</h3>
         <div class="url-content">{{ bookmarkUrl }}</div>
       </div>
 
       <!-- 标签选择区域 -->
       <div class="tag-input-section">
-        <h3>选择标签</h3>
+        <h3>Select tag</h3>
         <div class="tag-input-container">
           <input
             v-model="selectedTag"
             @keyup.enter="confirmAdd"
             type="text"
-            placeholder="输入标签名称或选择下方标签..."
+            placeholder="Enter tag name or select tag from below..."
             class="tag-input"
             ref="tagInput"
             maxlength="50"
@@ -30,7 +30,7 @@
 
         <!-- 标签辅助功能 -->
         <div v-if="userTags.length > 0" class="tag-assistant">
-          <h4>常用标签</h4>
+          <h4>Common tags</h4>
           <div class="user-tags-list">
             <button
               v-for="tag in userTags"
@@ -47,7 +47,7 @@
 
       <!-- 当前选中的标签显示 -->
       <div class="selected-tag-display" v-if="selectedTag">
-        <h3>当前标签</h3>
+        <h3>Current tag</h3>
         <div class="selected-tag-item">
           <span class="tag-text">{{ selectedTag }}</span>
           <button @click="clearSelectedTag" class="remove-tag-btn">×</button>
@@ -56,9 +56,9 @@
 
       <!-- 操作按钮 -->
       <div class="tag-modal-actions">
-        <button @click="closeModal" class="cancel-btn">取消</button>
+        <button @click="closeModal" class="cancel-btn">Cancel</button>
         <button @click="confirmAdd" class="confirm-btn" :disabled="!selectedTag.trim()">
-          确认收藏
+          Confirm add
         </button>
       </div>
 
@@ -138,7 +138,7 @@ export default {
      */
     clearSelectedTag() {
       this.selectedTag = ''
-      this.showMessage('标签已清除', 'info')
+      this.showMessage('Tag cleared', 'info')
     },
 
     /**
@@ -146,19 +146,19 @@ export default {
      */
     async confirmAdd() {
       if (!this.selectedTag.trim()) {
-        this.showMessage('请选择一个标签', 'error')
+        this.showMessage('Please select a tag', 'error')
         return
       }
 
       // 验证标签长度
       if (this.selectedTag.length > 50) {
-        this.showMessage('标签长度不能超过50个字符', 'error')
+        this.showMessage('Tag length cannot exceed 50 characters', 'error')
         return
       }
 
       try {
         this.isLoading = true
-        this.showMessage('正在添加收藏...', 'info')
+        this.showMessage('Adding bookmark...', 'info')
 
         // 显示加载动画
         if (this.$refs.loadingOverlay) {
@@ -171,7 +171,7 @@ export default {
         })
 
         if (response.success) {
-          this.showMessage('收藏添加成功！', 'success')
+          this.showMessage('Bookmark added successfully!', 'success')
 
           // 使用jQuery添加成功动画
           if (this.$refs.tagModal) {
@@ -186,19 +186,19 @@ export default {
             this.closeModal()
           }, 1500)
         } else {
-          this.showMessage(response.message || '添加收藏失败', 'error')
+          this.showMessage(response.message || 'Add bookmark failed', 'error')
         }
       } catch (error) {
-        console.error('添加收藏失败:', error)
+        console.error('Add bookmark failed:', error)
 
         // 显示具体的错误信息
-        let errorMessage = '添加收藏失败，请稍后重试'
+        let errorMessage = 'Add bookmark failed, please try again later'
         if (error.message) {
           errorMessage = error.message
         }
 
         // 弹出错误提示框
-        alert(`收藏失败：${errorMessage}`)
+        alert(`Add bookmark failed: ${errorMessage}`)
         this.showMessage(errorMessage, 'error')
       } finally {
         this.isLoading = false
@@ -252,7 +252,7 @@ export default {
           this.userTags = response.tag || []
         }
       } catch (error) {
-        console.error('加载用户标签失败:', error)
+      console.error('Load user tags failed:', error)
       }
     },
 
@@ -261,7 +261,7 @@ export default {
      */
     selectUserTag(tag) {
       this.selectedTag = tag
-      this.showMessage(`已选择标签：${tag}`, 'success')
+      this.showMessage(`Selected tag: ${tag}`, 'success')
     },
 
     /**
@@ -518,7 +518,7 @@ export default {
 }
 
 .selected-tag-item {
-  background: #4a90e2;
+  background: #2a6f97;
   color: white;
   border-color: #4a90e2;
 }
@@ -561,7 +561,7 @@ export default {
 .confirm-btn {
   flex: 1;
   padding: 12px 24px;
-  background: #4a90e2;
+  background: #2a6f97;
   color: white;
   border: none;
   border-radius: 8px;
