@@ -8,78 +8,67 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
+  # tls:
+  # - hosts:
+  #    - wisdomweb.local
+  #   secretName: wisdomweb-tls
   rules:
     - host: wisdomweb.local
       http:
         paths:
-          # 前端服务（根路径）
           - path: /()(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: frontend
                 port:
                   number: 80
 
-          # 后端Web
           - path: /backend(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: backend
                 port:
                   number: 8080
 
-          # 搜索引擎 search-engine
           - path: /search-engine(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: search-engine
                 port:
                   number: 3001
 
-          # 爬虫 crawler
           - path: /crawler(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: crawler
                 port:
                   number: 3000
 
-          # 关键词补全 keyword-service
           - path: /keyword-service(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: keyword-service
                 port:
                   number: 5000
 
-          # 前缀树 prefix-trie-server
           - path: /prefix-trie-server(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: prefix-trie-server
                 port:
                   number: 3002
 
-          # AI Agent 服务
           - path: /ai-agent(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: ai-agent
                 port:
                   number: 3003
 
-          #词云服务
-          - path: /load-index(/|$)(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: load-index
-                port:
-                  number: 3004
