@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: bertha6651/web_backend:latest
+        image: bertha6651/web_backend:v1
         ports:
         - containerPort: 8080
         envFrom:

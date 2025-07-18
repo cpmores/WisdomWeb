@@ -18,13 +18,16 @@ spec:
       containers:
       - name: search-engine
         image: cpmores/search-server:v1.0
+        volumeMounts:
+        - name: efs-storage
+          mountPath: /data
         ports:
         - containerPort: 3001
         env:
         - name: STORAGE_HOST
-          value: storage.prod.svc.cluster.local  # 你的 storage 服务地址
+          value: storage.prod.svc.cluster.local  
         - name: STORAGE_PORT
-          value: "27017"  # 根据实际端口修改
+          value: "27017"  
         resources:
           requests:
             cpu: "0.5"
@@ -32,24 +35,8 @@ spec:
           limits:
             cpu: "1"
             memory: "2Gi"
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 3001
-          initialDelaySeconds: 10
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3001
-          initialDelaySeconds: 30
-          periodSeconds: 20
-
-        volumeMounts:
-          - name: shared-storage
-            mountPath: /app/storage
 
       volumes:
-        - name: shared-storage
-          persistentVolumeClaim:
-            claimName: storage-pvc
+      - name: efs-storage
+        persistentVolumeClaim:
+          claimName: storage-pvc

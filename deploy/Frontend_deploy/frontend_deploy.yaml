@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: luyaoran/frontend:latest
+        image: luyaoran/wisdom:latest
         ports:
         - containerPort: 80
         resources:

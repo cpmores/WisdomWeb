@@ -64,12 +64,12 @@ public class BookmarkService {
             localResult.put("status", "success");
             localResult.put("message", bookmark.getId() == null ? "Bookmark added successfully" : "Bookmark updated successfully");
             localResult.put("url", url);
-            logger.info("Local bookmark operation successful for userId: {}, url: {}, tag: {}", user.getUserId(), url, bookmark.getTag());
+            logger.info("Local bookmark operation successful for userId: {}, url: {}, tag: {}", user.getId(), url, bookmark.getTag());
         } catch (Exception e) {
             localResult.put("status", "error");
             localResult.put("message", "Failed to add or update bookmark: " + e.getMessage());
             localResult.put("url", url);
-            logger.error("Local bookmark operation failed for userId: {}, url: {}, error: {}", user.getUserId(), url, e.getMessage());
+            logger.error("Local bookmark operation failed for userId: {}, url: {}, error: {}", user.getId(), url, e.getMessage());
             response.put("local", localResult);
             response.put("crawler", Map.of("status", "error", "message", "Operation aborted due to local failure", "url", url));
             return response;
@@ -77,24 +77,24 @@ public class BookmarkService {
 
         Map<String, Object> crawlerResult;
         try {
-            crawlerResult = crawlerClient.sendToCrawler(user.getUserId(), url, tag != null ? tag : "default", "append");
+            crawlerResult = crawlerClient.sendToCrawler(user.getId(), url, tag != null ? tag : "default", "append");
             crawlerResult.put("status", "success");
             crawlerResult.put("url", url);
         } catch (IllegalStateException e) {
             Bookmark bookmark = bookmarkRepository.findByUserIdAndUrl(userId, url);
             if (bookmark != null) {
                 bookmarkRepository.delete(bookmark);
-                logger.info("Rolled back local bookmark for userId: {}, url: {} due to crawler failure", user.getUserId(), url);
+                logger.info("Rolled back local bookmark for userId: {}, url: {} due to crawler failure", user.getId(), url);
             }
             localResult.put("status", "error");
             localResult.put("message", "Bookmark operation rolled back due to crawler failure");
             crawlerResult = Map.of(
                     "status", "error",
                     "message", e.getMessage(),
-                    "receivedData", Map.of("url", url, "tag", tag != null ? tag : "default", "userid", user.getUserId(), "operation", "append"),
+                    "receivedData", Map.of("url", url, "tag", tag != null ? tag : "default", "userid", user.getId(), "operation", "append"),
                     "url", url
             );
-            logger.error("Crawler failed for userId: {}, url: {}, error: {}", user.getUserId(), url, e.getMessage());
+            logger.error("Crawler failed for userId: {}, url: {}, error: {}", user.getId(), url, e.getMessage());
         }
 
         response.put("local", localResult);
@@ -144,7 +144,7 @@ public class BookmarkService {
                 localResult.put("status", "error");
                 localResult.put("message", "Bookmark not found for url: " + url);
                 localResult.put("url", url);
-                logger.warn("Local bookmark not found for userId: {}, url: {}", user.getUserId(), url);
+                logger.warn("Local bookmark not found for userId: {}, url: {}", user.getId(), url);
                 response.put("local", localResult);
                 response.put("crawler", Map.of("status", "error", "message", "Operation aborted due to bookmark not found", "url", url));
                 return response;
@@ -153,12 +153,12 @@ public class BookmarkService {
             localResult.put("status", "success");
             localResult.put("message", "Bookmark removed successfully");
             localResult.put("url", url);
-            logger.info("Local bookmark removed for userId: {}, url: {}", user.getUserId(), url);
+            logger.info("Local bookmark removed for userId: {}, url: {}", user.getId(), url);
         } catch (Exception e) {
             localResult.put("status", "error");
             localResult.put("message", "Failed to remove bookmark: " + e.getMessage());
             localResult.put("url", url);
-            logger.error("Local bookmark removal failed for userId: {}, url: {}, error: {}", user.getUserId(), url, e.getMessage());
+            logger.error("Local bookmark removal failed for userId: {}, url: {}, error: {}", user.getId(), url, e.getMessage());
             response.put("local", localResult);
             response.put("crawler", Map.of("status", "error", "message", "Operation aborted due to local failure", "url", url));
             return response;
@@ -166,7 +166,7 @@ public class BookmarkService {
 
         Map<String, Object> crawlerResult;
         try {
-            crawlerResult = crawlerClient.sendToCrawler(user.getUserId(), url, "default", "remove");
+            crawlerResult = crawlerClient.sendToCrawler(user.getId(), url, "default", "remove");
             crawlerResult.put("status", "success");
             crawlerResult.put("url", url);
         } catch (IllegalStateException e) {
@@ -179,19 +179,19 @@ public class BookmarkService {
                 bookmark.setTag("default");
                 bookmark.setClickCount(0);
                 bookmarkRepository.save(bookmark);
-                logger.info("Rolled back local bookmark for userId: {}, url: {} due to crawler failure", user.getUserId(), url);
+                logger.info("Rolled back local bookmark for userId: {}, url: {} due to crawler failure", user.getId(), url);
             } else {
-                logger.info("Bookmark already exists for userId: {}, url: {}, skipping re-insertion", user.getUserId(), url);
+                logger.info("Bookmark already exists for userId: {}, url: {}, skipping re-insertion", user.getId(), url);
             }
             localResult.put("status", "error");
             localResult.put("message", "Bookmark removal rolled back due to crawler failure");
             crawlerResult = Map.of(
                     "status", "error",
                     "message", e.getMessage(),
-                    "receivedData", Map.of("url", url, "tag", "default", "userid", user.getUserId(), "operation", "remove"),
+                    "receivedData", Map.of("url", url, "tag", "default", "userid", user.getId(), "operation", "remove"),
                     "url", url
             );
-            logger.error("Crawler failed for userId: {}, url: {}, error: {}", user.getUserId(), url, e.getMessage());
+            logger.error("Crawler failed for userId: {}, url: {}, error: {}", user.getId(), url, e.getMessage());
         }
 
         response.put("local", localResult);
@@ -314,7 +314,7 @@ public class BookmarkService {
 
         if (keyword != null && !keyword.isEmpty()) {
             try {
-                List<Map<String, Object>> searchResults = searchEngineClient.search(user.getUserId(), keyword);
+                List<Map<String, Object>> searchResults = searchEngineClient.search(user.getId(), keyword);
                 List<String> urls = searchResults.stream()
                         .map(result -> (String) result.get("url"))
                         .collect(Collectors.toList());

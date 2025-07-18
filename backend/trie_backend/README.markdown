@@ -84,7 +84,7 @@ trie-backend/
 
 ## Docker 镜像
 
-- **镜像地址**：`bertha6651/trie_backend:latest`
+- **镜像地址**：`bertha6651/trie_backend:v1
 - **构建说明**：基于 `python:3.9-slim`，安装 `requirements.txt` 中指定的依赖，暴露 5000 端口。
 - **拉取命令**：
   ```bash

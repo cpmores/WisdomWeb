@@ -25,14 +25,14 @@ public class CrawlerClient {
         this.restTemplate = restTemplate;
     }
 
-    public Map<String, Object> sendToCrawler(String userId, String url, String tag, String operation) {
+    public Map<String, Object> sendToCrawler(Long userId, String url, String tag, String operation) {
         String endpoint = crawlerUrl + "/receive-json";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         Map<String, String> requestBody = Map.of(
                 "url", url,
                 "tag", tag != null ? tag : "",
-                "userid", userId,
+                "userid", String.valueOf(userId),
                 "operation", operation
         );
         HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
