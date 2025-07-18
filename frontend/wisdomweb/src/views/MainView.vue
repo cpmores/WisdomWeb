@@ -1100,8 +1100,6 @@ export default {
       // 向后端发送POST请求，发送用户ID和点击的URL（不等待响应）
       this.sendClickRecordToBackend(bookmark.url)
 
-      // 使用 window.open 确保在新标签页打开链接
-      window.open(bookmark.url, '_blank', 'noopener,noreferrer')
 
       console.log('链接已打开:', bookmark.url)
     },
