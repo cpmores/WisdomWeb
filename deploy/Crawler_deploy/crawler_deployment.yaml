@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crawler
+  namespace: prod
+  labels:
+    app: crawler
+spec:
+  replicas: 1  # 可以根据负载水平扩展
+  selector:
+    matchLabels:
+      app: crawler
+  template:
+    metadata:
+      labels:
+        app: crawler
+    spec:
+      containers:
+      - name: crawler
+        image: cpmores/storage-server:v1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000  
+        volumeMounts:
+        - name: efs-storage
+          mountPath: /data  # 确保与 docker run -v /data 一致
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "0.5"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        # livenessProbe:
+        #   httpGet:
+        #     path: /healthz
+        #     port: 3000
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /healthz
+        #     port: 3000
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+
+      volumes:
+      - name: efs-storage
+        persistentVolumeClaim:
+          claimName: storage-pvc
+
+
