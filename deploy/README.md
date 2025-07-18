@@ -77,7 +77,6 @@ kubectl apply -f Ingress_deploy/             # 配置 Ingress 网关
 | `Trie_server_deploy/` | 前缀树补全服务的部署                                       |
 | `Storage_deploy/`     | 通用存储服务（处理爬虫结果、关键词、索引）                 |
 
-
 ## 数据卷与存储说明
 
 * 大部分服务使用 `hostPath` 或 `persistentVolumeClaim` 进行持久化挂载
