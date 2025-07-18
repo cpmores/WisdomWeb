@@ -7,7 +7,7 @@ metadata:
   labels:
     app: crawler
 spec:
-  replicas: 1  # 可以根据负载水平扩展
+  replicas: 1  
   selector:
     matchLabels:
       app: crawler
@@ -24,7 +24,7 @@ spec:
         - containerPort: 3000  
         volumeMounts:
         - name: efs-storage
-          mountPath: /data  # 确保与 docker run -v /data 一致
+          mountPath: /data  
         env:
         - name: NODE_ENV
           value: "production"
@@ -35,19 +35,7 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "1"
-        # livenessProbe:
-        #   httpGet:
-        #     path: /healthz
-        #     port: 3000
-        #   initialDelaySeconds: 10
-        #   periodSeconds: 10
-        # readinessProbe:
-        #   httpGet:
-        #     path: /healthz
-        #     port: 3000
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 5
-
+       
       volumes:
       - name: efs-storage
         persistentVolumeClaim:
