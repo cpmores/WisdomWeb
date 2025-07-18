@@ -24,18 +24,18 @@ public class BookmarkClickService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void recordClick(Long userId, String url) {
-        User user = userRepository.findById(userId)
+    public void recordClick(Long Id, String url) {
+        User user = userRepository.findById(Id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        Bookmark bookmark = bookmarkRepository.findByUserIdAndUrl(userId, url);
+        Bookmark bookmark = bookmarkRepository.findByUserIdAndUrl(Id, url);
         if (bookmark == null) {
             throw new IllegalArgumentException("Bookmark not found for url: " + url);
         }
 
         bookmark.setClickCount(bookmark.getClickCount() + 1);
         bookmarkRepository.save(bookmark);
-        logger.info("Bookmark click recorded for userId: {}, url: {}, new click count: {}", user.getUserId(), url, bookmark.getClickCount());
+        logger.info("Bookmark click recorded for userId: {}, url: {}, new click count: {}", user.getId(), url, bookmark.getClickCount());
     }
 
     public Long getUserIdFromToken(String token) {
