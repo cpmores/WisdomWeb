@@ -22,23 +22,11 @@ spec:
         envFrom:
         - configMapRef:
             name: backend-config
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 20
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 60
-          periodSeconds: 30
         resources:
           requests:
-            cpu: "0.5"       # 请求0.5核CPU，确保调度时预留
-            memory: "512Mi"  # 请求512MB内存
+            cpu: "0.5"       
+            memory: "512Mi"  
           limits:
-            cpu: "1"         # 限制最多使用1核CPU
-            memory: "1Gi"    # 限制最多使用1GB内存
+            cpu: "1"         
+            memory: "1Gi"    
 
