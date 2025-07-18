@@ -10,3 +10,13 @@ A basic Search Engine for personal use to maintain your own Knowledge Network.
 + 其他组件 `utils` ：其他功能组件
 + `k8s` 部署 `deploy` ：部署配置文件
 + 自动化脚本 `scripts` ：部署使用
+
+hosts 修改
+
+```bash
+44.218.106.137 wisdomweb.local
+```
+
+Turtorial
+
+https://www.bilibili.com/video/BV1EFgAzjEk6/?spm_id_from=333.337.search-card.all.click&vd_source=c135d0dd82ccc9aed199a2e246e7ecc3
