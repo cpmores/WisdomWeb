@@ -30,10 +30,9 @@ spec:
             memory: "512Mi"
 
         volumeMounts:
-          - name: shared-storage
-            mountPath: /app/storage
-
+        - name: efs-storage
+          mountPath: /data
       volumes:
-        - name: shared-storage
-          persistentVolumeClaim:
+      - name: efs-storage
+        persistentVolumeClaim:
           claimName: storage-pvc
