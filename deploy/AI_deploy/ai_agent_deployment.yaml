@@ -16,6 +16,9 @@ spec:
       containers:
         - name: ai-agent-container
           image: cpmores/ai-doc-server:v1.0
+          volumeMounts:
+          - name: efs-storage
+            mountPath: /data
           ports:
             - containerPort: 3003
           resources:
@@ -29,7 +32,7 @@ spec:
             - name: ARK_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: ai-agent-secret
+                  name: ai-agent-secrets
                   key: ARK_API_KEY
             - name: ARK_BASE_URL
               valueFrom:
@@ -56,11 +59,7 @@ spec:
                 configMapKeyRef:
                   name: ai-agent-config
                   key: TXT_FOLDER_PATH
-          volumeMounts:
-            - name: shared-storage
-              mountPath: /app/storage
-              readOnly: true
       volumes:
-        - name: shared-storage
-          persistentVolumeClaim:
-            claimName: storage-pvc
+      - name: efs-storage
+        persistentVolumeClaim:
+          claimName: storage-pvc

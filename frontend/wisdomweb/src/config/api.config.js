@@ -15,6 +15,11 @@ const getPrefixTreeBaseUrl = () => {
   return prefixTreeBaseUrl
 }
 
+// 获取AI服务API地址
+const getAiApiBaseUrl = () => {
+  return import.meta.env.VITE_AI_API_BASE_URL
+}
+
 // 服务器基础配置
 export const API_CONFIG = {
   // 服务器基础URL - 支持环境变量配置
@@ -22,6 +27,9 @@ export const API_CONFIG = {
 
   // 前缀树服务基础URL - 前缀树相关API使用不同的服务器
   PREFIX_TREE_BASE_URL: getPrefixTreeBaseUrl(),
+
+  // AI服务基础URL - AI相关API使用不同的服务器
+  AI_BASE_URL: getAiApiBaseUrl(),
 
   // API版本
   VERSION: 'v1',
@@ -118,10 +126,9 @@ export const API_ENDPOINTS = {
 
   // 标签管理相关
   TAGS: {
-    //TODO 使用了但是未实现
     // 获取用户标签
     GET_USER_TAGS: {
-      url: '/tags/usertags',
+      url: '/bookmarks/listTagsWithCounts',
       method: 'GET',
       description: '获取用户所有标签接口',
     },
@@ -162,7 +169,7 @@ export const API_ENDPOINTS = {
   AI: {
     // AI对话
     CHAT: {
-      url: '/ai/chat',
+      url: '/chat',
       method: 'POST',
       description: 'AI助手对话接口',
     },
@@ -421,3 +428,5 @@ export function setUserInitializeData(userData) {
 export function clearUserInitializeData() {
   localStorage.removeItem(API_CONFIG.AUTH.USER_KEY)
 }
+
+export { getAiApiBaseUrl }

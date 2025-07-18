@@ -4,7 +4,7 @@
  */
 
 import httpClient from './http-client.js'
-import { API_ENDPOINTS, API_CONFIG } from '../config/api.config.js'
+import { API_ENDPOINTS, API_CONFIG, getAiApiBaseUrl } from '../config/api.config.js'
 
 // ==================== 用户认证相关 ====================
 
@@ -444,8 +444,36 @@ export async function recordBookmarkClick(url) {
  */
 export async function getUserTags() {
   const endpoint = API_ENDPOINTS.TAGS.GET_USER_TAGS
-  return await httpClient.get(endpoint.url)
-}
+  //TODO 数据类型未解决
+  const response = await httpClient.get(endpoint.url)
+  // 适配服务器返回的新格式：对象数组 [{tag, urlCount}, ...]
+  console.log(response)
+  console.log(typeof response)//object
+  console.log(response[0])
+
+  let data = []
+  for (const item of response) {
+    data.push({
+      tag: item.tag,
+      urlCount: item.urlCount,
+    })
+  }
+
+  console.log(data)
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data)
+      } catch (e) {
+        data = []
+      }
+    }
+    if (Array.isArray(data)) {
+      return data // JS对象数组
+    } else {
+      return []
+    }
+
+}  
 
 // ==================== 搜索功能相关 ====================
 
@@ -510,16 +538,16 @@ export async function multiSearchBookmarks(searchParams) {
 
 /**
  * 前缀匹配搜索
- * @param {string} userid - 用户唯一标识符
+ * @param {string} id - 用户标识符
  * @param {string} prefix - 要搜索的前缀（中文或英文）
  * @returns {Promise<Object>} 匹配结果
  */
-export async function prefixMatch(userid, prefix) {
+export async function prefixMatch(idnum, prefix) {
   const endpoint = API_ENDPOINTS.SEARCH.PREFIX_MATCH
-
+  const id = String(idnum)
   // 验证参数
-  if (!userid || !userid.trim()) {
-    throw new Error('userid cannot be empty')
+  if (!id || !id.trim()) {
+    throw new Error('id cannot be empty')
   }
 
   if (!prefix || !prefix.trim()) {
@@ -528,7 +556,7 @@ export async function prefixMatch(userid, prefix) {
 
   // 准备请求参数
   const params = new URLSearchParams({
-    userid: userid.trim(),
+    userid: id.trim(),
     prefix: prefix.trim(),
   })
 
@@ -545,7 +573,7 @@ export async function prefixMatch(userid, prefix) {
         success: true,
         data: {
           results: response.results,
-          userid: response.userid,
+          id: response.id,
           language: response.language,
         },
         message: '匹配成功',
@@ -564,20 +592,20 @@ export async function prefixMatch(userid, prefix) {
 
 /**
  * 前缀树登出 - 清除指定用户的缓存数据
- * @param {string} userid - 用户唯一标识符
+ * @param {string} id - 用户标识符
  * @returns {Promise<Object>} 清除结果
  */
 export async function prefixTreeLogout(userid) {
   const endpoint = API_ENDPOINTS.SEARCH.PREFIX_TREE_LOGOUT
-
+  const id = String(userid)
   // 验证参数
-  if (!userid || !userid.trim()) {
-    throw new Error('userid cannot be empty')
+  if (!id || !id.trim()) {
+    throw new Error('id cannot be empty')
   }
 
   // 准备请求数据
   const requestData = {
-    userid: userid.trim(),
+    id: id.trim(),
   }
 
   try {
@@ -593,7 +621,7 @@ export async function prefixTreeLogout(userid) {
         success: true,
         data: {
           message: response.message,
-          userid: response.userid,
+          id: response.id,
         },
         message: '用户缓存数据清除成功',
       }
@@ -660,13 +688,70 @@ export async function getSearchHistory(sortBy = 'time') {
 // ==================== AI助手相关 ====================
 
 /**
- * AI对话
- * @param {Object} chatData - 对话数据 {message, context, model}
- * @returns {Promise<Object>} 对话结果
+ * AI助手对话
+ * @param {Object} chatData - {userid, message, is_first_chat}
+ * @returns {Promise<Object|string>} AI回复
  */
-export async function chatWithAI(chatData) {
+/*export async function chatWithAI(chatData) {
   const endpoint = API_ENDPOINTS.AI.CHAT
-  return await httpClient.post(endpoint.url, chatData)
+  // 使用AI专用BASE_URL
+  const aiBaseUrl = API_CONFIG.AI_BASE_URL || getAiApiBaseUrl() || ''
+  const url = aiBaseUrl ? `${aiBaseUrl}${endpoint.url}` : endpoint.url
+  try {
+    const response = await httpClient.post(url, chatData, { includeAuth: true })
+    return response
+  } catch (error) {
+    return error.message || 'AI对话请求失败'
+  }
+}*/
+
+// src/services/api.js
+export async function chatWithAI(payload) {
+  const aiBaseUrl = API_CONFIG.AI_BASE_URL || getAiApiBaseUrl() || ''
+  const endpoint = API_ENDPOINTS.AI.CHAT
+  const url = aiBaseUrl ? `${aiBaseUrl}${endpoint.url}` : endpoint.url
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.body) {
+    throw new Error('No response body')
+  }
+
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+  let buffer = ''
+
+  // async generator
+  async function* streamChunks() {
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      buffer += decoder.decode(value, { stream: true })
+      let lines = buffer.split('\n')
+      buffer = lines.pop() // 最后一行可能是不完整的
+      for (const line of lines) {
+        if (line.trim()) {
+          try {
+            yield JSON.parse(line)
+          } catch (e) {
+            // 跳过解析失败的行
+          }
+        }
+      }
+    }
+    // 处理最后一行
+    if (buffer.trim()) {
+      try {
+        yield JSON.parse(buffer)
+      } catch (e) {}
+    }
+  }
+
+  return streamChunks()
 }
 
 // ==================== 工具函数 ====================

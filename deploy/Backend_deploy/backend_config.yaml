@@ -5,9 +5,7 @@ metadata:
   name: backend-config
   namespace: prod
 data:
-  SPRING_DATASOURCE_URL: "jdbc:mariadb://mariadb:3306/WebSearch"
-  SPRING_DATASOURCE_USERNAME: "WebSearch"
-  SPRING_DATASOURCE_PASSWORD: "WebSearch123!"
+  SPRING_DATASOURCE_URL: "jdbc:mariadb://widsomweb-db.c8m5rwwx8dws.us-east-1.rds.amazonaws.com:3306/WebSearch"
   SEARCHENGINE_URL: "http://search-engine:3001/search"
   CRAWLER_URL: "http://crawler:3000"
   SPRING_PROFILES_ACTIVE: "production"
